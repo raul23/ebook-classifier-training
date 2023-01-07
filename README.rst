@@ -12,7 +12,7 @@ I am following along their tutorial but using my own dataset containing a bunch 
 
 Introduction
 ============
-The dataset of ebooks that I used to test text classification consists of 129 ebooks (``pdf`` and ``djvu``) from 3 categories:
+The dataset of ebooks that I used to test text classification consists of 129 English ebooks (``pdf`` and ``djvu``) from 3 categories:
 
 - ``computer_science`` with label 0 and 48 ebooks
 - ``mathematics`` with label 1 and 50 ebooks
