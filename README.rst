@@ -57,14 +57,24 @@ TODO
 
 Results of classifying ebooks
 =============================
-Here are the results from training a ``RidgeClassifier`` on the dataset of 129 documents from three different categories (computer_science,
-mathematics, physics).
+Here are the results from training a ``RidgeClassifier`` on the dataset of 129 documents with three categories (computer_science,
+mathematics, physics) and the train and test sets splitted as follows:
+
+- train data: 77 ebooks (60%)
+- test data: 52 ebooks (40%)
 
 .. raw:: html
 
    <p align="center"><img src="./images/confusion_matrix_ridgeclass_small_dataset.png">
    </p>
-   
+
+`:information_source:` Insights from the confusion matrix for ``RidgeClassifier``
+
+- The confusion matrix is plotted based on the predictions from the test set.
+- Among the three categories, this linear model has the most difficulties with the physics category. It confused physics ebooks for mathematics documents which is to be expected since both domains share overlaps between words.
+- Mathematics ebooks are well classified but one such document was classified as a computer science document. 
+- The computer science category is the one that ``RidgeClassifier`` has the most success in classifying with all computer science ebooks being correctly classified as such. It means that computer science documents all share more specific vocabulary than the one for the other two domains (mathematics and physics).
+
 |
  
 .. raw:: html
