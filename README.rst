@@ -63,6 +63,8 @@ mathematics, physics) and the train and test sets splitted as follows:
 - train data: 77 ebooks (60%)
 - test data: 52 ebooks (40%)
 
+|
+
 .. raw:: html
 
    <p align="center"><img src="./images/confusion_matrix_ridgeclass_small_dataset.png">
