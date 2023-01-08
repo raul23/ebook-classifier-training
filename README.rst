@@ -170,7 +170,8 @@ I won't list all options (too many) but here some of the important and interesti
     failed to convert an ebook to ``txt`` or resulted in an empty file, the OCR method will be used.
   - 'false': never use OCR, only use the other simpler conversion tools (``pdftotext`` and ``djvutxt``).
 - The option ``--cat, --categories CATEGORY [CATEGORY ...]`` takes the following default values: 
-  ``['biology', 'chemistry', 'mathematics', 'philosophy', 'physics']``
+  
+  ``['computer_science', 'mathematics', 'physics']``
 
 Caching
 -------
