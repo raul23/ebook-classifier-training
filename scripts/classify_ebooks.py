@@ -21,6 +21,8 @@ from types import SimpleNamespace
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pycld2
+import regex
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import RidgeClassifier
 from sklearn.metrics import ConfusionMatrixDisplay
@@ -28,9 +30,7 @@ from sklearn.utils import Bunch
 
 Cache = None
 nltk = None
-pycld2 = None
-RE_BAD_CHARS = None
-regex = None
+RE_BAD_CHARS = regex.compile(r"[\p{Cc}\p{Cs}]+")
 
 logger = logging.getLogger('clustering')
 __version__ = '0.1'
@@ -566,17 +566,11 @@ def get_pages_in_pdf(file_path, cmd='mdls'):
 
 
 def import_modules(english_detector='pycld2', use_cache=False):
-    global Cache, ENGLISH_VOCAB, nltk, pycld2, RE_BAD_CHARS, regex
-    logger.debug('importing regex')
-    import regex
-    RE_BAD_CHARS = regex.compile(r"[\p{Cc}\p{Cs}]+")
+    global Cache, ENGLISH_VOCAB, nltk
     if english_detector == 'nltk':
         logger.debug('importing nltk')
         import nltk
         ENGLISH_VOCAB = set(w.lower() for w in nltk.corpus.words.words())
-    elif english_detector == 'pycld2':
-        logger.debug('importing pycld2')
-        import pycld2
     if use_cache:
         logger.debug('importing diskcache')
         from diskcache import Cache
@@ -739,6 +733,17 @@ def pdftotext(input_file, output_file, first_page_to_convert=None, last_page_to_
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
+
+
+def plot_confusion_matrix(clf, y_test, pred, target_names):
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ConfusionMatrixDisplay.from_predictions(y_test, pred, ax=ax)
+    ax.xaxis.set_ticklabels(target_names)
+    ax.yaxis.set_ticklabels(target_names)
+    _ = ax.set_title(
+        f"Confusion Matrix for {clf.__class__.__name__}\non the original documents"
+    )
+    plt.show()
 
 
 def print_(msg):
@@ -1014,6 +1019,17 @@ class DatasetManager:
             logger.warning(f"{COLORS['YELLOW']}Cache folder not found:{COLORS['NC']} {folder}")
             return False
 
+    def classify_ebooks(self, categories):
+        X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories)
+
+        clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
+        clf.fit(X_train, y_train)
+        pred = clf.predict(X_test)
+
+        plot_confusion_matrix(clf, y_test, pred, target_names)
+
+        return 0
+
     @staticmethod
     def clear_cache(cache_folder):
         if DatasetManager.cache_folder_exists(cache_folder):
@@ -1215,17 +1231,6 @@ class DatasetManager:
             else:
                 self.dataset = pickle.load(f)
 
-    def classify_ebooks(self, categories):
-        X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories)
-
-        clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
-        clf.fit(X_train, y_train)
-        pred = clf.predict(X_test)
-
-        plot_confusion_matrix(clf, y_test, pred, target_names)
-
-        return 0
-
     def _vectorize_dataset(self, categories):
         logger.info(blue('Filtering dataset ...'))
         dataset = self.filter_dataset(categories_to_keep=categories)
@@ -1295,17 +1300,6 @@ class DatasetManager:
             print(f"n_samples: {X_test.shape[0]}, n_features: {X_test.shape[1]}")
 
         return X_train, X_test, y_train, y_test, feature_names, target_names
-
-
-def plot_confusion_matrix(clf, y_test, pred, target_names):
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ConfusionMatrixDisplay.from_predictions(y_test, pred, ax=ax)
-    ax.xaxis.set_ticklabels(target_names)
-    ax.yaxis.set_ticklabels(target_names)
-    _ = ax.set_title(
-        f"Confusion Matrix for {clf.__class__.__name__}\non the original documents"
-    )
-    plt.show()
 
 
 def main():
