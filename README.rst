@@ -22,6 +22,21 @@ I will be using different datasets of ebooks to test text classification. One of
 By default, only 10% of a given ebook is `converted to text <#dataset-generation>`_ and added to the dataset. Also if an ebook is 
 made of images, `OCR <#ocr>`_ is applied on 5 pages chosen randomly in the first 50% of the given ebook to extract the text.
 
+Some stats about this small dataset:
+
+.. code-block::
+
+   Categories size: [48 50 31]
+   129 documents - 3 categories
+   
+   77 documents - 5.03MB (training set)
+   52 documents - 2.67MB (test set)
+
+   vectorize training done in 0.861s at 5.837MB/s
+   n_samples: 77, n_features: 5436
+   vectorize testing done in 0.433s at 6.174MB/s
+   n_samples: 52, n_features: 5436
+
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
 multiple clasification models will be used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
 
