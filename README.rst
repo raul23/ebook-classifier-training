@@ -108,7 +108,35 @@ Script ``classify_ebooks.py``
 =============================
 Dependencies
 ------------
-TODO
+This is the environment on which the script `classify_ebooks.py <./scripts/classify_ebooks.py>`_ was tested:
+
+* **Platform:** macOS
+* **Python**: version **3.7**
+* `matplotlib <https://matplotlib.org/>`_: **v3.5.2** for generating graphs
+* `numpy <https://numpy.org/>`_: **v1.21.5**, for "array processing for numbers, strings, records, and objects"
+* `pandas <https://pandas.pydata.org/>`_: **v1.3.5**, "High-performance, easy-to-use data structures and data analysis tool" 
+* `pycld2 <https://github.com/aboSamoor/pycld2>`_: **v0.41**, for detecting the language of a given ebook in order to keep 
+  books based on a chosen language
+* `regex <https://pypi.org/project/regex/>`_: **v2022.7.9**, "this regex implementation is backwards-compatible with 
+  the standard ``re`` module, but offers additional functionality"
+* `scikit-learn <https://scikit-learn.org/>`_: **v1.0.2**, "a set of python modules for machine learning and data mining"
+
+**Ref.:** https://docs.anaconda.com/anaconda/packages/py3.7_osx-64/
+
+|
+
+`:star:` **Other dependencies**
+
+You also need recent versions of:
+
+-  `poppler <https://poppler.freedesktop.org/>`_ (including ``pdftotext``) and `DjVuLibre <http://djvu.sourceforge.net/>`_ (including ``djvutxt``)
+   can be installed for conversion of ``.pdf`` and ``.djvu`` files to ``.txt``, respectively.
+
+Optionally:
+
+- `diskcache <http://www.grantjenks.com/docs/diskcache/>`_: **v5.4.0** for caching persistently the converted files into ``txt``
+- `Tesseract <https://github.com/tesseract-ocr/tesseract>`_ for running OCR on books - version 4 gives 
+  better results. OCR is disabled by default since it is a slow resource-intensive process.
 
 Script options
 --------------
