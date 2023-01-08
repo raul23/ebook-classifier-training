@@ -45,40 +45,12 @@ Some stats about this small dataset:
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
 multiple clasification models will be used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
 
-Script ``classify_ebooks.py``
-=============================
-Dependencies
-------------
-TODO
-
-Script options
---------------
-TODO
-
-Caching
--------
-TODO
-
-Ebooks directory
-----------------
-TODO
-
-Dataset generation
-------------------
-TODO
-
-OCR
----
-TODO
-
-Filtering a dataset: select texts only in English and from valid categories
----------------------------------------------------------------------------
-TODO
-
 Results of classifying ebooks
 =============================
-Here are the results from training a ``RidgeClassifier`` on the dataset of 129 documents with three categories (computer_science,
-mathematics, physics) and the train and test sets splitted as follows:
+I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
+of this document.
+
+Thus without further ado, here are the results from training a ``RidgeClassifier`` on the dataset of 129 documents with three categories (computer_science, mathematics, physics) and the train and test sets splitted as follows:
 
 - train data: 77 ebooks (60%)
 - test data: 52 ebooks (40%)
@@ -125,3 +97,33 @@ mathematics, physics) and the train and test sets splitted as follows:
 - When you see the word 'energy' among books from the three categories, you are almost sure that they will be about physics.
 - Algorithm appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
   form of a word (TODO).
+
+Script ``classify_ebooks.py``
+=============================
+Dependencies
+------------
+TODO
+
+Script options
+--------------
+TODO
+
+Caching
+-------
+TODO
+
+Ebooks directory
+----------------
+TODO
+
+Dataset generation
+------------------
+TODO
+
+OCR
+---
+TODO
+
+Filtering a dataset: select texts only in English and from valid categories
+---------------------------------------------------------------------------
+TODO
