@@ -110,6 +110,9 @@ The train and test sets are splitted as follows:
 
 Benchmarking classifiers
 ------------------------
+Also like in the scikit-learn's tutorial, multiple models were tested by analyzing the trade-off between
+training/testing time and their test score.
+
 +-----------------+--------------------------------------------+---------------------------------------------------+-------------------------+---------------------------+--------------------+-----------------------------------------+--------------------+---------------------------+
 |                 | LogisticRegression(C=1000, max_iter=1000)  | RidgeClassifier(alpha=1e-06, solver='sparse_cg')  | KNeighborsClassifier()  | RandomForestClassifier()  | LinearSVC(C=1000)  | SGDClassifier(alpha=0.001, loss='log')  | NearestCentroid()  | ComplementNB(alpha=1000)  |
 +=================+============================================+===================================================+=========================+===========================+====================+=========================================+====================+===========================+
