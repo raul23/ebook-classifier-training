@@ -57,4 +57,18 @@ TODO
 
 Results of classifying ebooks
 =============================
-TODO
+Here are the results from training a ``RidgeClassifier`` on the dataset of 129 documents from three different categories (computer_science,
+mathematics, physics).
+
+.. raw:: html
+
+   <p align="center"><img src="./images/confusion_matrix_ridgeclass_small_dataset.png.png">
+   </p>
+   
+ |
+ 
+.. raw:: html
+
+   <p align="center"><img src="./images/average_feature_effect_small_dataset.png.png.png">
+   </p>
+ 
