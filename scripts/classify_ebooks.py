@@ -18,16 +18,24 @@ from pathlib import Path
 from time import time
 from types import SimpleNamespace
 
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pycld2
 import regex
+from pprint import pprint
+from sklearn import metrics
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import RidgeClassifier
+from sklearn.linear_model import LogisticRegression, RidgeClassifier, SGDClassifier
 from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.naive_bayes import ComplementNB
+from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
+from sklearn.pipeline import Pipeline
+from sklearn.svm import LinearSVC
 from sklearn.utils import Bunch
+from sklearn.utils.extmath import density
 
 Cache = None
 nltk = None
@@ -68,6 +76,10 @@ CATEGORIES = ['computer_science', 'mathematics', 'physics']
 # ===============
 LOGGING_FORMATTER = 'only_msg'
 LOGGING_LEVEL = 'info'
+
+# Hyperparameter tuning options
+# =============================
+MODELS = ['ComplementNB']
 
 # OCR options
 # ===========
@@ -277,6 +289,36 @@ def add_general_options(parser, add_opts=None, remove_opts=None,
             choices=['console', 'only_msg', 'simple',], default=LOGGING_FORMATTER,
             help='Set logging formatter.' + get_default_message(LOGGING_FORMATTER))
     return parser_general_group
+
+
+def benchmark(clf, X_train, y_train, X_test, y_test, custom_name=False):
+    print("_" * 80)
+    print("Training: ")
+    print(clf)
+    t0 = time()
+    clf.fit(X_train, y_train)
+    train_time = time() - t0
+    print(f"train time: {train_time:.3}s")
+
+    t0 = time()
+    pred = clf.predict(X_test)
+    test_time = time() - t0
+    print(f"test time:  {test_time:.3}s")
+
+    score = metrics.accuracy_score(y_test, pred)
+    print(f"accuracy:   {score:.3}")
+
+    if hasattr(clf, "coef_"):
+        print(f"dimensionality: {clf.coef_.shape[1]}")
+        print(f"density: {density(clf.coef_)}")
+        print()
+
+    print()
+    if custom_name:
+        clf_descr = str(custom_name)
+    else:
+        clf_descr = clf.__class__.__name__
+    return clf_descr, score, train_time, test_time
 
 
 def catdoc(input_file, output_file):
@@ -742,7 +784,7 @@ def plot_confusion_matrix(clf, y_test, pred, target_names):
     ax.xaxis.set_ticklabels(target_names)
     ax.yaxis.set_ticklabels(target_names)
     _ = ax.set_title(
-        f"Confusion Matrix for {clf.__class__.__name__}\non the original documents"
+        f"Confusion Matrix for {clf.__class__.__name__}\non the documents from small dataset"
     )
     plt.show()
 
@@ -882,6 +924,13 @@ def setup_argparser():
     mutual_cache_group.add_argument(
         '-n', '--number-items', dest='check_number_items', action='store_true',
         help='Show number of items stored in cache.')
+    # ====================
+    # Benchmarking options
+    # ====================
+    benchmark_group = parser.add_argument_group(title=yellow('Benchmarking options'))
+    benchmark_group.add_argument(
+        '-b', '--benchmark', dest='benchmark', action='store_true',
+        help='Benchmarking classifiers.')
     # =======================
     # Convert-to-text options
     # =======================
@@ -901,7 +950,19 @@ def setup_argparser():
     dataset_group.add_argument(
         '--cat', '--categories', metavar='CATEGORY', dest='categories',
         nargs='+', default=None,
-        help='Only include these categories in the dataset. ' + get_default_message(CATEGORIES))
+        help='Only include these categories in the dataset.' + get_default_message(CATEGORIES))
+    # =============================
+    # Hyperparameter tuning options
+    # =============================
+    hyper_group = parser.add_argument_group(title=yellow('Hyperparameter tuning options'))
+    hyper_group.add_argument(
+        '--hyper', '--hyperparams-tuning', dest='hyperparams', action='store_true',
+        help='Perform hyperparameter tuning.')
+    hyper_group.add_argument(
+        '-m', '--models', metavar='MODEL', dest='models',
+        nargs='+', default=MODELS,
+        help='The names of models whose hyperparameters will be tuned with grid search.'
+             + get_default_message(MODELS))
     # ===========
     # OCR options
     # ===========
@@ -956,6 +1017,13 @@ def setup_log(quiet=False, verbose=False, logging_level=LOGGING_LEVEL,
         # =============
         logger.debug("Running {} v{}".format(__file__, __version__))
         logger.debug("Verbose option {}".format("enabled" if verbose else "disabled"))
+
+
+def shorten_param(param_name):
+    """Remove components' prefixes in param_name."""
+    if "__" in param_name:
+        return param_name.rsplit("__", 1)[1]
+    return param_name
 
 
 def size_mb(docs):
@@ -1072,7 +1140,7 @@ class DatasetManager:
         pred = clf.predict(X_test)
 
         plot_confusion_matrix(clf, y_test, pred, target_names)
-        plot_feature_effects(clf, X_train, target_names, feature_names).set_title("Average feature effect on the original data")
+        plot_feature_effects(clf, X_train, target_names, feature_names).set_title("Average feature effect on the small dataset")
         plt.show()
 
         return 0
@@ -1116,6 +1184,140 @@ class DatasetManager:
         logger.info(f'Number of ebooks rejected: {number_ebooks_rejected}')
         self._fix_target(dataset)
         return dataset
+
+    def hyperparams_tuning(self, model_names, categories=None):
+        if not model_names:
+            logger.warning(yellow('No model was specified!'))
+        for model_name in model_names:
+            tuned_parameters = {}
+            if model_name == 'ComplementNB':
+                model = ComplementNB()
+                tuned_parameters = {"clf__alpha": np.logspace(-6, 6, 13)}
+            elif model_name == 'LogisticRegression':
+                model = LogisticRegression()
+                tuned_parameters = {"clf__C": [1, 10, 100, 1000], "clf__max_iter": [100, 500, 1000]}
+            elif model_name == 'RidgeClassifier':
+                model = RidgeClassifier(solver="sparse_cg")
+                tuned_parameters = {"clf__alpha": np.logspace(-6, 6, 13)}
+            elif model_name == 'KNeighborsClassifier':
+                # ValueError: Expected n_neighbors <= n_samples,  but n_samples = 62, n_neighbors = 100
+                model = KNeighborsClassifier()
+                tuned_parameters = {"clf__n_neighbors": [5, 10, 25, 50]}
+            elif model_name == 'RandomForestClassifier':
+                model = RandomForestClassifier()
+            elif model_name == 'NearestCentroid':
+                model = NearestCentroid()
+            elif model_name == 'LinearSVC':
+                model = LinearSVC(dual=True)
+                tuned_parameters = {"clf__C": [1, 10, 100, 1000], "clf__max_iter": [100, 500, 1000]}
+            elif model_name == 'SGDClassifier':
+                model = SGDClassifier(loss="log", early_stopping=True)
+                tuned_parameters = {"clf__alpha": np.logspace(-6, 6, 13), }
+            else:
+                # TODO: logging
+                continue
+            target_names, train_data, y_train, test_data, y_test, test_data = self._split_dataset(
+                categories)
+
+            pipeline = Pipeline(
+                [
+                    ("vect", TfidfVectorizer(sublinear_tf=True, stop_words="english")),
+                    ("clf", model),
+                ]
+            )
+
+            parameter_grid = {
+                "vect__max_df": (0.2, 0.4, 0.6, 0.8, 1.0),
+                "vect__min_df": (1, 3, 5, 10),
+                "vect__ngram_range": ((1, 1), (1, 2)),  # unigrams or bigrams
+                "vect__norm": ("l1", "l2")
+            }
+            parameter_grid.update(tuned_parameters)
+
+            random_search = RandomizedSearchCV(
+                estimator=pipeline,
+                param_distributions=parameter_grid,
+                n_iter=40,
+                random_state=0,
+                n_jobs=2,
+                verbose=3,
+            )
+
+            print("Performing grid search...")
+            print("Hyperparameters to be evaluated:")
+            pprint(parameter_grid)
+
+            t0 = time()
+            random_search.fit(train_data, y_train)
+            print(f"Done in {time() - t0:.3f}s")
+
+            print("Best parameters combination found:")
+            best_parameters = random_search.best_estimator_.get_params()
+            for param_name in sorted(parameter_grid.keys()):
+                print(f"{param_name}: {best_parameters[param_name]}")
+
+            test_accuracy = random_search.score(test_data, y_test)
+            print(
+                "Accuracy of the best parameters using the inner CV of "
+                f"the random search: {random_search.best_score_:.3f}"
+            )
+            print(f"Accuracy on test set: {test_accuracy:.3f}")
+
+        return 0
+
+    def benchmark_classifiers(self, categories):
+        X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories)
+        results = []
+        for clf, name in (
+                (LogisticRegression(C=1000, max_iter=1000), "Logistic Regression"),
+                (RidgeClassifier(alpha=1e-06, solver="sparse_cg"), "Ridge Classifier"),
+                (KNeighborsClassifier(n_neighbors=5), "kNN"),
+                (RandomForestClassifier(), "Random Forest"),
+                # L2 penalty Linear SVC
+                (LinearSVC(C=1000, dual=True, max_iter=1000), "Linear SVC"),
+                # L2 penalty Linear SGD
+                (SGDClassifier(loss="log", alpha=1e-3), "log-loss SGD"),
+                # NearestCentroid (aka Rocchio classifier)
+                (NearestCentroid(), "NearestCentroid"),
+                # Sparse naive Bayes classifier
+                (ComplementNB(alpha=1000), "Complement naive Bayes"),
+        ):
+            print("=" * 80)
+            print(name)
+            results.append(benchmark(clf, X_train, y_train, X_test, y_test, name))
+
+        indices = np.arange(len(results))
+
+        results = [[x[i] for x in results] for i in range(4)]
+
+        clf_names, score, training_time, test_time = results
+        training_time = np.array(training_time)
+        test_time = np.array(test_time)
+
+        fig, ax1 = plt.subplots(figsize=(10, 8))
+        ax1.scatter(score, training_time, s=60)
+        ax1.set(
+            title="Score-training time trade-off",
+            yscale="log",
+            xlabel="test accuracy",
+            ylabel="training time (s)",
+        )
+        fig, ax2 = plt.subplots(figsize=(10, 8))
+        ax2.scatter(score, test_time, s=60)
+        ax2.set(
+            title="Score-test time trade-off",
+            yscale="log",
+            xlabel="test accuracy",
+            ylabel="test time (s)",
+        )
+
+        for i, txt in enumerate(clf_names):
+            ax1.annotate(txt, (score[i], training_time[i]))
+            ax2.annotate(txt, (score[i], test_time[i]))
+
+        plt.show()
+
+        return 0
 
     @staticmethod
     def number_items_in_cache(cache_folder):
@@ -1278,7 +1480,7 @@ class DatasetManager:
             else:
                 self.dataset = pickle.load(f)
 
-    def _vectorize_dataset(self, categories):
+    def _split_dataset(self, categories, train_prop=0.6):
         logger.info(blue('Filtering dataset ...'))
         dataset = self.filter_dataset(categories_to_keep=categories)
 
@@ -1294,21 +1496,25 @@ class DatasetManager:
         logger.info(f'Target names: {dataset.target_name_to_value}')
         logger.info(f'Categories size: {category_sizes}')
         logger.info(f'{len(dataset.data)} documents - {true_k} categories')
-        end_position = int(0.6*dataset_size)
+        end_position = int(train_prop * dataset_size)
 
         # split dataset in a training set and a test set
         train_data = dataset.data[:end_position]
         y_train = dataset.target[:end_position]
-        train_filenames = dataset.filenames[:end_position]
+        # train_filenames = dataset.filenames[:end_position]
         train_data_size = len(train_data)
 
         test_data = dataset.data[end_position:]
         y_test = dataset.target[end_position:]
-        test_filenames = dataset.filenames[end_position:]
+        # test_filenames = dataset.filenames[end_position:]
         test_data_size = len(test_data)
 
         assert dataset_size == (train_data_size + test_data_size)
 
+        return target_names, train_data, y_train, test_data, y_test, test_data
+
+    def _vectorize_dataset(self, categories):
+        target_names, train_data, y_train, test_data, y_test, test_data = self._split_dataset(categories)
         # Extracting features from the training data using a sparse vectorizer
         t0 = time()
         vectorizer = TfidfVectorizer(
@@ -1375,7 +1581,13 @@ def main():
                 categories = CATEGORIES
             else:
                 categories = args.categories
-            exit_code = data_manager.classify_ebooks(categories)
+            # Tasks
+            if args.hyperparams:
+                exit_code = data_manager.hyperparams_tuning(args.models, categories)
+            elif args.benchmark:
+                exit_code = data_manager.benchmark_classifiers(categories)
+            else:
+                exit_code = data_manager.classify_ebooks(categories)
         else:
             logger.warning(yellow('Missing input directory'))
             exit_code = 3
@@ -1396,3 +1608,108 @@ if __name__ == '__main__':
         logger.error(red(f'[ERROR] {msg}'))
     else:
         logger.debug(msg)
+
+
+# ComplementNB:
+"""
+Done in 201.569s
+Best parameters combination found:
+clf__alpha: 1000.0
+vect__max_df: 0.2
+vect__min_df: 1
+vect__ngram_range: (1, 2)
+vect__norm: l2
+Accuracy of the best parameters using the inner CV of the random search: 0.988
+Accuracy on test set: 0.962
+"""
+
+# LogisticRegression
+"""
+Done in 345.623s
+Best parameters combination found:
+clf__C: 1000
+clf__max_iter: 1000
+vect__max_df: 0.2
+vect__min_df: 1
+vect__ngram_range: (1, 1)
+vect__norm: l2
+Accuracy of the best parameters using the inner CV of the random search: 0.988
+Accuracy on test set: 0.942
+"""
+
+# RidgeClassifier
+"""
+Done in 258.698s
+Best parameters combination found:
+clf__alpha: 1e-06
+vect__max_df: 0.2
+vect__min_df: 1
+vect__ngram_range: (1, 1)
+vect__norm: l2
+Accuracy of the best parameters using the inner CV of the random search: 0.988
+Accuracy on test set: 0.942
+"""
+
+# KNeighborsClassifier
+"""
+Done in 169.304s
+Best parameters combination found:
+clf__n_neighbors: 5
+vect__max_df: 0.2
+vect__min_df: 10
+vect__ngram_range: (1, 2)
+vect__norm: l2
+Accuracy of the best parameters using the inner CV of the random search: 0.962
+Accuracy on test set: 0.962            
+"""
+
+# RandomForestClassifier
+"""
+Done in 280.983s
+Best parameters combination found:
+vect__max_df: 0.8
+vect__min_df: 3
+vect__ngram_range: (1, 1)
+vect__norm: l1
+Accuracy of the best parameters using the inner CV of the random search: 0.949
+Accuracy on test set: 0.846
+"""
+
+# NearestCentroid
+"""
+Done in 179.342s
+Best parameters combination found:
+vect__max_df: 1.0
+vect__min_df: 10
+vect__ngram_range: (1, 1)
+vect__norm: l2
+Accuracy of the best parameters using the inner CV of the random search: 0.988
+Accuracy on test set: 0.923
+"""
+
+# LinearSVC
+"""
+Done in 389.006s
+Best parameters combination found:
+clf__C: 1000
+clf__max_iter: 1000
+vect__max_df: 0.2
+vect__min_df: 1
+vect__ngram_range: (1, 1)
+vect__norm: l2
+Accuracy of the best parameters using the inner CV of the random search: 0.988
+Accuracy on test set: 0.942
+"""
+
+# SGDClassifier
+"""
+Done in 224.084s
+Best parameters combination found:
+clf__alpha: 0.001
+vect__max_df: 1.0
+vect__min_df: 10
+vect__ngram_range: (1, 2)
+vect__norm: l2
+Accuracy of the best parameters using the inner CV of the random search: 0.974
+Accuracy on test set: 0.942
+"""
