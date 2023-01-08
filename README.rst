@@ -65,7 +65,7 @@ mathematics, physics).
    <p align="center"><img src="./images/confusion_matrix_ridgeclass_small_dataset.png">
    </p>
    
- |
+|
  
 .. raw:: html
 
