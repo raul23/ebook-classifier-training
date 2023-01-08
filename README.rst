@@ -94,13 +94,10 @@ mathematics, physics) and the train and test sets splitted as follows:
 
 `:information_source:` Insights from the words with the highest average feature effects 
 
-- This graph show words that are strongly positively correlated with
-one category and negatively associated with the other two categories such as zeta (positive for mathematics) and universe (positive for physics).
+- This graph show words that are strongly positively correlated with one category and negatively associated 
+  with the other two categories such as zeta (positive for mathematics) and universe (positive for physics).
 
   Those words constitute good predictive features.
-
-- Computer science is a category that has lots of very good predictive features (e.g. programming and algorithm). No wonder that the ``RidgeClassifier`` was able to correctly classify all ebooks from this category.
-
+- Computer science is a category that has lots of very good predictive features (e.g. programming and algorithm). No wonder that the     
+  ``RidgeClassifier`` was able to correctly classify all ebooks from this category.
 - When you see the word 'energy' among books from the three categories, you are almost sure that they will be about physics.
-
-- 
