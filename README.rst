@@ -50,7 +50,9 @@ Results of classifying ebooks
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
 of this document.
 
-Thus without further ado, here are the results from training a ``RidgeClassifier`` on the dataset of 129 documents with three categories (computer_science, mathematics, physics) and the train and test sets splitted as follows:
+Thus without further ado, here are the results from training a ``RidgeClassifier`` on the dataset of 129 documents with three categories (computer_science, mathematics, physics). 
+
+The train and test sets splitted as follows:
 
 - train data: 77 ebooks (60%)
 - test data: 52 ebooks (40%)
