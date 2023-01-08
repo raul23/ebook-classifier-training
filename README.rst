@@ -8,7 +8,7 @@ Experimenting with classifying ebooks
 
 I am basing my experimentation with classifying text on the excellent scikit-learn's tutorial: `Classification of text documents using sparse features <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_.
 
-I am following along their tutorial but using my own dataset containing a bunch of ebooks (``pdf``, ``djvu``).
+I am following along their tutorial but using my own datasets containing a bunch of ebooks (``pdf``, ``djvu``).
 
 Introduction
 ============
