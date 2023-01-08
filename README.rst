@@ -71,7 +71,7 @@ mathematics, physics) and the train and test sets splitted as follows:
 `:information_source:` Insights from the confusion matrix for ``RidgeClassifier``
 
 - The confusion matrix is plotted based on the predictions from the test set.
-- Among the three categories, this linear model has the most difficulties with the physics category. It confused two physics ebooks for mathematics documents which is to be expected since both domains share overlaps between words. The vice-versa situation is not found, i.e. no mathematics documents were incorrectly classified as physics ones which is to be expected since ebooks about physics use a more specific vocabulary than for mathematics documents.
+- Among the three categories, this linear model has the most difficulties with the physics category. It confused two physics ebooks for mathematics documents which is to be expected since both domains share overlaps between words. The vice-versa situation is not found, i.e. no mathematics documents were incorrectly classified as physics ones which could mean that books about physics use a more specific vocabulary than for mathematics documents.
 - Mathematics ebooks are well classified but one such document was classified as a computer science one. 
 - The computer science category is the one that ``RidgeClassifier`` has the most success in classifying with all computer science ebooks being correctly classified as such. 
 
@@ -81,4 +81,26 @@ mathematics, physics) and the train and test sets splitted as follows:
 
    <p align="center"><img src="./images/average_feature_effect_small_dataset.png">
    </p>
- 
+
+.. code-block::
+
+   top 5 keywords per class:
+     computer_science mathematics   physics
+   0       algorithms     riemann    energy
+   1        algorithm    geometry   quantum
+   2      programming        zeta  universe
+   3            input       plane     light
+   4          machine    theorems  particle
+
+`:information_source:` Insights from the words with the highest average feature effects 
+
+- This graph show words that are strongly positively correlated with
+one category and negatively associated with the other two categories such as zeta (positive for mathematics) and universe (positive for physics).
+
+  Those words constitute good predictive features.
+
+- Computer science is a category that has lots of very good predictive features (e.g. programming and algorithm). No wonder that the ``RidgeClassifier`` was able to correctly classify all ebooks from this category.
+
+- When you see the word 'energy' among books from the three categories, you are almost sure that they will be about physics.
+
+- 
