@@ -50,3 +50,6 @@ TODO
 Filtering a dataset: select texts only in English and from valid categories
 ---------------------------------------------------------------------------
 TODO
+
+Results of classifying ebooks
+=============================
