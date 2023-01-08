@@ -24,6 +24,20 @@ made of images, `OCR <#ocr>`_ is applied on 5 pages chosen randomly in the first
 
 Script ``classify_ebooks.py``
 =============================
+Dependencies
+------------
+TODO
+
+Script options
+--------------
+TODO
+
+Caching
+-------
+TODO
+
+Ebooks directory
+----------------
 
 Dataset generation
 ------------------
@@ -31,4 +45,8 @@ TODO
 
 OCR
 ---
+TODO
+
+Filtering a dataset: select texts only in English and from valid categories
+---------------------------------------------------------------------------
 TODO
