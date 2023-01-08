@@ -10,6 +10,8 @@ I am basing my experimentation with classifying text on the excellent scikit-lea
 
 I am following along their tutorial but using my own datasets containing a bunch of ebooks (``pdf``, ``djvu``).
 
+The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with certain labels such as history or fiction).
+
 Introduction
 ============
 I will be using different datasets of ebooks to test text classification. They will be of different size and categories. 
