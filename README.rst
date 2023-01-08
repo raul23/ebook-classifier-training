@@ -1,6 +1,6 @@
-======================================
-Experimenting with classifiying ebooks
-======================================
+=====================================
+Experimenting with classifying ebooks
+=====================================
 .. contents:: **Contents**
    :depth: 4
    :local:
