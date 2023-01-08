@@ -157,7 +157,7 @@ I won't list all options (too many) but here some of the important and interesti
 
 `:information_source:` Explaining some important and interesting options/arguments
 
-- ``input_directory`` is the path to the main directory containing the documents to cluster.
+- ``input_directory`` is the path to the main directory containing the documents to classify.
 - By **dataset re-creation** I mean the case when you delete the pickle dataset file and generate the dataset 
   again. If you are using cache, then the dataset generation should be quick since the text conversions were
   already computed and cached. Using the option ``-u`` is worthwhile especially if you used OCR for some of the ebooks since this procedure is very
