@@ -20,6 +20,8 @@ One of them is a small dataset that consists of 129 English ebooks (``pdf`` and 
 - ``mathematics`` with label 1 and 50 ebooks
 - ``physics`` with label 2 and 31 ebooks
 
+It is the same dataset I `tested clustering <https://github.com/raul23/clustering-text#clustering-ebooks-pdf-djvu>`_ on.
+
 By default, only 10% of a given ebook is `converted to text <#dataset-generation>`_ and added to the dataset. Also if an ebook is 
 made of images, `OCR <#ocr>`_ is applied on 5 pages chosen randomly in the first 50% of the given ebook to extract the text.
 
