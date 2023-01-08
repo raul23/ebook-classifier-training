@@ -38,6 +38,8 @@ Some stats about this small dataset:
    vectorize testing done in 0.433s at 6.174MB/s
    n_samples: 52, n_features: 5436
 
+|
+
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
 multiple clasification models will be used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
 
