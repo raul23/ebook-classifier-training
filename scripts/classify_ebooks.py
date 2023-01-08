@@ -1,5 +1,5 @@
-# This script is based on scikit-learn's tutorial: Clustering text documents using k-means
-# Ref: https://scikit-learn.org/stable/auto_examples/text/plot_document_clustering.html
+# This script is based on scikit-learn's tutorial: Classification of text documents using sparse features
+# Ref: https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html
 import argparse
 import ast
 import hashlib
@@ -21,6 +21,7 @@ from types import SimpleNamespace
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import pycld2
 import regex
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -746,6 +747,50 @@ def plot_confusion_matrix(clf, y_test, pred, target_names):
     plt.show()
 
 
+def plot_feature_effects(clf, X_train, target_names, feature_names):
+    # learned coefficients weighted by frequency of appearance
+    average_feature_effects = clf.coef_ * np.asarray(X_train.mean(axis=0)).ravel()
+
+    for i, label in enumerate(target_names):
+        top5 = np.argsort(average_feature_effects[i])[-5:][::-1]
+        if i == 0:
+            top = pd.DataFrame(feature_names[top5], columns=[label])
+            top_indices = top5
+        else:
+            top[label] = feature_names[top5]
+            top_indices = np.concatenate((top_indices, top5), axis=None)
+    top_indices = np.unique(top_indices)
+    predictive_words = feature_names[top_indices]
+
+    # plot feature effects
+    bar_size = 0.25
+    padding = 0.75
+    y_locs = np.arange(len(top_indices)) * (4 * bar_size + padding)
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    for i, label in enumerate(target_names):
+        ax.barh(
+            y_locs + (i - 2) * bar_size,
+            average_feature_effects[i, top_indices],
+            height=bar_size,
+            label=label,
+        )
+    ax.set(
+        yticks=y_locs,
+        yticklabels=predictive_words,
+        ylim=[
+            0 - 4 * bar_size,
+            len(top_indices) * (4 * bar_size + padding) - 4 * bar_size,
+        ],
+    )
+    ax.legend(loc="lower right")
+
+    print("top 5 keywords per class:")
+    print(top)
+
+    return ax
+
+
 def print_(msg):
     global QUIET
     if not QUIET:
@@ -1027,6 +1072,8 @@ class DatasetManager:
         pred = clf.predict(X_test)
 
         plot_confusion_matrix(clf, y_test, pred, target_names)
+        plot_feature_effects(clf, X_train, target_names, feature_names).set_title("Average feature effect on the original data")
+        plt.show()
 
         return 0
 
