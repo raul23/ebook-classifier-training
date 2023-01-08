@@ -22,10 +22,13 @@ I will be using different datasets of ebooks to test text classification. One of
 By default, only 10% of a given ebook is `converted to text <#dataset-generation>`_ and added to the dataset. Also if an ebook is 
 made of images, `OCR <#ocr>`_ is applied on 5 pages chosen randomly in the first 50% of the given ebook to extract the text.
 
+Script ``classify_ebooks.py``
+=============================
+
 Dataset generation
-==================
+------------------
 TODO
 
 OCR
-===
+---
 TODO
