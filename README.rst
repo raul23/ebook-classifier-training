@@ -47,6 +47,8 @@ multiple clasification models will be used such as: ``RidgeClassifier``, ``Logis
 
 Results of classifying ebooks
 =============================
+Training a ``RidgeClassifier``
+------------------------------
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
 of this document.
 
@@ -103,6 +105,20 @@ The train and test sets splitted as follows:
 - When you see the word 'energy' among books from the three categories, you are almost sure that they will be about physics.
 - Algorithm appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
   form of a word (TODO).
+
+Benchmarking classifiers
+------------------------
+.. raw:: html
+
+   <p align="center"><img src="./images/score_train_time_trade_off.png">
+   </p>
+   
+|
+
+.. raw:: html
+
+   <p align="center"><img src="./images/score_test_time_trade_off.png">
+   </p>
 
 Script ``classify_ebooks.py``
 =============================
