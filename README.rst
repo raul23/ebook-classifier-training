@@ -104,4 +104,4 @@ mathematics, physics) and the train and test sets splitted as follows:
   ``RidgeClassifier`` was able to correctly classify all ebooks from this category.
 - When you see the word 'energy' among books from the three categories, you are almost sure that they will be about physics.
 - Algorithm appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
-  form of a word.
+  form of a word (TODO).
