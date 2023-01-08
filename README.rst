@@ -62,13 +62,13 @@ mathematics, physics).
 
 .. raw:: html
 
-   <p align="center"><img src="./images/confusion_matrix_ridgeclass_small_dataset.png.png">
+   <p align="center"><img src="./images/confusion_matrix_ridgeclass_small_dataset.png">
    </p>
    
  |
  
 .. raw:: html
 
-   <p align="center"><img src="./images/average_feature_effect_small_dataset.png.png.png">
+   <p align="center"><img src="./images/average_feature_effect_small_dataset.png">
    </p>
  
