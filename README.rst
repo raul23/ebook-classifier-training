@@ -128,13 +128,30 @@ Benchmarking classifiers
 
    <p align="center"><img src="./images/score_training_time_trade_off.png">
    </p>
-   
+
 |
 
 .. raw:: html
 
    <p align="center"><img src="./images/score_test_time_trade_off.png">
    </p>
+
+|
+
+`:information_source:` Based on the trade-off between the test accuracy and the training/testing time, which model to choose?
+
+- Complement naive Bayes is the model with the best trade-off between test score and training/testing time.
+- KNN is the model with the best training time and test accuracy trade-off. However KNN is the second worst model in terms of testing time.
+
+  I am kind of surprise that KNN has the best test accuracy considering that KNN is not expected to perform well with high-dimensional features
+  like we find in text classification.
+  
+  From scikit-learn's `tutorial 
+  <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#plot-accuracy-training-and-test-time-of-each-classifier>`_:
+  
+   Furthermore, the “curse of dimensionality” harms the ability of this model [KNN] to yield competitive accuracy in the 
+   high dimensional feature space of text classification problems.
+- Random Forest is the slowest model to train and make predictions and on top of that with the worst test score.
 
 Script ``classify_ebooks.py``
 =============================
