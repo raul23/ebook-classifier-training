@@ -76,7 +76,7 @@ The train and test sets are splitted as follows:
   documents were incorrectly classified as physics ones which could mean that books about physics use a more specific vocabulary than for mathematics 
   documents.
 - Mathematics ebooks are well classified but one such document was classified as a computer science one. 
-- The computer science category is the one that ``RidgeClassifier`` has the most success in classifying with all computer science ebooks being 
+- The computer science category is the one that ``RidgeClassifier`` has the most success with all computer science ebooks being 
   correctly classified as such. 
 
 |
