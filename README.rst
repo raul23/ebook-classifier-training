@@ -141,9 +141,10 @@ Benchmarking classifiers
 `:information_source:` Based on the trade-off between the test accuracy and the training/testing time, which model to choose?
 
 - Complement naive Bayes is the model with the best trade-off between test score and training/testing time.
-- KNN is the model with the best training time and test accuracy trade-off. However KNN is the second worst model in terms of testing time.
+- KNN is the model with the best training time and test accuracy trade-off. However KNN is the second worst model in terms of testing time, i.e.
+  it is very slow to make predictions.
 
-  I am kind of surprise that KNN has the best test accuracy considering that KNN is not expected to perform well with high-dimensional features
+  I am kind of surprise that KNN has onbe the best test accuracy considering that KNN is not expected to perform well with high-dimensional features
   like we find in text classification.
   
   From scikit-learn's `tutorial 
