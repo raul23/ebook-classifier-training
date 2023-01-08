@@ -54,7 +54,7 @@ of this document.
 
 Thus without further ado, here are the results from training a ``RidgeClassifier`` on the dataset of 129 documents with three categories (computer_science, mathematics, physics). 
 
-The train and test sets splitted as follows:
+The train and test sets are splitted as follows:
 
 - train data: 77 ebooks (60%)
 - test data: 52 ebooks (40%)
