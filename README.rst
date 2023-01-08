@@ -67,9 +67,13 @@ The train and test sets splitted as follows:
 `:information_source:` Insights from the confusion matrix for ``RidgeClassifier``
 
 - The confusion matrix is plotted based on the predictions from the test set.
-- Among the three categories, this linear model has the most difficulties with the physics category. It confused two physics ebooks for mathematics documents which is to be expected since both domains share overlaps between words. The vice-versa situation is not found, i.e. no mathematics documents were incorrectly classified as physics ones which could mean that books about physics use a more specific vocabulary than for mathematics documents.
+- Among the three categories, this linear model has the most "difficulties" with the physics category. It confused two physics ebooks for mathematics 
+  documents which is to be expected since both domains share overlaps between words. The vice-versa situation is not found, i.e. no mathematics 
+  documents were incorrectly classified as physics ones which could mean that books about physics use a more specific vocabulary than for mathematics 
+  documents.
 - Mathematics ebooks are well classified but one such document was classified as a computer science one. 
-- The computer science category is the one that ``RidgeClassifier`` has the most success in classifying with all computer science ebooks being correctly classified as such. 
+- The computer science category is the one that ``RidgeClassifier`` has the most success in classifying with all computer science ebooks being 
+  correctly classified as such. 
 
 |
  
