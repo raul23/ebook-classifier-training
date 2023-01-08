@@ -110,7 +110,7 @@ Benchmarking classifiers
 ------------------------
 .. raw:: html
 
-   <p align="center"><img src="./images/score_train_time_trade_off.png">
+   <p align="center"><img src="./images/score_training_time_trade_off.png">
    </p>
    
 |
