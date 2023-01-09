@@ -401,8 +401,89 @@ added to the dataset and cache, books rejected and duplicates found
 
 OCR
 ---
-TODO
+For those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``), 
+you can run the dataset generation using the  ``--ud`` and ``-o true`` (enable OCR) options::
+
+ $ python classify_ebooks.py -u --ud -o true ~/Data/ebooks_test/
+
+`:information_source:` 
+
+ - The ``--ud`` flag refers to the action of updating the dataset pickle file that was already saved within the main ebooks directory
+   (e.g. ``~/Data/ebooks_test/``)
+ - ``-o true`` enables OCR. The choices for ``-o, --ocr-enabled`` are: ``{always, true, false}``. See `Script options for clustering ebooks 
+   <#script-options-for-clustering-ebooks>`_ for an explanation of these values.
+ - The OCR procedure is resource intensive, thus the conversion for those problematic ebooks might take longer than usual.
+ - By default, OCR is applied on only 5 pages chosen randomly in the first 50% of a given ebook. This number is controlled by
+   the option ``--ocr-only-random-pages PAGES``.
+
+|
+
+Loading a dataset and applying OCR to those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``):
+
+.. raw:: html
+
+   <p align="left"><img src="./images/updating_dataset_ocr.png">
+   </p>
+
+|
+
+Results at the end of applying OCR to all problematic ebooks (made up of images):
+
+.. raw:: html
+
+   <p align="left"><img src="./images/updating_dataset_ocr_end_results.png">
+   </p>
+   
+`:information_source:` All 14 problematic ebooks (made up of images) were successfully converted to ``txt`` and added to the dataset and cache.
 
 Filtering a dataset: select texts only in English and from valid categories
 ---------------------------------------------------------------------------
-TODO
+After the dataset containing texts from ebooks is generated, the resulting dataset is filtered by removing text that is not English
+and not part of the specified categories (i.e. ``computer_science``, ``mathematics``, ``physics``).
+
+Here are some samples of output from the script ``classify_ebooks.py``::
+
+ python classify_ebooks.py -u ~/Data/ebooks/ --verbose
+ 
+`:information_source:` Since the option ``--verbose`` is used, you will see more information printed in the terminal such as
+if the text is in English or its category.
+
+| 
+ 
+Showing the categories that will be kept:
+
+.. raw:: html
+
+   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/filtering_keeping_categories.png">
+   </p>
+
+|
+
+Texts rejected for not being in English:
+
+.. raw:: html
+
+   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/filtering_rejected_french_spanish.png">
+   </p>
+   
+|
+
+Texts rejected for not being part of the specified categories (``computer_science``, ``mathematics``, ``physics``):
+
+.. raw:: html
+
+   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/filtering_rejected_politics.png">
+   </p>
+
+|
+
+What it looks like in the terminal if the option ``--verbose`` is not used: only the list of rejected texts is shown after the
+filtering is completed
+
+.. raw:: html
+
+   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/filtering_no_verbose.png">
+   </p>
+
+`:information_source:` You will see in my list of ebooks that the text from the ebook ``abstract algebra.pdf`` was rejected even though it
+is from an English mathematics ebook. ``pycld2`` detected the text as not being in English because the text conversion (``pdftotext``) didn't 100% succeeded and introduced too many odd characters (e.g. ``0ß Å ÞBð``) mixed with english words. It seems that it is the only ebook over 153 converted documents that has this problem.
