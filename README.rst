@@ -233,14 +233,14 @@ I won't list all options (too many) but here are some of the important and inter
   again. If you are using cache, then the dataset generation should be quick since the text conversions were
   already computed and cached. Using the option ``-u`` is worthwhile especially if you used OCR for some of the ebooks since this procedure is very
   resource intensive and can take awhile if many pages are OCRed.
-- The choices for ``-o, --ocr-enabled`` are ``{always, true, false}``
+- The choices for ``-o`` are ``{always, true, false}``
   
   - 'always': always use OCR first when doing text conversion. If the converson fails, then use the other simpler conversion tools
     (``pdftotext`` and ``djvutxt``).
   - 'true': first simpler conversion tools (``pdftotext`` and ``djvutxt``) will be used and then if a conversion method
     failed to convert an ebook to ``txt`` or resulted in an empty file, the OCR method will be used.
   - 'false': never use OCR, only use the other simpler conversion tools (``pdftotext`` and ``djvutxt``).
-- The option ``--cat, --categories CATEGORY [CATEGORY ...]`` takes the following default values: 
+- The option ``--cat CATEGORY [CATEGORY ...]`` takes the following default values: 
   
   ``['computer_science', 'mathematics', 'physics']``
 
