@@ -411,7 +411,7 @@ you can run the dataset generation using the  ``--ud`` and ``-o true`` (enable O
  - The ``--ud`` flag refers to the action of updating the dataset pickle file that was already saved within the main ebooks directory
    (e.g. ``~/Data/ebooks_test/``)
  - ``-o true`` enables OCR. The choices for ``-o, --ocr-enabled`` are: ``{always, true, false}``. See `Script options for clustering ebooks 
-   <#script-options-for-clustering-ebooks>`_ for an explanation of these values.
+   <#script-options>`_ for an explanation of these values.
  - The OCR procedure is resource intensive, thus the conversion for those problematic ebooks might take longer than usual.
  - By default, OCR is applied on only 5 pages chosen randomly in the first 50% of a given ebook. This number is controlled by
    the option ``--ocr-only-random-pages PAGES``.
@@ -422,7 +422,7 @@ Loading a dataset and applying OCR to those ebooks that couldn't be converted to
 
 .. raw:: html
 
-   <p align="left"><img src="./images/updating_dataset_ocr.png">
+   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/updating_dataset_ocr.png">
    </p>
 
 |
@@ -431,7 +431,7 @@ Results at the end of applying OCR to all problematic ebooks (made up of images)
 
 .. raw:: html
 
-   <p align="left"><img src="./images/updating_dataset_ocr_end_results.png">
+   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/updating_dataset_ocr_end_results.png">
    </p>
    
 `:information_source:` All 14 problematic ebooks (made up of images) were successfully converted to ``txt`` and added to the dataset and cache.
@@ -452,8 +452,6 @@ After a dataset is generated and saved, you can update it with new texts from mo
  - ``--ud``: tells the script to update the dataset pickle file saved within the main ebooks directory (e.g. ``~/Data/ebooks_test/``).
  - ``-o true``: apply OCR on those ebooks that couldn't be converted with simpler methods (``pdftotext`` and ``djvutxt``).
  - ``-u``: use cache to avoid re-computing the text conversion for those ebooks that were already processed previously.
- - ``-t ebooks``: tells the script that the input directory (e.g. ``~/Data/ebooks_test/``) should be search for
-   ``pdf`` and ``djvu`` ebooks to be added to the dataset.
 
 Filtering a dataset: select texts only in English and from valid categories
 ---------------------------------------------------------------------------
