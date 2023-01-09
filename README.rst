@@ -246,12 +246,12 @@ I won't list all options (too many) but here are some of the important and inter
 
 Caching
 -------
-`:information_source:` About the caching option (``--use-cache``) supported by the script ``cluster_text_docs.py``
+`:information_source:` About the caching option (``--use-cache``) supported by the script ``classify_ebooks.py.py``
 
 - Cache is used to save the converted ebook files into ``txt`` to
   avoid re-converting them which can be a time consuming process. 
   `DiskCache <http://www.grantjenks.com/docs/diskcache/>`_, a disk and file 
-  backed cache library, is used by the ``cluster_text_docs.py`` script.
+  backed cache library, is used by the ``classify_ebooks.py.py`` script.
 - Default cache folder used: ``~/.classify_ebooks``
 - The MD5 hashes of the ebook files are used as keys to the file-based cache.
 - These hashes of ebooks (keys) are then mapped to a dictionary with the following structure:
@@ -294,7 +294,7 @@ Caching
 
 Ebooks directory
 ----------------
-`:warning:` In order to run the script `classify_ebooks.py <./scripts/classify_ebooks.py>`_, you need first to have a main directory (e.g. ``./ebooks/``) with all the ebooks (``pdf`` and ``djvu``) you want to test clustering on. Each ebook should be in a folder whose name should correspond to the category of said ebook.
+`:warning:` In order to run the script `classify_ebooks.py <./scripts/classify_ebooks.py>`_, you need first to have a main directory (e.g. ``./ebooks/``) with all the ebooks (``pdf`` and ``djvu``) you want to test classification on. Each ebook should be in a folder whose name should correspond to the category of said ebook.
 
 For example:
 
