@@ -436,6 +436,25 @@ Results at the end of applying OCR to all problematic ebooks (made up of images)
    
 `:information_source:` All 14 problematic ebooks (made up of images) were successfully converted to ``txt`` and added to the dataset and cache.
 
+Updating a dataset
+""""""""""""""""""
+After a dataset is generated and saved, you can update it with new texts from more ebooks by using the ``--ud`` option::
+
+ $ python classify_ebooks.py -u -o true --ud ~/Data/ebooks_test/
+
+.. raw:: html
+
+   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/updating_dataset_ocr.png">
+   </p>
+   
+`:information_source:`
+
+ - ``--ud``: tells the script to update the dataset pickle file saved within the main ebooks directory (e.g. ``~/Data/ebooks_test/``).
+ - ``-o true``: apply OCR on those ebooks that couldn't be converted with simpler methods (``pdftotext`` and ``djvutxt``).
+ - ``-u``: use cache to avoid re-computing the text conversion for those ebooks that were already processed previously.
+ - ``-t ebooks``: tells the script that the input directory (e.g. ``~/Data/ebooks_test/``) should be search for
+   ``pdf`` and ``djvu`` ebooks to be added to the dataset.
+
 Filtering a dataset: select texts only in English and from valid categories
 ---------------------------------------------------------------------------
 After the dataset containing texts from ebooks is generated, the resulting dataset is filtered by removing text that is not English
