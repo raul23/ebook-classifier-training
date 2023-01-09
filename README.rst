@@ -437,7 +437,7 @@ Results at the end of applying OCR to all problematic ebooks (made up of images)
 `:information_source:` All 14 problematic ebooks (made up of images) were successfully converted to ``txt`` and added to the dataset and cache.
 
 Updating a dataset
-""""""""""""""""""
+------------------
 After a dataset is generated and saved, you can update it with new texts from more ebooks by using the ``--ud`` option::
 
  $ python classify_ebooks.py -u -o true --ud ~/Data/ebooks_test/
