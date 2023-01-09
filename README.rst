@@ -202,11 +202,27 @@ To display the script's list of options and their descriptions::
 
 I won't list all options (too many) but here are some of the important and interesting ones:
 
--s, --seed SEED                        Seed for numpy's and Python's random generators. (default: 123456)
+**Benchmarking options:**
+
+-b, --benchmark                        Benchmarking classifiers.
+
+**Cache options:**
+
 -u, --use-cache                        Highly recommended to use cache to speed up **dataset re-creation**.
--o, --ocr-enabled                      Whether to enable OCR for ``pdf``, ``djvu`` and image files. It is disabled by default. (default: false)
+
+**Dataset options:**
+
 --ud, --update-dataset                 Update dataset with text from more new ebooks found in the directory.
 --cat, --categories CATEGORY           Only include these categories in the dataset.  
+
+**Hyperparameter tuning options:**
+
+--hyper, --hyperparams-tuning          Perform hyperparameter tuning.
+-m, --models MODEL                     The names of models whose hyperparameters will be tuned with grid search. (default: ['ComplementNB'])
+
+**OCR options:**
+
+-o, --ocr-enabled                      Whether to enable OCR for ``pdf``, ``djvu`` and image files. It is disabled by default. (default: false)
 
 |
 
