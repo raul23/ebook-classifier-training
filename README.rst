@@ -312,7 +312,7 @@ Dataset generation
 ------------------
 To start generating a dataset containing texts from ebooks after you have setup your `directory of ebooks <#ebooks-directory>`_, the input directory is necessary::
 
- $ python classify_ebooks.py ~/Data/ebooks_test/
+ $ python classify_ebooks.py ~/Data/ebooks/
  
 `:information_source:` Explaining the text conversion procedure
 
@@ -349,7 +349,7 @@ The next times the script is run, the dataset will be loaded from disk as long a
 
 Generating the ebooks dataset using cache (``-u`` option) without OCR support (i.e. the ``-o true`` option is not used)::
 
- $ python classify_ebooks.py -u ~/Data/ebooks_test/
+ $ python classify_ebooks.py -u ~/Data/ebooks/
 
 First time running the script with a cleared cache:
 
@@ -404,12 +404,12 @@ OCR
 For those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``), 
 you can run the dataset generation using the  ``--ud`` and ``-o true`` (enable OCR) options::
 
- $ python classify_ebooks.py -u --ud -o true ~/Data/ebooks_test/
+ $ python classify_ebooks.py -u --ud -o true ~/Data/ebooks/
 
 `:information_source:` 
 
  - The ``--ud`` flag refers to the action of updating the dataset pickle file that was already saved within the main ebooks directory
-   (e.g. ``~/Data/ebooks_test/``)
+   (e.g. ``~/Data/ebooks/``)
  - ``-o true`` enables OCR. The choices for ``-o, --ocr-enabled`` are: ``{always, true, false}``. See `Script options for clustering ebooks 
    <#script-options>`_ for an explanation of these values.
  - The OCR procedure is resource intensive, thus the conversion for those problematic ebooks might take longer than usual.
@@ -440,7 +440,7 @@ Updating a dataset
 ------------------
 After a dataset is generated and saved, you can update it with new texts from more ebooks by using the ``--ud`` option::
 
- $ python classify_ebooks.py -u -o true --ud ~/Data/ebooks_test/
+ $ python classify_ebooks.py -u -o true --ud ~/Data/ebooks/
 
 .. raw:: html
 
@@ -449,7 +449,7 @@ After a dataset is generated and saved, you can update it with new texts from mo
    
 `:information_source:`
 
- - ``--ud``: tells the script to update the dataset pickle file saved within the main ebooks directory (e.g. ``~/Data/ebooks_test/``).
+ - ``--ud``: tells the script to update the dataset pickle file saved within the main ebooks directory (e.g. ``~/Data/ebooks``).
  - ``-o true``: apply OCR on those ebooks that couldn't be converted with simpler methods (``pdftotext`` and ``djvutxt``).
  - ``-u``: use cache to avoid re-computing the text conversion for those ebooks that were already processed previously.
 
