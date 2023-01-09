@@ -246,7 +246,51 @@ I won't list all options (too many) but here are some of the important and inter
 
 Caching
 -------
-TODO
+`:information_source:` About the caching option (``--use-cache``) supported by the script ``cluster_text_docs.py``
+
+- Cache is used to save the converted ebook files into ``txt`` to
+  avoid re-converting them which can be a time consuming process. 
+  `DiskCache <http://www.grantjenks.com/docs/diskcache/>`_, a disk and file 
+  backed cache library, is used by the ``cluster_text_docs.py`` script.
+- Default cache folder used: ``~/.classify_ebooks``
+- The MD5 hashes of the ebook files are used as keys to the file-based cache.
+- These hashes of ebooks (keys) are then mapped to a dictionary with the following structure:
+
+  - key: ``convert_method+convert_only_percentage_ebook+ocr_only_random_pages``
+  
+    where 
+    
+    - ``convert_method`` is either ``djvutxt`` or ``pdftotext``
+    - ``convert_only_percentage_ebook`` is the percentage of a given ebook that is converted to ``txt``
+    - ``ocr_only_random_pages`` is the number of pages chosen randomly in the first 50% of a given ebook
+      that will be OCRed
+      
+    e.g. djvutxt+15+3
+    
+  - value: the extracted text based on the options mentioned in the associated key
+  
+  Hence, you can have multiple extracted texts associated with a given ebook with each of the text
+  extraction based on different values of the options mentioned in the key.
+
+|
+
+`:warning:` Important things to keep in mind when using the caching option
+
+* When enabling the cache with the flag ``--use-cache``, the ``classify_ebooks.py`` 
+  script has to cache the converted ebooks (``txt``) if they were
+  not already saved in previous runs. Therefore, the speed up of some of the
+  tasks (dataset re-creation and updating) will be seen in subsequent executions of the 
+  script.
+* Keep in mind that caching has its caveats. For instance if a given ebook
+  is modified (e.g. a page is deleted) then the ``classify_ebooks.py`` 
+  script has to run the text conversion again since the keys in the cache are the MD5 hashes of
+  the ebooks.
+* There is no problem in the
+  cache growing without bounds since its size is set to a maximum of 1 GB by
+  default (check the ``--cache-size-limit`` option) and its eviction policy
+  determines what items get to be evicted to make space for more items which
+  by default it is the least-recently-stored eviction policy (check the
+  ``--eviction-policy`` option).
 
 Ebooks directory
 ----------------
