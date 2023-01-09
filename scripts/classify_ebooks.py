@@ -1330,7 +1330,7 @@ class DatasetManager:
 
     @staticmethod
     def remove_keys_from_cache(cache_folder, keys):
-        if DatasetManager.cache_folder_exists(cache_folder):
+         if DatasetManager.cache_folder_exists(cache_folder):
             cache = Cache(cache_folder)
             logger.info(f'Removing keys from cache: {cache_folder}')
             for key in keys:
