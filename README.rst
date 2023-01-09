@@ -14,7 +14,7 @@ The main motivation of experimenting with text classification is to use the best
 
 Introduction
 ============
-I will be using different datasets of ebooks to test text classification. They will be of different size and categories. 
+I will be using two different datasets of ebooks to test text classification. They will be of different size and categories. 
 
 One of them is a small dataset that consists of 129 English ebooks (``pdf`` and ``djvu``) from 3 categories:
 
