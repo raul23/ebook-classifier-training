@@ -294,7 +294,19 @@ Caching
 
 Ebooks directory
 ----------------
-TODO
+`:warning:` In order to run the script `classify_ebooks.py <./scripts/classify_ebooks.py>`_, you need first to have a main directory (e.g. ``./ebooks/``) with all the ebooks (``pdf`` and ``djvu``) you want to test clustering on. Each ebook should be in a folder whose name should correspond to the category of said ebook.
+
+For example:
+
+- ../ebooks/**biology**/Cell theory.djvu
+- ../ebooks/**philosophy**/History of Philosophy in Europe.pdf
+- ../ebooks/**physics**/Electricity.pdf
+
+Then, you need to give the path to the main directory to the script, like this::
+
+ $ python classify_ebooks.py ~/Data/ebooks/
+ 
+The next section explains in details the generation of a dataset containing text from these ebooks.
 
 Dataset generation
 ------------------
