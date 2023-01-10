@@ -511,8 +511,13 @@ Here are some samples of output from the script ``classify_ebooks.py``::
 
  python classify_ebooks.py -u ~/Data/ebooks/ --verbose
  
-`:information_source:` Since the option ``--verbose`` is used, you will see more information printed in the terminal such as
-if the text is in English or its category.
+`:information_source:` 
+- Since the option ``--verbose`` is used, you will see more information printed in the terminal such as
+  if the text is in English or its category.
+- By default, the three mentioned categories are choosen. But you can control the categories you want to include in the dataset with the
+  ``--cat`` option::
+  
+   python classify_ebooks.py -u ~/Data/ebooks/ --cat chemistry physics
 
 | 
  
