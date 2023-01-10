@@ -15,7 +15,7 @@ I am following along their tutorial but using my own two datasets containing a b
 The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as history or fiction).
 
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
-multiple clasification models are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
+multiple classifiers are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
 
 Results of classifying ebooks ⭐
 ================================
