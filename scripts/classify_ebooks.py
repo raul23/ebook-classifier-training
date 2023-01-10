@@ -1197,6 +1197,7 @@ class DatasetManager:
             clf_params = len(target_names)
         # TODO: sanity check before calling eval
         logger.info(f"{blue('Classifier:')} {clf_name}")
+        logger.info(f"{blue('Parameters:')} {clf_params}")
         clf = eval(f'{clf_name}({clf_params})')
         # clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
         clf.fit(X_train, y_train)
