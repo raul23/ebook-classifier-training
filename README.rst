@@ -360,9 +360,9 @@ Then, you need to give the path to the main directory to the script, like this::
  
 The next section explains in details the generation of a dataset containing text from these ebooks.
 
-Dataset generation
-------------------
-To start generating a dataset containing texts from ebooks after you have setup your `directory of ebooks <#ebooks-directory>`_, the option
+Dataset creation
+----------------
+To start creating a dataset containing texts from ebooks after you have setup your `directory of ebooks <#ebooks-directory>`_, the option
 ``--cd`` and the input directory are necessary::
 
  $ python classify_ebooks.py --cd ~/Data/ebooks/
