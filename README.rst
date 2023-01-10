@@ -236,6 +236,9 @@ Command used to generate the next plots::
 coefficients are almost the same values between all classes, the small differences are enough to help the model to correctly differentiate when
 making its predictions!? 
 
+Still not sure what is really happening here with ``ComplementNB``'s odd behavior even though it is giving good
+predictions on the test set (as seen from its confusion matrix).
+
 Benchmarking classifiers
 """"""""""""""""""""""""
 Also like in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#benchmarking-classifiers>`_, 
