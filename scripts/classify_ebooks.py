@@ -69,14 +69,14 @@ CHECK_NUMBER_ITEMS = False
 
 # Classification options
 # ======================
-CLF = ['RidgeClassifier', 'tol=1e-06', 'solver=sparse_cg']
+CLF = ['RidgeClassifier', 'tol=1e-02', 'solver=sparse_cg']
 
 # Dataset options
 # ===============
 UPDATE_DATASET = False
 CATEGORIES = ['computer_science', 'mathematics', 'physics']
 # TfidfVectorizer params
-VECT_PARAMS = ['max_df=0.2', 'min_df=1', 'ngram_range=(1, 1)', 'norm=l2']
+VECT_PARAMS = ['max_df=0.5', 'min_df=5', 'ngram_range=(1, 1)', 'norm=l2']
 
 # Logging options
 # ===============
@@ -1153,6 +1153,7 @@ class DatasetManager:
         for param in params:
             param_name, param_value = param.strip().split('=')
             try:
+                # TODO: sanity check before calling eval
                 param_value = eval(param_value)
             except NameError:
                 # e.g. NameError: name 'sparse_cg' is not defined
@@ -1166,6 +1167,7 @@ class DatasetManager:
         for param in vect_params:
             param_name, param_value = param.split('=')
             try:
+                # TODO: sanity check before calling eval
                 param_value = eval(param_value)
             except NameError:
                 # e.g. NameError: name 'l2' is not defined
@@ -1173,10 +1175,10 @@ class DatasetManager:
             vect_params_dict.setdefault(param_name, param_value)
         X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories, **vect_params_dict)
 
-        # TODO: sanity check before calling eval
         clf_name = clf_name_and_params[0]
         clf_params = clf_name_and_params[1:]
         clf_params = self._clean_params(clf_params)
+        # TODO: sanity check before calling eval
         clf = eval(f'{clf_name}({clf_params})')
         # clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
         clf.fit(X_train, y_train)
