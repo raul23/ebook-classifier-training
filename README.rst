@@ -58,16 +58,20 @@ of this document.
 
 Thus without further ado, here are the results from training multiple classifiers on two different datasets of ebooks.
 
-Classifying with ``RidgeClassifier``
-------------------------------------
-The first classifier I tried is a ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` trained on the dataset 
-of 129 documents with three categories (computer_science, mathematics, physics). It is the same model with the same parameters
-as in scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#analysis-of-a-bag-of-words-document-classifier>`_.
+Small dataset: 129 documents with 3 categories
+----------------------------------------------
+The first classifiers I am testing are those trained on the small dataset of 129 document with 3 categories: computer_science, mathematics, physics.
 
 The train and test sets are splitted as follows:
 
 - train data: 77 ebooks (60%)
 - test data: 52 ebooks (40%)
+
+Classifying with ``RidgeClassifier``
+""""""""""""""""""""""""""""""""""""
+The first classifier I tried is a ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` trained on the `dataset 
+of 129 documents <#small-dataset-129-documents-with-3-categories>`_ with three categories (computer_science, 
+mathematics, physics). It is the same model with the same parameters as in scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#analysis-of-a-bag-of-words-document-classifier>`_.
 
 Command used to generate the next plots::
 
@@ -124,7 +128,7 @@ Command used to generate the next plots::
   form of a word (TODO).
 
 Benchmarking classifiers
-------------------------
+""""""""""""""""""""""""
 Also like in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#benchmarking-classifiers>`_, 
 multiple models were tested by analyzing the trade-off between training/testing time and their test score.
 
