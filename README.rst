@@ -192,6 +192,8 @@ Command used to generate the next plots::
    <p align="center"><img src="./images/confusion_matrix_ComplementNB_small_dataset.png">
    </p>
 
+|
+
 `:information_source:` At first glance, the confusion matrix coming from ``ComplementNB`` looks almost as good as the one from `RidgeClassifier <#classifying-with-ridgeclassifier>`_. However, the next plot about the average feature effects tells another story about this model's performance on the test set.
 
 |
