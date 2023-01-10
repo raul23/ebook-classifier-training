@@ -133,6 +133,8 @@ Command used to generate the next plots::
 `:information_source:` When not specifying any particular classifier with the option ``--clf``, the default classifier
 ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` is used.
 
+.. commit 0dbfcce1c1ce3a5c70c4a42b592c1a8845de3a96
+
 |
 
 .. raw:: html
