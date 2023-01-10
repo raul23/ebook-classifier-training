@@ -224,12 +224,12 @@ I won't list all options (too many) but here are some of the important and inter
 
 **OCR options:**
 
--o                                      Whether to enable OCR for ``pdf``, ``djvu`` and image files. It is disabled by default. (default: false)
+-o                                     Whether to enable OCR for ``pdf``, ``djvu`` and image files. It is disabled by default. (default: false)
 
 Classification options:
 
---clf CLF                               The name of the classifier along with its parameters to be used for classifying ebooks. 
-                                        (default: ['RidgeClassifier', 'tol=1e-06', 'solver="sparse_cg"'])
+--clf CLF                              The name of the classifier along with its parameters to be used for classifying ebooks. 
+                                       (default: ['RidgeClassifier', 'tol=1e-06', 'solver="sparse_cg"'])
 
 |
 
