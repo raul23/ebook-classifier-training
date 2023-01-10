@@ -220,7 +220,7 @@ I won't list all options (too many) but here are some of the important and inter
 **Hyperparameter tuning options:**
 
 --hyper                                Perform hyperparameter tuning.
---clfs CLF                             The names of classifiers whose hyperparameters will be tuned with grid search. (default: ['ComplementNB'])
+--clfs CLF                             The names of classifiers whose hyperparameters will be tuned with grid search. (default: ComplementNB)
 
 **OCR options:**
 
