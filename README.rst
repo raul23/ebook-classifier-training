@@ -57,6 +57,31 @@ The parameters for ``TfidfVectorizer``::
 
  max_df=0.5    min_df=5    ngram_range=(1, 1)   norm=l2
 
+A sample of the kind of ebook included in this dataset:
+
+- computer_science:
+ 
+  - `A Discipline of Programming <https://www.amazon.ca/Discipline-Programming-Dijkstra/dp/013215871X>`_
+  - `Algorithms in C <https://www.amazon.com/Algorithms-Computer-Science-Robert-Sedgewick/dp/0201514257/>`_
+  - `bash Cookbook: Solutions and Examples for bash Users <https://www.amazon.ca/bash-Cookbook-Solutions-Examples-Users/dp/0596526784>`_
+  - `Coding All-in-One For Dummies <https://www.amazon.ca/Coding-All-Dummies-Nikhil-Abraham/dp/1119363020/>`_
+  - `Data Structures with C <https://www.amazon.com/Data-Structures-C-SIE-Lipschutz/dp/0070701989>`_
+- mathematics:
+
+  - `An Introduction to the Theory of the Riemann Zeta-Function 
+    <https://www.amazon.com/Introduction-Zeta-Function-Cambridge-Advanced-Mathematics/dp/0521335353>`_
+  - `Category Theory for the Sciences <https://www.amazon.com/Category-Theory-Sciences-MIT-Press/dp/0262028131>`_
+  - `Introductory Non-Euclidean Geometry <https://www.amazon.com/Introductory-Non-Euclidean-Geometry-Dover-Mathematics-ebook/dp/B00A41V6Q2>`_
+  - `Models of Peano Arithmetic <https://www.amazon.com/Models-Peano-Arithmetic-Oxford-Guides/dp/019853213X>`_
+  - `The taming of chance <https://www.amazon.com/Taming-Chance-Ideas-Context/dp/0521388848>`_
+- phyics:
+
+  - `Gauge Theory of elementary particle physics <https://www.amazon.com/Gauge-Theory-elementary-particle-physics/dp/0198519613>`_
+  - `Introduction to particle physics <https://www.amazon.com/Introduction-Particle-Physics-English-French/dp/0471653721>`_
+  - `Student Friendly Quantum Field Theory <https://www.amazon.com/Student-Friendly-Quantum-Field-Theory/dp/0984513957>`_
+  - `The Inflationary Universe <https://www.amazon.com/Inflationary-Universe-Alan-Guth/dp/0201328402>`_
+  - `The Strongest Magnetic Fields in the Universe <https://www.amazon.com/Strongest-Magnetic-Fields-Universe-Sciences-ebook/dp/B01JAK55B4/>`_
+
 Results of classifying ebooks ⭐
 ================================
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
