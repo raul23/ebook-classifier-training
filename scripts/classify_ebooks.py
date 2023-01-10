@@ -67,10 +67,16 @@ CLEAR_CACHE = False
 REMOVE_KEYS = None
 CHECK_NUMBER_ITEMS = False
 
+# Classification options
+# ======================
+CLF = ['RidgeClassifier', 'tol=1e-06', 'solver=sparse_cg']
+
 # Dataset options
 # ===============
 UPDATE_DATASET = False
 CATEGORIES = ['computer_science', 'mathematics', 'physics']
+# TfidfVectorizer params
+VECT_PARAMS = ['max_df=0.2', 'min_df=1', 'ngram_range=(1, 1)', 'norm=l2']
 
 # Logging options
 # ===============
@@ -79,7 +85,7 @@ LOGGING_LEVEL = 'info'
 
 # Hyperparameter tuning options
 # =============================
-MODELS = ['ComplementNB']
+CLFS = ['ComplementNB']
 
 # OCR options
 # ===========
@@ -950,7 +956,12 @@ def setup_argparser():
     dataset_group.add_argument(
         '--cat', '--categories', metavar='CATEGORY', dest='categories',
         nargs='+', default=None,
-        help='Only include these categories in the dataset.' + get_default_message(CATEGORIES))
+        help='Only include these categories in the dataset.' + get_default_message(' '.join(CATEGORIES)))
+    dataset_group.add_argument(
+        '--vect-params', metavar='PARAMS', dest='vect_params',
+        nargs='+', default=VECT_PARAMS,
+        help='The parameters to be used by TfidfVectorizer for vectorizing the dataset.'
+             + get_default_message(' '.join(VECT_PARAMS).replace('(', "'(").replace(')', ")'")))
     # =============================
     # Hyperparameter tuning options
     # =============================
@@ -959,10 +970,10 @@ def setup_argparser():
         '--hyper', '--hyperparams-tuning', dest='hyperparams', action='store_true',
         help='Perform hyperparameter tuning.')
     hyper_group.add_argument(
-        '-m', '--models', metavar='MODEL', dest='models',
-        nargs='+', default=MODELS,
-        help='The names of models whose hyperparameters will be tuned with grid search.'
-             + get_default_message(MODELS))
+        '--clfs', metavar='CLF', dest='classifiers',
+        nargs='+', default=CLFS,
+        help='The names of classifiers whose hyperparameters will be tuned with grid search.'
+             + get_default_message(' '.join(CLFS)))
     # ===========
     # OCR options
     # ===========
@@ -977,11 +988,16 @@ def setup_argparser():
         metavar='PAGES', default=OCR_ONLY_RANDOM_PAGES,
         help='OCR only these number of pages chosen randomly in the first 50%% of a given ebook.'
              + get_default_message(OCR_ONLY_RANDOM_PAGES))
-    # ==============
-    # Input argument
-    # ==============
-    input_group = parser.add_argument_group(title=yellow('Input argument'))
-    input_group.add_argument(
+    # ======================
+    # Classification options
+    # ======================
+    classification_group = parser.add_argument_group(title=yellow('Classification options'))
+    classification_group.add_argument(
+        '--clf', metavar='CLF_PARAMS', dest='clf',
+        nargs='+', default=CLF,
+        help='The name of the classifier along with its parameters to be used for classifying ebooks.'
+             + get_default_message(' '.join(CLF)))
+    classification_group.add_argument(
         name_input, default=None, nargs='*', action=required_length(0, 1),
         help="Path to the main directory containing the ebooks to classify.")
     return parser
@@ -1132,16 +1148,54 @@ class DatasetManager:
             logger.warning(f"{COLORS['YELLOW']}Cache folder not found:{COLORS['NC']} {folder}")
             return False
 
-    def classify_ebooks(self, categories):
-        X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories)
+    def _clean_params(self, params):
+        new_params = []
+        for param in params:
+            param_name, param_value = param.strip().split('=')
+            try:
+                param_value = eval(param_value)
+            except NameError:
+                # e.g. NameError: name 'sparse_cg' is not defined
+                # SOLUTION: solver=sparse_cg --> solver="sparse_cg"
+                param_value = f'"{param_value}"'
+            new_params.append(f'{param_name}={param_value}')
+        return ', '.join(new_params)
 
-        clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
+    def classify_ebooks(self, clf_name_and_params, vect_params, categories):
+        vect_params_dict = {}
+        for param in vect_params:
+            param_name, param_value = param.split('=')
+            try:
+                param_value = eval(param_value)
+            except NameError:
+                # e.g. NameError: name 'l2' is not defined
+                pass
+            vect_params_dict.setdefault(param_name, param_value)
+        X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories, **vect_params_dict)
+
+        # TODO: sanity check before calling eval
+        clf_name = clf_name_and_params[0]
+        clf_params = clf_name_and_params[1:]
+        clf_params = self._clean_params(clf_params)
+        clf = eval(f'{clf_name}({clf_params})')
+        # clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
         clf.fit(X_train, y_train)
         pred = clf.predict(X_test)
 
-        plot_confusion_matrix(clf, y_test, pred, target_names)
-        plot_feature_effects(clf, X_train, target_names, feature_names).set_title("Average feature effect on the small dataset")
-        plt.show()
+        try:
+            plot_confusion_matrix(clf, y_test, pred, target_names)
+            plot_feature_effects(clf, X_train, target_names, feature_names).set_title("Average feature effect on the small dataset")
+            plt.show()
+        except AttributeError as e:
+            # For KNN, RandomForestClassifier, NearestCentroid:
+            # AttributeError: 'KNeighborsClassifier' object has no attribute 'coef_'
+            # No feature effects for them
+            if not hasattr(clf, 'coef_'):
+                logger.error(red(f'[WARNING] {e}'))
+                logger.info('Thus, no feature effects could be plotted')
+            else:
+                logger.exception(e)
+            return 1
 
         return 0
 
@@ -1185,33 +1239,33 @@ class DatasetManager:
         self._fix_target(dataset)
         return dataset
 
-    def hyperparams_tuning(self, model_names, categories=None):
-        if not model_names:
+    def hyperparams_tuning(self, clf_names, categories=None):
+        if not clf_names:
             logger.warning(yellow('No model was specified!'))
-        for model_name in model_names:
+        for clf_name in clf_names:
             tuned_parameters = {}
-            if model_name == 'ComplementNB':
-                model = ComplementNB()
+            if clf_name == 'ComplementNB':
+                clf = ComplementNB()
                 tuned_parameters = {"clf__alpha": np.logspace(-6, 6, 13)}
-            elif model_name == 'LogisticRegression':
-                model = LogisticRegression()
+            elif clf_name == 'LogisticRegression':
+                clf = LogisticRegression()
                 tuned_parameters = {"clf__C": [1, 10, 100, 1000], "clf__max_iter": [100, 500, 1000]}
-            elif model_name == 'RidgeClassifier':
-                model = RidgeClassifier(solver="sparse_cg")
+            elif clf_name == 'RidgeClassifier':
+                clf = RidgeClassifier(solver="sparse_cg")
                 tuned_parameters = {"clf__alpha": np.logspace(-6, 6, 13)}
-            elif model_name == 'KNeighborsClassifier':
+            elif clf_name == 'KNeighborsClassifier':
                 # ValueError: Expected n_neighbors <= n_samples,  but n_samples = 62, n_neighbors = 100
-                model = KNeighborsClassifier()
+                clf = KNeighborsClassifier()
                 tuned_parameters = {"clf__n_neighbors": [5, 10, 25, 50]}
-            elif model_name == 'RandomForestClassifier':
-                model = RandomForestClassifier()
-            elif model_name == 'NearestCentroid':
-                model = NearestCentroid()
-            elif model_name == 'LinearSVC':
-                model = LinearSVC(dual=True)
+            elif clf_name == 'RandomForestClassifier':
+                clf = RandomForestClassifier()
+            elif clf_name == 'NearestCentroid':
+                clf = NearestCentroid()
+            elif clf_name == 'LinearSVC':
+                clf = LinearSVC(dual=True)
                 tuned_parameters = {"clf__C": [1, 10, 100, 1000], "clf__max_iter": [100, 500, 1000]}
-            elif model_name == 'SGDClassifier':
-                model = SGDClassifier(loss="log", early_stopping=True)
+            elif clf_name == 'SGDClassifier':
+                clf = SGDClassifier(loss="log", early_stopping=True)
                 tuned_parameters = {"clf__alpha": np.logspace(-6, 6, 13), }
             else:
                 # TODO: logging
@@ -1222,7 +1276,7 @@ class DatasetManager:
             pipeline = Pipeline(
                 [
                     ("vect", TfidfVectorizer(sublinear_tf=True, stop_words="english")),
-                    ("clf", model),
+                    ("clf", clf),
                 ]
             )
 
@@ -1513,12 +1567,12 @@ class DatasetManager:
 
         return target_names, train_data, y_train, test_data, y_test, test_data
 
-    def _vectorize_dataset(self, categories):
+    def _vectorize_dataset(self, categories, max_df=0.5, min_df=5, ngram_range=(1, 1), norm='l2'):
         target_names, train_data, y_train, test_data, y_test, test_data = self._split_dataset(categories)
         # Extracting features from the training data using a sparse vectorizer
         t0 = time()
         vectorizer = TfidfVectorizer(
-            sublinear_tf=True, max_df=0.5, min_df=5, stop_words="english"
+            sublinear_tf=True, max_df=max_df, min_df=min_df, ngram_range=ngram_range, norm=norm, stop_words="english"
         )
         X_train = vectorizer.fit_transform(train_data)
         duration_train = time() - t0
@@ -1583,11 +1637,11 @@ def main():
                 categories = args.categories
             # Tasks
             if args.hyperparams:
-                exit_code = data_manager.hyperparams_tuning(args.models, categories)
+                exit_code = data_manager.hyperparams_tuning(args.classifiers, categories)
             elif args.benchmark:
                 exit_code = data_manager.benchmark_classifiers(categories)
             else:
-                exit_code = data_manager.classify_ebooks(categories)
+                exit_code = data_manager.classify_ebooks(args.clf, args.vect_params, categories)
         else:
             logger.warning(yellow('Missing input directory'))
             exit_code = 3
