@@ -276,6 +276,19 @@ I won't list all options (too many) but here are some of the important and inter
     failed to convert an ebook to ``txt`` or resulted in an empty file, the OCR method will be used.
   - 'false': never use OCR, only use the other simpler conversion tools (``pdftotext`` and ``djvutxt``).
 
+Start the classification of ebooks ⭐
+-------------------------------------
+To **quickly** start the classification of ebooks, all you need is to provide the directory containing said ebooks::
+
+ python classify_ebooks.py ~/Data/ebooks
+ 
+The script will generate the dataset and then train the default classifier (``RidgeClassifier``) and 
+display the confusion matrix and features effect graph.
+
+To specify a classifier with its parameters, use the ``clf`` option::
+
+ python classify_ebooks.py ~/Data/ebooks --clf 
+
 Caching
 -------
 `:information_source:` About the caching option (``--use-cache``) supported by the script ``classify_ebooks.py.py``
