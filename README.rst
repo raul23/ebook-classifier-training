@@ -53,13 +53,16 @@ multiple clasification models are used such as: ``RidgeClassifier``, ``LogisticR
 
 Results of classifying ebooks ⭐
 ================================
-Classifying with ``RidgeClassifier``
-------------------------------------
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
 of this document.
 
-Thus without further ado, here are the results from training a ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` on the dataset 
-of 129 documents with three categories (computer_science, mathematics, physics). 
+Thus without further ado, here are the results from training multiple classifiers on two different datasets of ebooks.
+
+Classifying with ``RidgeClassifier``
+------------------------------------
+The first classifier I tried is a ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` on the dataset 
+of 129 documents with three categories (computer_science, mathematics, physics). It is the same model with the same parameters
+as in scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#analysis-of-a-bag-of-words-document-classifier>`_.
 
 The train and test sets are splitted as follows:
 
