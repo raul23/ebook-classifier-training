@@ -214,7 +214,7 @@ I won't list all options (too many) but here are some of the important and inter
 
 --ud                                  Update dataset with text from more new ebooks found in the directory.
 --cat CATEGORY                        Only include these categories in the dataset.  
---vect-params VECT_PARAMS             The parameters to be used by TfidfVectorizer for vectorizing the dataset. 
+--vect-params PARAMS                  The parameters to be used by TfidfVectorizer for vectorizing the dataset. 
                                       (default: ['max_df=0.2', 'min_df=1', 'ngram_range=(1, 1)', 'norm=l2'])
 
 **Hyperparameter tuning options:**
