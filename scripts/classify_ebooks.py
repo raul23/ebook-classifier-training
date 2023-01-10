@@ -108,13 +108,16 @@ PDF_CONVERT_METHOD = 'pdftotext'
 
 class RandomModel:
 
-    def __init__(self, n_clusters):
-        self.random_state = 12345
+    def __init__(self, n_labels):
+        self.random_state = SEED
         self.labels_ = None
-        self.n_clusters = n_clusters
+        self.n_labels = n_labels
 
-    def fit(self, X):
-        self.labels_ = np.random.randint(0, self.n_clusters, X.shape[0])
+    def fit(self, X_train, y_train):
+        self.labels_ = np.random.randint(0, self.n_labels, X_train.shape[0])
+
+    def predict(self, X_test):
+        return np.random.randint(0, self.n_labels, X_test.shape[0])
 
     def set_params(self, random_state):
         self.random_state = random_state
@@ -1190,6 +1193,8 @@ class DatasetManager:
         clf_name = clf_name_and_params[0]
         clf_params = clf_name_and_params[1:]
         clf_params = self._clean_params(clf_params)
+        if clf_name == 'RandomModel':
+            clf_params = len(target_names)
         # TODO: sanity check before calling eval
         logger.info(f"{blue('Classifier:')} {clf_name}")
         clf = eval(f'{clf_name}({clf_params})')
@@ -1206,7 +1211,7 @@ class DatasetManager:
             # AttributeError: 'KNeighborsClassifier' object has no attribute 'coef_'
             # No feature effects for them
             if not hasattr(clf, 'coef_'):
-                logger.error(red(f'[WARNING] {e}'))
+                logger.error(red(f'{e}'))
                 logger.info('Thus, no feature effects could be plotted')
             else:
                 logger.exception(e)
