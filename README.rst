@@ -60,7 +60,7 @@ Thus without further ado, here are the results from training multiple classifier
 
 Classifying with ``RidgeClassifier``
 ------------------------------------
-The first classifier I tried is a ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` on the dataset 
+The first classifier I tried is a ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` trained on the dataset 
 of 129 documents with three categories (computer_science, mathematics, physics). It is the same model with the same parameters
 as in scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#analysis-of-a-bag-of-words-document-classifier>`_.
 
