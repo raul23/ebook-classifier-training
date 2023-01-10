@@ -60,7 +60,7 @@ The parameters for ``TfidfVectorizer``::
 
  max_df=0.5    min_df=5    ngram_range=(1, 1)   norm=l2
 
-A sample of the kind of ebooks included in this dataset:
+A sample of the kind of ebooks included in this small dataset:
 
 - computer_science:
  
