@@ -462,6 +462,7 @@ you can update the dataset using the  options ``--ud`` (update) and ``-o true`` 
 
 `:information_source:` 
 
+ - ``-u`` enables the cache in order to add the converted text to the cache.
  - The ``--ud`` flag refers to the action of updating the dataset pickle file that was already saved within the main ebooks directory
    (e.g. ``~/Data/ebooks/``)
  - ``-o true`` enables OCR. The choices for ``-o, --ocr-enabled`` are: ``{always, true, false}``. See `Script options <#script-options>`_ for an 
@@ -505,12 +506,13 @@ After a dataset is created and saved, you can update it with new texts from more
 
 Filtering a dataset: select texts only in English and from valid categories
 ---------------------------------------------------------------------------
-After the dataset containing texts from ebooks is generated, the resulting dataset is filtered by removing text that is not English
-and not part of the specified categories (i.e. ``computer_science``, ``mathematics``, ``physics``).
+After the dataset containing texts from ebooks is generated, you can launch the classification by providing only the input directory
+containing the saved pickle file of the dataset. During the text classification, the dataset is loaded and filtered by removing 
+text that is not English and not part of the specified categories (e.g. ``computer_science``, ``mathematics``, ``physics``).
 
 Here are some samples of output from the script ``classify_ebooks.py``::
 
- python classify_ebooks.py -u ~/Data/ebooks/ --verbose
+ python classify_ebooks.py ~/Data/ebooks/ --verbose
  
 `:information_source:` 
 
