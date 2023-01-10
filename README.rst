@@ -44,6 +44,10 @@ Some stats about this small dataset:
 
 |
 
+The parameters for ``TfidfVectorizer``::
+
+ 'max_df=0.5', 'min_df=5', 'ngram_range=(1, 1)', 'norm=l2'
+
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
 multiple clasification models are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
 
@@ -54,7 +58,8 @@ Training a ``RidgeClassifier``
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
 of this document.
 
-Thus without further ado, here are the results from training a ``RidgeClassifier`` on the dataset of 129 documents with three categories (computer_science, mathematics, physics). 
+Thus without further ado, here are the results from training a ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` on the dataset 
+of 129 documents with three categories (computer_science, mathematics, physics). 
 
 The train and test sets are splitted as follows:
 
@@ -215,7 +220,7 @@ I won't list all options (too many) but here are some of the important and inter
 --ud                                  Update dataset with text from more new ebooks found in the directory.
 --cat CATEGORY                        Only include these categories in the dataset. (default: computer_science mathematics physics)  
 --vect-params PARAMS                  The parameters to be used by TfidfVectorizer for vectorizing the dataset. 
-                                      (default: max_df=0.2 min_df=1 ngram_range='(1, 1)' norm=l2)
+                                      (default: max_df=0.5 min_df=5 ngram_range='(1, 1)' norm=l2)
 
 **Hyperparameter tuning options:**
 
@@ -229,7 +234,7 @@ I won't list all options (too many) but here are some of the important and inter
 **Classification options:**
 
 --clf CLF_PARAMS                       The name of the classifier along with its parameters to be used for classifying ebooks. 
-                                       (default: RidgeClassifier tol=1e-06 solver=sparse_cg)
+                                       (default: RidgeClassifier tol=1e-2 solver=sparse_cg)
 
 |
 
