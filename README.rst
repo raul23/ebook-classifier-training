@@ -210,9 +210,9 @@ Command used to generate the next plots::
    physics: [0.16900022, 0.16801978, 0.15738953, 0.15292028, 0.15352079]
 - The model's coefficients seem to be very similar between each class::
 
-  For computer_science: [8.60059669, 8.60056681, 8.60094647, ..., 8.60074224, 8.60053628, 8.60082752]
-  For mathematics: [8.60082058, 8.60044876, 8.60090342, ..., 8.60075364, 8.6007128, 8.6008339 ]
-  For physics: [8.60055778, 8.60041649, 8.60095444, ..., 8.60070866, 8.60052311, 8.60094642]
+   For computer_science: [8.60059669, 8.60056681, 8.60094647, ..., 8.60074224, 8.60053628, 8.60082752]
+   For mathematics: [8.60082058, 8.60044876, 8.60090342, ..., 8.60075364, 8.6007128, 8.6008339 ]
+   For physics: [8.60055778, 8.60041649, 8.60095444, ..., 8.60070866, 8.60052311, 8.60094642]
 - These are the coefficents upon which the average feature effects are computed.
 - Here are the coefficents for `RidgeClassifier <#classifying-with-ridgeclassifier>`_ as a comparison::
 
