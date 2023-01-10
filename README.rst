@@ -107,7 +107,7 @@ the ebooks to be classified:
 
 |
 
-Command used to generate the next plot::
+Command used to generate the confusion matrix shown next::
 
  python classify_ebooks.py ~/Data/ebooks -s 12345 --clf RandomModel
 
