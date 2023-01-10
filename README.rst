@@ -21,7 +21,7 @@ Datasets
 ========
 Small dataset: 129 documents with 3 categories
 ----------------------------------------------
-The first classifiers I am testing are those trained on the small dataset of 129 English documents (``pdf`` and ``djvu``) from 
+The first classifiers I am testing are those trained on a small dataset of 129 English documents (``pdf`` and ``djvu``) from 
 3 categories:
 
 - ``computer_science`` with label 0 and 48 ebooks
