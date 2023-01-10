@@ -383,7 +383,7 @@ To start creating a dataset containing texts from ebooks after you have setup yo
 
 |
 
-`:information_source:` The first time the script is run, the dataset of text (from ebooks) will be generated. This dataset is a `Bunch <https://scikit-learn.org/stable/modules/generated/sklearn.utils.Bunch.html>`_ object (a dictionary-like object that allows you to access its values by keys or attributes) with the following structure:
+`:information_source:` The first time the script is run, the dataset of text (from ebooks) will be created. This dataset is a `Bunch <https://scikit-learn.org/stable/modules/generated/sklearn.utils.Bunch.html>`_ object (a dictionary-like object that allows you to access its values by keys or attributes) with the following structure:
 
 - ``data``: list of shape (n_samples,)
 - ``filenames``: list of shape (n_samples,)
@@ -401,7 +401,7 @@ The next times the script is run, the dataset will be loaded from disk as long a
 
 |
 
-Generating the ebooks dataset using cache (``-u`` option) without OCR support (i.e. the ``-o true`` option is not used)::
+Creating the ebooks dataset using cache (``-u`` option) without OCR support (i.e. the ``-o true`` option is not used)::
 
  $ python classify_ebooks.py --cd -u ~/Data/ebooks/
 
@@ -445,7 +445,7 @@ When a duplicate is found (based on MD5 hashes), the correponding ebook is not p
 
 |
 
-At the end of the dataset generation, some results are shown about the number of texts
+At the end of the dataset creation, some results are shown about the number of texts
 added to the dataset and cache, books rejected and duplicates found
 
 .. raw:: html
@@ -456,7 +456,7 @@ added to the dataset and cache, books rejected and duplicates found
 OCR
 ---
 For those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``), 
-you can run the dataset generation using the  ``--ud`` and ``-o true`` (enable OCR) options::
+you can update the dataset using the  options ``--ud`` (update) and ``-o true`` (enable OCR)::
 
  $ python classify_ebooks.py -u --ud -o true ~/Data/ebooks/
 
@@ -492,20 +492,16 @@ Results at the end of applying OCR to all problematic ebooks (made up of images)
 
 Updating a dataset
 ------------------
-After a dataset is generated and saved, you can update it with new texts from more ebooks by using the ``--ud`` option::
+After a dataset is created and saved, you can update it with new texts from more ebooks by using the ``--ud`` option::
 
- $ python classify_ebooks.py -u -o true --ud ~/Data/ebooks/
+ $ python classify_ebooks.py --ud ~/Data/ebooks/
 
 .. raw:: html
 
    <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/updating_dataset_ocr.png">
    </p>
    
-`:information_source:`
-
- - ``--ud``: tells the script to update the dataset pickle file saved within the main ebooks directory (e.g. ``~/Data/ebooks``).
- - ``-o true``: apply OCR on those ebooks that couldn't be converted with simpler methods (``pdftotext`` and ``djvutxt``).
- - ``-u``: use cache to avoid re-computing the text conversion for those ebooks that were already processed previously.
+`:information_source:` ``--ud`` tells the script to update the dataset pickle file saved within the main ebooks directory (e.g. ``~/Data/ebooks``).
 
 Filtering a dataset: select texts only in English and from valid categories
 ---------------------------------------------------------------------------
