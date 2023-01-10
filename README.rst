@@ -462,13 +462,13 @@ you can update the dataset using the  options ``--ud`` (update) and ``-o true`` 
 
 `:information_source:` 
 
-    - The ``--ud`` flag refers to the action of updating the dataset pickle file that was already saved within the main ebooks directory
-      (e.g. ``~/Data/ebooks/``)
-    - ``-o true`` enables OCR. The choices for ``-o, --ocr-enabled`` are: ``{always, true, false}``. See `Script options <#script-options>`_ for an 
-      explanation of these values.
-    - The OCR procedure is resource intensive, thus the conversion for those problematic ebooks might take longer than usual.
-    - By default, OCR is applied on only 5 pages chosen randomly in the first 50% of a given ebook. This number is controlled by
-      the option ``--ocr-only-random-pages PAGES``.
+ - The ``--ud`` flag refers to the action of updating the dataset pickle file that was already saved within the main ebooks directory
+   (e.g. ``~/Data/ebooks/``)
+ - ``-o true`` enables OCR. The choices for ``-o, --ocr-enabled`` are: ``{always, true, false}``. See `Script options <#script-options>`_ for an 
+   explanation of these values.
+ - The OCR procedure is resource intensive, thus the conversion for those problematic ebooks might take longer than usual.
+ - By default, OCR is applied on only 5 pages chosen randomly in the first 50% of a given ebook. This number is controlled by
+   the option ``--ocr-only-random-pages PAGES``.
 
 |
 
@@ -514,12 +514,12 @@ Here are some samples of output from the script ``classify_ebooks.py``::
  
 `:information_source:` 
 
-- Since the option ``--verbose`` is used, you will see more information printed in the terminal such as
-  if the text is in English or its category.
-- By default, the three mentioned categories are choosen. But you can control the categories you want to include in the dataset with the
-  ``--cat`` option::
-  
-   python classify_ebooks.py -u ~/Data/ebooks/ --cat chemistry physics
+   - Since the option ``--verbose`` is used, you will see more information printed in the terminal such as
+     if the text is in English or its category.
+   - By default, the three mentioned categories are choosen. But you can control the categories you want to include in the dataset with the
+     ``--cat`` option::
+
+      python classify_ebooks.py -u ~/Data/ebooks/ --cat chemistry physics
 
 | 
  
