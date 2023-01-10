@@ -6,17 +6,22 @@ Experimenting with classifying ebooks
    :local:
    :backlinks: top
 
+Introduction
+============
 I am basing my experimentation with classifying text on the excellent scikit-learn's tutorial: `Classification of text documents using sparse features <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_.
 
 I am following along their tutorial but using my own datasets containing a bunch of ebooks (``pdf`` and ``djvu``).
 
-The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as history or fiction).
-
-Introduction
-============
 I will be using two different datasets of ebooks to test text classification. They will be of different size and categories. 
 
-One of them is a small dataset that consists of 129 English ebooks (``pdf`` and ``djvu``) from 3 categories:
+The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as history or fiction).
+
+Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
+multiple clasification models are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
+
+Small dataset: 129 documents with 3 categories
+----------------------------------------------
+The first dataset of ebooks text is a small one that consists of 129 English ebooks (``pdf`` and ``djvu``) from 3 categories:
 
 - ``computer_science`` with label 0 and 48 ebooks
 - ``mathematics`` with label 1 and 50 ebooks
@@ -47,9 +52,6 @@ Some stats about this small dataset:
 The parameters for ``TfidfVectorizer``::
 
  max_df=0.5    min_df=5    ngram_range=(1, 1)   norm=l2
-
-Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
-multiple clasification models are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
 
 Results of classifying ebooks ⭐
 ================================
