@@ -220,6 +220,8 @@ Command used to generate the next plots::
    mathematics: [ 0.09391498, -0.04700096, -0.01501172, ..., -0.00338542, 0.0700915 , -0.03325268]
    physics: [-0.05675082,  0.0149598 ,  0.00025892, ..., -0.02538427, -0.05347232,  0.0313287 ])
 
+|
+
 .. code-block::
 
    top 5 keywords per class:
