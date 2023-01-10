@@ -182,6 +182,18 @@ Command used to generate the next plots::
 
 Classifying with ``ComplementNB`` (odd results)
 """""""""""""""""""""""""""""""""""""""""""""""
+.. raw:: html
+
+   <p align="center"><img src="./images/confusion_matrix_ComplementNB_small_dataset.png">
+   </p>
+   
+|
+
+.. raw:: html
+
+   <p align="center"><img src="./images/average_feature_effect_ComplementNB_small_dataset.png">
+   </p>
+
 .. code-block::
 
    top 5 keywords per class:
