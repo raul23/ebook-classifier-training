@@ -170,6 +170,7 @@ Command used to generate the next plots::
 
 `:information_source:` Insights from the words with the highest average feature effects 
 
+- The average feature effects are computed based on the training set.
 - This graph show words that are strongly positively correlated with one category and negatively associated 
   with the other two categories such as zeta (positive for mathematics) and universe (positive for physics).
 
@@ -180,19 +181,44 @@ Command used to generate the next plots::
 - Algorithm appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
   form of a word (TODO).
 
-Classifying with ``ComplementNB`` (odd results)
-"""""""""""""""""""""""""""""""""""""""""""""""
+Classifying with ``ComplementNB`` (odd results)❗❓
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+Command used to generate the next plots::
+
+ $ python classify_ebooks.py ~/Data/ebooks -s 12345 --clf ComplementNB alpha=1000
+
 .. raw:: html
 
    <p align="center"><img src="./images/confusion_matrix_ComplementNB_small_dataset.png">
    </p>
-   
+
+`:information_source:` At first glance, the confusion matrix coming from ``ComplementNB`` looks almost as good as the one from `RidgeClassifier <#classifying-with-ridgeclassifier>`_. However, the next plot about the average feature effects tells another story about this model's performance on the test set.
+
 |
 
 .. raw:: html
 
    <p align="center"><img src="./images/average_feature_effect_ComplementNB_small_dataset.png">
    </p>
+
+`:information_source:` What is really going on here? The average effects for each top 5 keywords seem to be almost the same for all class.
+
+- Average effects for each top 5 keywords per class::
+
+   computer_science: [0.16902425, 0.16804379, 0.15740153, 0.1529318 , 0.15351916]
+   mathematics: [0.16900307, 0.16802233, 0.15739999, 0.15292876, 0.15352894]
+   physics: [0.16900022, 0.16801978, 0.15738953, 0.15292028, 0.15352079]
+- The model's coefficients seem to be very similar between each class::
+
+  For computer_science: [8.60059669, 8.60056681, 8.60094647, ..., 8.60074224, 8.60053628, 8.60082752]
+  For mathematics: [8.60082058, 8.60044876, 8.60090342, ..., 8.60075364, 8.6007128, 8.6008339 ]
+  For physics: [8.60055778, 8.60041649, 8.60095444, ..., 8.60070866, 8.60052311, 8.60094642]
+- These are the coefficents upon which the average feature effects are computed.
+- Here are the coefficents for `RidgeClassifier <#classifying-with-ridgeclassifier>`_ as a comparison::
+
+   computer_science: [-0.0370117 ,  0.03214876,  0.01486401, ...,  0.02848551, -0.01713074,  0.00178766]
+   mathematics: [ 0.09391498, -0.04700096, -0.01501172, ..., -0.00338542, 0.0700915 , -0.03325268]
+   physics: [-0.05675082,  0.0149598 ,  0.00025892, ..., -0.02538427, -0.05347232,  0.0313287 ])
 
 .. code-block::
 
@@ -204,6 +230,9 @@ Classifying with ``ComplementNB`` (odd results)
    3            shall       shall       shall
    4         integers    integers    integers
 
+`:information_source:` The top 5 keywords (or any topK for that matter) are the same for all class. It seems that even though ``ComplementNB``'s 
+coefficients are almost the same values between all classes, the small differences are enough to help the model to correctly differentiate when
+making its predictions!? 
 
 Benchmarking classifiers
 """"""""""""""""""""""""
