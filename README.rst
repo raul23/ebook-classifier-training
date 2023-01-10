@@ -228,7 +228,7 @@ I won't list all options (too many) but here are some of the important and inter
 
 Classification options:
 
---clf CLF                              The name of the classifier along with its parameters to be used for classifying ebooks. 
+--clf CLF_PARAMS                       The name of the classifier along with its parameters to be used for classifying ebooks. 
                                        (default: ['RidgeClassifier', 'tol=1e-06', 'solver="sparse_cg"'])
 
 |
