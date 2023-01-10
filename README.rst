@@ -53,8 +53,8 @@ multiple clasification models are used such as: ``RidgeClassifier``, ``LogisticR
 
 Results of classifying ebooks
 =============================
-Training a ``RidgeClassifier``
-------------------------------
+Classifying with ``RidgeClassifier``
+------------------------------------
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
 of this document.
 
@@ -65,6 +65,13 @@ The train and test sets are splitted as follows:
 
 - train data: 77 ebooks (60%)
 - test data: 52 ebooks (40%)
+
+Command used to classify with ``RidgeClassifier``::
+
+ python classify_ebooks.py ~/Data/ebooks -s 12345
+ 
+`:information_source:` When not specifying any particular classifier with the option ``--clf``, the default classifier
+``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` is used.
 
 |
 
