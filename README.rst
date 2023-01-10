@@ -66,7 +66,7 @@ The train and test sets are splitted as follows:
 - train data: 77 ebooks (60%)
 - test data: 52 ebooks (40%)
 
-Command used to classify with ``RidgeClassifier``::
+Command used to generate the next plots::
 
  python classify_ebooks.py ~/Data/ebooks -s 12345
  
