@@ -46,7 +46,7 @@ Some stats about this small dataset:
 
 The parameters for ``TfidfVectorizer``::
 
- 'max_df=0.5', 'min_df=5', 'ngram_range=(1, 1)', 'norm=l2'
+ max_df=0.5    min_df=5    ngram_range=(1, 1)   norm=l2
 
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
 multiple clasification models are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
