@@ -217,6 +217,7 @@ I won't list all options (too many) but here are some of the important and inter
 
 **Dataset options:**
 
+--cd                                  Create dataset with text from ebooks found in the directory.
 --ud                                  Update dataset with text from more new ebooks found in the directory.
 --cat CATEGORY                        Only include these categories in the dataset. (default: computer_science mathematics physics)  
 --vect-params PARAMS                  The parameters to be used by TfidfVectorizer for vectorizing the dataset. 
@@ -242,6 +243,11 @@ I won't list all options (too many) but here are some of the important and inter
 `:information_source:` Explaining some important and interesting options/arguments
 
 - ``input_directory`` is the path to the main directory containing the documents to classify.
+
+  The following options require to specify an ``input_directory``:
+  
+  - ``--hyper-tune``: hyperparameter tuning
+  - ``-b``: benchmarking
 - ``-b`` uses right now hard-coded parameter values for multiple classifiers. However, I will eventualy
   make it possible to upload a JSON file with custom parameter values for different classifiers when
   using this option (TODO).
@@ -336,12 +342,14 @@ The next section explains in details the generation of a dataset containing text
 
 Dataset generation
 ------------------
-To start generating a dataset containing texts from ebooks after you have setup your `directory of ebooks <#ebooks-directory>`_, the input directory is necessary::
+To start generating a dataset containing texts from ebooks after you have setup your `directory of ebooks <#ebooks-directory>`_, the option
+``--cd`` and the input directory are necessary::
 
- $ python classify_ebooks.py ~/Data/ebooks/
+ $ python classify_ebooks.py --cd ~/Data/ebooks/
  
 `:information_source:` Explaining the text conversion procedure
 
+- ``--cd, --create-dataset`` tells the script to start creating the dataset if it is not already found within the specified directory.
 - The script will try to convert each ebook to text by using ``pdftotext`` or ``djvutxt`` depending on the type of file.
 - By default, OCR is not used (``--ocr-enabled`` is set to 'false') since it is a very resource intensive procedure. The other
   simpler conversion methods (``pdftotext`` or ``djvutxt``) are used instead which are very quick and reliable in their text conversion of ebooks.
@@ -375,7 +383,7 @@ The next times the script is run, the dataset will be loaded from disk as long a
 
 Generating the ebooks dataset using cache (``-u`` option) without OCR support (i.e. the ``-o true`` option is not used)::
 
- $ python classify_ebooks.py -u ~/Data/ebooks/
+ $ python classify_ebooks.py --cd -u ~/Data/ebooks/
 
 First time running the script with a cleared cache:
 
