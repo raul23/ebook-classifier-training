@@ -224,8 +224,9 @@ I won't list all options (too many) but here are some of the important and inter
 
 **Hyperparameter tuning options:**
 
---hyper                                Perform hyperparameter tuning.
---clfs CLF                             The names of classifiers whose hyperparameters will be tuned with grid search. (default: ComplementNB)
+--hyper-tune                           Perform hyperparameter tuning.
+--clfs CLF                             The names of classifiers whose hyperparameters will be tuned with grid search.
+                                       (default: RidgeClassifier ComplementNB)
 
 **OCR options:**
 
@@ -241,10 +242,26 @@ I won't list all options (too many) but here are some of the important and inter
 `:information_source:` Explaining some important and interesting options/arguments
 
 - ``input_directory`` is the path to the main directory containing the documents to classify.
+- ``-b`` uses right now hard-coded parameter values for multiple classifiers. However, I will eventualy
+  make it possible to upload a JSON file with custom parameter values for different classifiers when
+  using this option (TODO).
 - By **dataset re-creation** I mean the case when you delete the pickle dataset file and generate the dataset 
   again. If you are using cache, then the dataset generation should be quick since the text conversions were
   already computed and cached. Using the option ``-u`` is worthwhile especially if you used OCR for some of the ebooks since this procedure is very
   resource intensive and can take awhile if many pages are OCRed.
+- ``--vect-params PARAMS [PARAMS ...]``: the parameters for ``TfidfVectorizer`` are given one after the other like this::
+
+   --vect-params max_df=0.2 min_df=1 ngram_range='(1,1)' norm=l2
+   
+  `:warning:` It is important to escape any parentheses on the terminal by placing them within single quotes or after a backslash
+  (e.g. ``ngram_range=\(1,1)\)``).
+- ``--clfs [CLF [CLF ...]]``: the names of the classifiers are those used in scikit-learn's modules. For example::
+
+   python classify_ebooks.py ~/Data/ebooks --hyper-tune --clfs KNeighborsClassifier NearestCentroid LogisticRegression
+   
+- ``--clf CLF_PARAMS``: the name of the classifier and its parameters are the ones used in scikit-learn's modules. For example::
+  
+   python classify_ebooks.py ~/Data/ebooks --clf KNeighborsClassifier n_neighbors=5
 - The choices for ``-o`` are ``{always, true, false}``
   
   - 'always': always use OCR first when doing text conversion. If the converson fails, then use the other simpler conversion tools
