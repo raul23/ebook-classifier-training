@@ -60,8 +60,6 @@ Some stats about this small dataset:
    vectorize testing done in 0.433s at 6.174MB/s
    n_samples: 52, n_features: 5436
 
-|
-
 The parameters for ``TfidfVectorizer``::
 
  max_df=0.5    min_df=5    ngram_range=(1, 1)   norm=l2
