@@ -19,13 +19,26 @@ The main motivation of experimenting with text classification is to use the best
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
 multiple clasification models are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
 
+Results of classifying ebooks ⭐
+================================
+I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
+of this document.
+
+Thus without further ado, here are the results from training multiple classifiers on two different datasets of ebooks.
+
 Small dataset: 129 documents with 3 categories
 ----------------------------------------------
-The first dataset of ebooks text is a small one that consists of 129 English ebooks (``pdf`` and ``djvu``) from 3 categories:
+The first classifiers I am testing are those trained on the small dataset of 129 English documents (``pdf`` and ``djvu``) from 
+3 categories:
 
 - ``computer_science`` with label 0 and 48 ebooks
 - ``mathematics`` with label 1 and 50 ebooks
 - ``physics`` with label 2 and 31 ebooks
+
+The train and test sets are splitted as follows:
+
+- train data: 77 ebooks (60%)
+- test data: 52 ebooks (40%)
 
 It is the same dataset I `tested clustering <https://github.com/raul23/clustering-text#clustering-ebooks-pdf-djvu>`_ on.
 
@@ -52,22 +65,6 @@ Some stats about this small dataset:
 The parameters for ``TfidfVectorizer``::
 
  max_df=0.5    min_df=5    ngram_range=(1, 1)   norm=l2
-
-Results of classifying ebooks ⭐
-================================
-I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
-of this document.
-
-Thus without further ado, here are the results from training multiple classifiers on two different datasets of ebooks.
-
-Small dataset: 129 documents with 3 categories
-----------------------------------------------
-The first classifiers I am testing are those trained on the small dataset of 129 document with 3 categories: computer_science, mathematics, physics.
-
-The train and test sets are splitted as follows:
-
-- train data: 77 ebooks (60%)
-- test data: 52 ebooks (40%)
 
 Classifying with ``RidgeClassifier``
 """"""""""""""""""""""""""""""""""""
