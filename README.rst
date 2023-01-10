@@ -292,7 +292,7 @@ To **quickly** start the classification of ebooks, all you need is to provide th
 The script will generate the dataset and then train the default classifier (``RidgeClassifier``) and 
 display the confusion matrix and features effect graph.
 
-To specify a classifier with its parameters, use the ``clf`` option::
+To specify a classifier with its parameters, use the ``--clf`` option::
 
  python classify_ebooks.py ~/Data/ebooks --clf 
 
