@@ -10,20 +10,15 @@ Introduction
 ============
 I am basing my experimentation with classifying text on the excellent scikit-learn's tutorial: `Classification of text documents using sparse features <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_.
 
-I am following along their tutorial but using my own two datasets containing a bunch of ebooks (``pdf`` and ``djvu``). They are of different size and categories. 
+I am following along their tutorial but using my own `two datasets <#datasets>`_ containing a bunch of ebooks (``pdf`` and ``djvu``). They are of different size and categories. 
 
 The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as history or fiction).
 
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
 multiple classifiers are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
 
-Results of classifying ebooks ⭐
-================================
-I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
-of this document.
-
-Thus without further ado, here are the results from training multiple classifiers on two different datasets of ebooks.
-
+Datasets
+========
 Small dataset: 129 documents with 3 categories
 ----------------------------------------------
 The first classifiers I am testing are those trained on the small dataset of 129 English documents (``pdf`` and ``djvu``) from 
@@ -61,6 +56,17 @@ Some stats about this small dataset:
 The parameters for ``TfidfVectorizer``::
 
  max_df=0.5    min_df=5    ngram_range=(1, 1)   norm=l2
+
+Results of classifying ebooks ⭐
+================================
+I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
+of this document.
+
+Thus without further ado, here are the results from training multiple classifiers on two different datasets of ebooks.
+
+Part 1: classifiers trained on the small dataset
+------------------------------------------------
+These are the classification results from models trained on the `small dataset 129 documents <#small-dataset-129-documents-with-3-categories>`_ with three categories (computer_science, mathematics, physics).
 
 Classifying with ``RidgeClassifier``
 """"""""""""""""""""""""""""""""""""
