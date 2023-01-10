@@ -73,19 +73,20 @@ CLF = ['RidgeClassifier', 'tol=1e-02', 'solver=sparse_cg']
 
 # Dataset options
 # ===============
+CREATE_DATASET = False
 UPDATE_DATASET = False
 CATEGORIES = ['computer_science', 'mathematics', 'physics']
 # TfidfVectorizer params
 VECT_PARAMS = ['max_df=0.5', 'min_df=5', 'ngram_range=(1, 1)', 'norm=l2']
 
+# Hyperparameter tuning options
+# =============================
+CLFS = ['RidgeClassifier', 'ComplementNB']
+
 # Logging options
 # ===============
 LOGGING_FORMATTER = 'only_msg'
 LOGGING_LEVEL = 'info'
-
-# Hyperparameter tuning options
-# =============================
-CLFS = ['ComplementNB']
 
 # OCR options
 # ===========
@@ -951,6 +952,9 @@ def setup_argparser():
     # ===============
     dataset_group = parser.add_argument_group(title=yellow('Dataset options'))
     dataset_group.add_argument(
+        '--cd', '--create-dataset', dest='create_dataset', action='store_true',
+        help='Create dataset with text from ebooks found in the directory.')
+    dataset_group.add_argument(
         '--ud', '--update-dataset', dest='update_dataset', action='store_true',
         help='Update dataset with text from more new ebooks found in the directory.')
     dataset_group.add_argument(
@@ -958,7 +962,7 @@ def setup_argparser():
         nargs='+', default=None,
         help='Only include these categories in the dataset.' + get_default_message(' '.join(CATEGORIES)))
     dataset_group.add_argument(
-        '--vect-params', metavar='PARAMS', dest='vect_params',
+        '--vp', '--vect-params', metavar='PARAMS', dest='vect_params',
         nargs='+', default=VECT_PARAMS,
         help='The parameters to be used by TfidfVectorizer for vectorizing the dataset.'
              + get_default_message(' '.join(VECT_PARAMS).replace('(', "'(").replace(')', ")'")))
@@ -967,11 +971,11 @@ def setup_argparser():
     # =============================
     hyper_group = parser.add_argument_group(title=yellow('Hyperparameter tuning options'))
     hyper_group.add_argument(
-        '--hyper', '--hyperparams-tuning', dest='hyperparams', action='store_true',
+        '--ht', '--hyper-tune', dest='hyper_tune', action='store_true',
         help='Perform hyperparameter tuning.')
     hyper_group.add_argument(
-        '--clfs', metavar='CLF', dest='classifiers',
-        nargs='+', default=CLFS,
+        '--clfs', metavar='CLF', dest='clfs',
+        nargs='*', default=CLFS,
         help='The names of classifiers whose hyperparameters will be tuned with grid search.'
              + get_default_message(' '.join(CLFS)))
     # ===========
@@ -994,7 +998,7 @@ def setup_argparser():
     classification_group = parser.add_argument_group(title=yellow('Classification options'))
     classification_group.add_argument(
         '--clf', metavar='CLF_PARAMS', dest='clf',
-        nargs='+', default=CLF,
+        nargs='*', default=CLF,
         help='The name of the classifier along with its parameters to be used for classifying ebooks.'
              + get_default_message(' '.join(CLF)))
     classification_group.add_argument(
@@ -1095,6 +1099,7 @@ class DatasetManager:
         self.msword_convert_method = MSWORD_CONVERT_METHOD
         self.pdf_convert_method = PDF_CONVERT_METHOD
         # Dataset options
+        self.create_dataset = CREATE_DATASET
         self.update_dataset = UPDATE_DATASET
         # OCR options
         self.ocr_enabled = OCR_ENABLED
@@ -1131,8 +1136,11 @@ class DatasetManager:
             logger.info(blue('Generating dataset ...'))
         else:
             generate_dataset = False
-            logger.info(blue("Loading dataset ..."))
-            self._load_dataset()
+            if self.create_dataset:
+                logger .info('Dataset is already created!')
+            else:
+                logger.info(blue("Loading dataset ..."))
+                self._load_dataset()
         if generate_dataset:
             self._generate_dataset()
             logger.info(f"{COLORS['BLUE']}Saving dataset:{COLORS['NC']} {self.dataset_path}")
@@ -1163,6 +1171,10 @@ class DatasetManager:
         return ', '.join(new_params)
 
     def classify_ebooks(self, clf_name_and_params, vect_params, categories):
+        # TODO: check first clf is supported
+        if not clf_name_and_params:
+            logger.warning(yellow('No classifier was specified!'))
+            return 0
         vect_params_dict = {}
         for param in vect_params:
             param_name, param_value = param.split('=')
@@ -1179,6 +1191,7 @@ class DatasetManager:
         clf_params = clf_name_and_params[1:]
         clf_params = self._clean_params(clf_params)
         # TODO: sanity check before calling eval
+        logger.info(f"{blue('Classifier:')} {clf_name}")
         clf = eval(f'{clf_name}({clf_params})')
         # clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
         clf.fit(X_train, y_train)
@@ -1234,6 +1247,7 @@ class DatasetManager:
                 dataset.target.append(self.dataset.target[i])
                 dataset.target_names.add(self.dataset.filenames[i].parent.name)
             else:
+                # TODO: replace COLORS with yellow() and for the others too
                 logger.warning(f"{COLORS['YELLOW']}[WARNING] Document rejected:{COLORS['NC']} "
                                f"{str(self.dataset.filenames[i])[:100]}")
                 number_ebooks_rejected += 1
@@ -1243,9 +1257,13 @@ class DatasetManager:
 
     def hyperparams_tuning(self, clf_names, categories=None):
         if not clf_names:
-            logger.warning(yellow('No model was specified!'))
+            logger.warning(yellow('No classifiers were specified!'))
+            return 0
+        target_names, train_data, y_train, test_data, y_test, test_data = self._split_dataset(
+            categories)
         for clf_name in clf_names:
             tuned_parameters = {}
+            logger.info(f"\n{blue('Classifier:')} {clf_name}")
             if clf_name == 'ComplementNB':
                 clf = ComplementNB()
                 tuned_parameters = {"clf__alpha": np.logspace(-6, 6, 13)}
@@ -1270,10 +1288,8 @@ class DatasetManager:
                 clf = SGDClassifier(loss="log", early_stopping=True)
                 tuned_parameters = {"clf__alpha": np.logspace(-6, 6, 13), }
             else:
-                # TODO: logging
+                logger.warning(f"{yellow('[WARNING] Classifier not supported:')} {clf_name}")
                 continue
-            target_names, train_data, y_train, test_data, y_test, test_data = self._split_dataset(
-                categories)
 
             pipeline = Pipeline(
                 [
@@ -1293,13 +1309,14 @@ class DatasetManager:
             random_search = RandomizedSearchCV(
                 estimator=pipeline,
                 param_distributions=parameter_grid,
-                n_iter=40,
+                n_iter=2,
                 random_state=0,
                 n_jobs=2,
-                verbose=3,
+                verbose=1,
             )
 
-            print("Performing grid search...")
+            # TODO: use logger instead of print and for others too
+            print(blue("Performing grid search..."))
             print("Hyperparameters to be evaluated:")
             pprint(parameter_grid)
 
@@ -1307,7 +1324,7 @@ class DatasetManager:
             random_search.fit(train_data, y_train)
             print(f"Done in {time() - t0:.3f}s")
 
-            print("Best parameters combination found:")
+            print(green(f"Best parameters combination found for {clf_name}:"))
             best_parameters = random_search.best_estimator_.get_params()
             for param_name in sorted(parameter_grid.keys()):
                 print(f"{param_name}: {best_parameters[param_name]}")
@@ -1633,20 +1650,20 @@ def main():
             DatasetManager.remove_keys_from_cache(CACHE_FOLDER, args.remove_keys)
         elif args.input_directory:
             data_manager = DatasetManager(**namespace_to_dict(args))
-            if args.categories is None:
-                categories = CATEGORIES
-            else:
-                categories = args.categories
+            categories = CATEGORIES if args.categories is None else args.categories
+            clfs = args.clfs if args.clfs else CLFS
+            clf = args.clf if args.clf else CLF
             # Tasks
-            if args.hyperparams:
-                exit_code = data_manager.hyperparams_tuning(args.classifiers, categories)
-            elif args.benchmark:
-                exit_code = data_manager.benchmark_classifiers(categories)
-            else:
-                exit_code = data_manager.classify_ebooks(args.clf, args.vect_params, categories)
+            if not (args.create_dataset or args.update_dataset):
+                if args.hyper_tune:
+                    exit_code = data_manager.hyperparams_tuning(clfs, categories)
+                elif args.benchmark:
+                    exit_code = data_manager.benchmark_classifiers(categories)
+                else:
+                    exit_code = data_manager.classify_ebooks(clf, args.vect_params, categories)
         else:
             logger.warning(yellow('Missing input directory'))
-            exit_code = 3
+            exit_code = 2
     except KeyboardInterrupt:
         print_(yellow('\nProgram stopped!'))
         exit_code = 2
