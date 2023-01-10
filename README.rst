@@ -215,7 +215,7 @@ I won't list all options (too many) but here are some of the important and inter
 --ud                                  Update dataset with text from more new ebooks found in the directory.
 --cat CATEGORY                        Only include these categories in the dataset.  
 --vect-params PARAMS                  The parameters to be used by TfidfVectorizer for vectorizing the dataset. 
-                                      (default: ['max_df=0.2', 'min_df=1', 'ngram_range=(1, 1)', 'norm=l2'])
+                                      (default: max_df=0.2 min_df=1 ngram_range='(1, 1)' norm=l2)
 
 **Hyperparameter tuning options:**
 
@@ -226,10 +226,10 @@ I won't list all options (too many) but here are some of the important and inter
 
 -o                                     Whether to enable OCR for ``pdf``, ``djvu`` and image files. It is disabled by default. (default: false)
 
-Classification options:
+**Classification options:**
 
 --clf CLF_PARAMS                       The name of the classifier along with its parameters to be used for classifying ebooks. 
-                                       (default: ['RidgeClassifier', 'tol=1e-06', 'solver="sparse_cg"'])
+                                       (default: RidgeClassifier tol=1e-06 solver=sparse_cg)
 
 |
 
