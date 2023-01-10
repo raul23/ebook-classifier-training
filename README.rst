@@ -213,7 +213,8 @@ Command used to generate the next plots::
    computer_science: [8.60059669, 8.60056681, 8.60094647, ..., 8.60074224, 8.60053628, 8.60082752]
    mathematics: [8.60082058, 8.60044876, 8.60090342, ..., 8.60075364, 8.6007128, 8.6008339 ]
    physics: [8.60055778, 8.60041649, 8.60095444, ..., 8.60070866, 8.60052311, 8.60094642]
-- These are the coefficents upon which the average feature effects are computed.
+
+  **NOTE:** These are the coefficents upon which the average feature effects are computed.
 - Here are the coefficents for `RidgeClassifier <#classifying-with-ridgeclassifier>`_ as a comparison::
 
    computer_science: [-0.0370117 ,  0.03214876,  0.01486401, ...,  0.02848551, -0.01713074,  0.00178766]
