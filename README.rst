@@ -96,6 +96,30 @@ Part 1: classifiers trained on the small dataset
 ------------------------------------------------
 These are the classification results from models trained on the `small dataset 129 documents <#small-dataset-129-documents-with-3-categories>`_ with three categories (computer_science, mathematics, physics).
 
+Classifying with ``RandomModel`` (baseline)
+"""""""""""""""""""""""""""""""""""""""""""
+All classifiers need to be at least much better than the baseline ``RandomModel`` which randomly generates the labels (from 0 to 2) for 
+the ebooks to be classified:
+
+.. code-block:: python
+
+   self.labels_ = np.random.randint(0, self.n_clusters, X.shape[0])
+
+|
+
+Command used to generate the next plot::
+
+ python classify_ebooks.py ~/Data/ebooks -s 12345 --clf RandomModel
+
+|
+
+.. raw:: html
+
+   <p align="center"><img src="./images/confusion_matrix_RandomModel_small_dataset.png">
+   </p>
+
+`:information_source:` No feature effect plot couldn't be generated since this random model doesn't have coefficients (no ``coef_``).
+
 Classifying with ``RidgeClassifier``
 """"""""""""""""""""""""""""""""""""
 The first classifier I tried is a ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` trained on the `dataset 
@@ -155,6 +179,19 @@ Command used to generate the next plots::
 - When you see the word 'energy' among books from the three categories, you are almost sure that they will be about physics.
 - Algorithm appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
   form of a word (TODO).
+
+Classifying with ``ComplementNB`` (odd results)
+"""""""""""""""""""""""""""""""""""""""""""""""
+.. code-block::
+
+   top 5 keywords per class:
+     computer_science mathematics     physics
+   0        algorithm   algorithm   algorithm
+   1       algorithms  algorithms  algorithms
+   2          integer     integer     integer
+   3            shall       shall       shall
+   4         integers    integers    integers
+
 
 Benchmarking classifiers
 """"""""""""""""""""""""
