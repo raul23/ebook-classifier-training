@@ -33,7 +33,8 @@ The train and test sets are splitted as follows:
 - train data: 77 ebooks (60%)
 - test data: 52 ebooks (40%)
 
-This toy dataset can be interesting for testing quickly ideas about improving text classification since the training and testing times are very reasonable.
+This toy dataset can be interesting for quickly testing ideas about improving text classification since the training and 
+testing times are very reasonable.
 
 It is the same dataset I `tested clustering <https://github.com/raul23/clustering-text#clustering-ebooks-pdf-djvu>`_ on.
 
