@@ -118,7 +118,7 @@ Command used to generate the next plot::
    <p align="center"><img src="./images/confusion_matrix_RandomModel_small_dataset.png">
    </p>
 
-`:information_source:` No feature effect plot couldn't be generated since this random model doesn't have coefficients (no ``coef_``).
+`:information_source:` No feature effect plot could be generated since this random model doesn't have coefficients (no ``coef_``).
 
 Classifying with ``RidgeClassifier``
 """"""""""""""""""""""""""""""""""""
