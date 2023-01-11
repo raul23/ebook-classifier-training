@@ -301,6 +301,22 @@ Part 2: classifiers trained on the large dataset
 ------------------------------------------------
 TODO
 
+Classifying with ``RandomModel`` (baseline)
+"""""""""""""""""""""""""""""""""""""""""""
+TODO
+
+Classifying with ``RidgeClassifier``
+""""""""""""""""""""""""""""""""""""
+TODO
+
+Classifying with ``ComplementNB``
+"""""""""""""""""""""""""""""""""
+TODO
+
+Benchmarking classifiers
+""""""""""""""""""""""""
+TODO
+
 Script ``classify_ebooks.py``
 =============================
 Dependencies
