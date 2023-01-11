@@ -400,12 +400,13 @@ Command used to generate the next plots::
 - Obviously, the words that are part of the category constitute the best predictive features:
   security (positively correlated with computer security), dataset, intelligence, linux, neural.
   
-  What that means is that if you could also rely on the filename, then the task of ebooks classification could be
-  mostly done with regex. You might not achieve as good results as with machine learning but for some users
-  it might be good enough, especially if the ebooks are well named including good predictive words.
+  If you could also rely on the filename, then the task of ebooks classification could be tried
+  with regex. You might not achieve as good results as with machine learning but for some users
+  it might be good enough, especially if the ebooks are well named and contain some of these good
+  predictive words.
   
   However, the classifiers are very robust in that they can work well even if the ebooks have pure gibberish
-  as filenames or wrongly named since these models only care about the content of the documents. Looking at my own 
+  as filenames or are wrongly named since these models only care about the content of the documents. Looking at my own 
   collection of ebooks, I have a couple of them that were lazily named with odd titles that don't give much
   information about their content (e.g. ``2 copy.pdf``). But the classifiers should still be able to classify them
   without much problems.
