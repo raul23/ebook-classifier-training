@@ -384,12 +384,12 @@ Command used to generate the next plots::
 
 `:information_source:` ``RidgeClassifier`` is doing a perfect job even with its default parameters.
 
-- ``RidgeClassifier`` struggles a lot with classifying *data structures* ebooks, confusing three of them as being documents about *algorithms*. 
+- ``RidgeClassifier`` struggles a lot with classifying *data structures* ebooks, confusing three of them as *algorithms* documents. 
   On the other hand, it does perfectly in classifying ebooks about *algorithms*, getting all eight of them. The subject of *data stuctures* has a more 
   specific vocabulary than *algorithms* and this might explain why it makes this misclassification with *data structures* ebooks 
   only and not the opposite.
 - *Artificial intelligence* is another category that ``RidgeClassifier`` has difficulties in classifying. It confuses books
-  about *AI* for documents about *artificial neural networks* (no surprise), *compiler*, and *computer security*. I am curious about
+  about *AI* for documents expressly about *artificial neural networks* (no surprise), *compiler*, and *computer security*. I am curious about
   investigating why it made the latter two misclassifications.
 - *Machine learning* really is a category that ``RidgeClassifier`` does a great job with getting 15 ebooks correctly over 16.
 - Not enough documents about *database* but it got all three correctly.
@@ -455,10 +455,12 @@ Command used to generate the next plots::
 `:information_source:` Overall, ``ComplementNB``'s predictions are not as good as those from ``RidgeClassifier``
 
 - *Data structures* continues being a very difficult category to predict. However, ``ComplementNB`` is doing a worse job
-  than ``RidgeClassifier`` in that respect: confusing 4 *data structures* ebooks for being about *algorithms* and being able
+  than ``RidgeClassifier`` in that respect: confusing 4 *data structures* ebooks for *algorithms* ones and being able
   to correctly categorize only one *data structures* ebook.
 - *Penetration testing* is another category that ``ComplementNB`` struggles more than ``RidgeClassifier`` does:
   only one ebook was correctly classified as such vs 5 for ``RidgeClassifier`` (over 6 documents from that category).
+  
+  ``ComplementNB`` confused 5 *penetration testing* ebooks for *computer security* ones (which technically it is the case).
 - Like with ``RidgeClassifier``, ``ComplementNB`` does a perfect job in classifying all *algorithms* ebooks correctly.
 - Also, *machine learning* presents an easy category to classify: 14 ebooks correctly classify as such over a total 16 documents from that category.
 - Where ``ComplementNB`` is doing a relatively better job (but not that significant) than ``RidgeClassifier`` is with
