@@ -351,6 +351,8 @@ Command used to generate the next plots::
 
 .. commit with i==250
 
+|
+
 .. raw:: html
 
    <p align="center"><img src="./images/confusion_matrix_ridgeclass_medium_dataset.png">
