@@ -343,7 +343,7 @@ TODO
 Classifying with ``RidgeClassifier``
 """"""""""""""""""""""""""""""""""""
 A ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` was trained on the `dataset 
-of 202 documents <#sedium-size-dataset-202-documents-with-10-categories>`_ with ten categories. It is the same model with the same parameters as in scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#analysis-of-a-bag-of-words-document-classifier>`_.
+of 202 documents <#medium-size-dataset-202-documents-with-10-categories>`_ with ten categories. It is the same model with the same parameters as in scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#analysis-of-a-bag-of-words-document-classifier>`_.
 
 Command used to generate the next plots::
 
