@@ -460,7 +460,7 @@ Command used to generate the next plots::
 - *Penetration testing* is another category that ``ComplementNB`` struggles more than ``RidgeClassifier`` does:
   only one ebook was correctly classified as such vs 5 for ``RidgeClassifier`` (over 6 documents from that category).
 - Like with ``RidgeClassifier``, ``ComplementNB`` does a perfect job in classifying all *algorithms* ebooks correctly.
-- Also, *machine learning* presents an easy category to classifiy: 14 ebooks correctly classify as such over a total 16 documents from that category.
+- Also, *machine learning* presents an easy category to classify: 14 ebooks correctly classify as such over a total 16 documents from that category.
 - Where ``ComplementNB`` is doing a relatively better job (but not that significant) than ``RidgeClassifier`` is with
   the *computer security* category: only one misclassification vs two for ``RidgeClassifier`` (over 12 ebooks from that category).
 
