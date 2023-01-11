@@ -444,6 +444,8 @@ Command used to generate the next plots::
 
 `:information_source:` I used the scikit-learn's default values for ``ComplementNB``'s parameters.
 
+|
+
 .. raw:: html
 
    <p align="center"><img src="./images/confusion_matrix_ComplementNB_medium_dataset.png">
