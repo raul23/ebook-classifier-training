@@ -377,7 +377,7 @@ Command used to generate the next plots::
    <p align="center"><img src="./images/average_feature_effect_ridgeclass_medium_dataset2.png">
    </p>
 
-`:information_source:` It is getting too crowded and very hard to read!
+`:information_source:` It is getting too crowded and very hard to read! 🔎
 
 - Obviously, the words that are part of the category constitute the best predictive features:
   security (positively correlated with computer security), dataset, intelligence, linux, neural.
