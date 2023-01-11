@@ -388,6 +388,7 @@ Command used to generate the next plots::
 
 .. code-block::
 
+   top 5 keywords per class:
      algorithms artificial intelligence artificial neural networks    compiler computer security
    0   integers            intelligence                     neural    compiler          security
    1    integer              artificial                      layer   compilers           attacks
