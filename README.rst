@@ -10,7 +10,7 @@ Introduction
 ============
 I am basing my experimentation with classifying text on the excellent scikit-learn's tutorial: `Classification of text documents using sparse features <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_.
 
-I am following along their tutorial but using my own `two datasets <#datasets>`_ containing a bunch of ebooks (``pdf`` and ``djvu``). They are of different size and categories. 
+I am following along their tutorial but using my own `three datasets <#datasets>`_ containing a bunch of ebooks (``pdf`` and ``djvu``). They are of different size and categories. 
 
 The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as history or fiction).
 
@@ -85,9 +85,44 @@ A sample of the kind of ebooks included in this small dataset:
   - `The Inflationary Universe <https://www.amazon.com/Inflationary-Universe-Alan-Guth/dp/0201328402>`_
   - `The Strongest Magnetic Fields in the Universe <https://www.amazon.com/Strongest-Magnetic-Fields-Universe-Sciences-ebook/dp/B01JAK55B4/>`_
 
-Large dataset: X documents with Y categories
---------------------------------------------
-TODO
+Medium-size dataset: X documents with Y categories
+--------------------------------------------------
+The second dataset consists of 202 English documents (``pdf`` and ``djvu``) from 10 categories:
+
+- ``algorithms``: with label 0 and 22 ebooks
+- ``artificial intelligence``: with label 1 and 12 ebooks
+- ``artificial neural networks``: with label 2 and 19 ebooks
+- ``compiler``: with label 3 and 26 ebooks
+- ``computer security``: with label 4 and 28 ebooks
+- ``data structures``: with label 5 and 17 ebooks
+- ``database``: with label 6 and 13 ebooks
+- ``linux``: with label 7 and 17 ebooks
+- ``machine learning``: with label 8 and 33 ebooks
+- ``penetration testing``: with label 9 and 15 ebooks
+
+The train and test sets are splitted as follows:
+
+- train data: 121 ebooks (60%)
+- test data: 81 ebooks (40%)
+
+By default, only 10% of a given ebook is `converted to text <#dataset-generation>`_ and added to the dataset. No OCR was applied
+this time.
+
+Some stats about this medium-size dataset:
+
+.. code-block::
+
+   Categories size: [22 12 19 26 28 17 13 17 33 15]
+   202 documents - 10 categories
+   121 documents - 10.22MB (training set)
+   
+   81 documents - 7.24MB (test set)
+   10 categories
+   
+   vectorize training done in 1.378s at 7.421MB/s
+   n_samples: 121, n_features: 8549
+   vectorize testing done in 0.941s at 7.686MB/s
+   n_samples: 81, n_features: 8549
 
 Results of classifying ebooks ⭐
 ================================
@@ -297,8 +332,8 @@ multiple models were tested by analyzing the trade-off between training/testing 
    high dimensional feature space of text classification problems.
 - Random Forest 👎 is the slowest model to train and make predictions and on top of that with the worst test score.
 
-Part 2: classifiers trained on the large dataset
-------------------------------------------------
+Part 2: classifiers trained on the medium-size dataset
+------------------------------------------------------
 TODO
 
 Classifying with ``RandomModel`` (baseline)
