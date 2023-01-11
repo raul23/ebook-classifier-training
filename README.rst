@@ -38,7 +38,7 @@ testing times are very reasonable.
 
 It is the same dataset I `tested clustering <https://github.com/raul23/clustering-text#clustering-ebooks-pdf-djvu>`_ on.
 
-By default, only 10% of a given ebook is `converted to text <#dataset-generation>`_ and added to the dataset. Also if an ebook is 
+By default, only 10% of a given ebook is `converted to text <#dataset-creation>`_ and added to the dataset. Also if an ebook is 
 made of images, `OCR <#ocr>`_ is applied on 5 pages chosen randomly in the first 50% of the given ebook to extract the text.
 
 Some stats about this small dataset:
@@ -105,7 +105,7 @@ The train and test sets are splitted as follows:
 - train data: 121 ebooks (60%)
 - test data: 81 ebooks (40%)
 
-By default, only 10% of a given ebook is `converted to text <#dataset-generation>`_ and added to the dataset. No OCR was applied
+By default, only 10% of a given ebook is `converted to text <#dataset-creation>`_ and added to the dataset. No OCR was applied
 this time.
 
 Some stats about this medium-size dataset:
