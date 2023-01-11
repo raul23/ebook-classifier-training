@@ -1158,18 +1158,23 @@ class DatasetManager:
         X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories)
         results = []
         for clf, name in (
-                (LogisticRegression(C=1000, max_iter=1000), "Logistic Regression"),
-                (RidgeClassifier(alpha=1e-06, solver="sparse_cg"), "Ridge Classifier"),
+                # (LogisticRegression(C=1000, max_iter=1000), "Logistic Regression"),
+                # (RidgeClassifier(alpha=1e-06, solver="sparse_cg"), "Ridge Classifier"),
+                (RidgeClassifier(alpha=0.001, solver="sparse_cg"), "Ridge Classifier"),
+                # (KNeighborsClassifier(n_neighbors=5), "kNN"),
                 (KNeighborsClassifier(n_neighbors=5), "kNN"),
                 (RandomForestClassifier(), "Random Forest"),
                 # L2 penalty Linear SVC
-                (LinearSVC(C=1000, dual=True, max_iter=1000), "Linear SVC"),
+                # (LinearSVC(C=1000, dual=True, max_iter=1000), "Linear SVC"),
+                (LinearSVC(C=10, dual=True, max_iter=1000), "Linear SVC"),
                 # L2 penalty Linear SGD
-                (SGDClassifier(loss="log", alpha=1e-3), "log-loss SGD"),
+                # (SGDClassifier(loss="log", alpha=1e-3), "log-loss SGD"),
+                (SGDClassifier(loss="log", alpha=1e-06), "log-loss SGD"),
                 # NearestCentroid (aka Rocchio classifier)
                 (NearestCentroid(), "NearestCentroid"),
                 # Sparse naive Bayes classifier
-                (ComplementNB(alpha=1000), "Complement naive Bayes"),
+                # (ComplementNB(alpha=1000), "Complement naive Bayes"),
+                (ComplementNB(alpha=10000), "Complement naive Bayes"),
         ):
             print("=" * 80)
             print(name)
@@ -1376,7 +1381,7 @@ class DatasetManager:
                 n_iter=40,
                 random_state=0,
                 n_jobs=2,
-                verbose=1,
+                verbose=3,
             )
 
             # TODO: use logger instead of print and for others too
