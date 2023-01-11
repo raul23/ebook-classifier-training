@@ -12,7 +12,7 @@ I am basing my experimentation with classifying text on the excellent scikit-lea
 
 I am following along their tutorial but using my own `three datasets <#datasets>`_ containing a bunch of ebooks (``pdf`` and ``djvu``). They are of different size and categories.
 
-`:information_source:` Right, I have not finished building the large dataset with > 900 documents since I need to fix some bugs in the code.
+`:information_source:` I have not finished building the large dataset with > 900 documents since I need to fix some bugs in the code.
 
 The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as history or fiction).
 
