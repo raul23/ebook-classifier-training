@@ -338,7 +338,28 @@ These are the classification results from models trained on the `medium-size dat
 
 Classifying with ``RandomModel`` (baseline)
 """""""""""""""""""""""""""""""""""""""""""
-TODO
+All classifiers need to be at least much better than the baseline ``RandomModel`` which randomly generates the labels (from 0 to 9) for 
+the ebooks to be classified:
+
+.. code-block:: python
+
+   self.labels_ = np.random.randint(0, self.n_clusters, X.shape[0])
+
+|
+
+Command used to generate the confusion matrix shown next::
+
+ python classify_ebooks.py ~/Data/organize -s 12345 --clf RandomModel
+
+|
+
+.. raw:: html
+
+   <p align="center"><img src="./images/confusion_matrix_RandomModel_medium_dataset.png">
+   </p>
+
+`:information_source:` No feature effect plot could be generated since this random model doesn't have coefficients (no ``coef_``).
+
 
 Classifying with ``RidgeClassifier``
 """"""""""""""""""""""""""""""""""""
