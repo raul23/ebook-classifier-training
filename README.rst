@@ -519,6 +519,16 @@ I will try eventually what they suggest: increase ``max_iter`` or do some `prepr
 
 .. talk about hyper tune the other benchmarking results and add command for benchmarking
 
+.. raw:: html
+
+   <p align="center"><img src="./images/score_training_time_trade_off_medium.png">
+   </p>
+   
+.. raw:: html
+
+   <p align="center"><img src="./images/score_test_time_trade_off_medium.png">
+   </p>
+
 Script ``classify_ebooks.py``
 =============================
 Dependencies
