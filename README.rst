@@ -486,7 +486,15 @@ Command used to generate the next plots::
 
 Benchmarking classifiers
 """"""""""""""""""""""""
-TODO
+`:information_source:` Having problems training ``LogisticRegression`` on the medium-size dataset (202 documents)::
+
+   STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+   Increase the number of iterations (max_iter) or scale the data as shown in:
+       https://scikit-learn.org/stable/modules/preprocessing.html
+   Please also refer to the documentation for alternative solver options:
+
+I will try eventually what they suggest: increase ``max_iter`` or do some preprocessing of the dataset.
 
 .. python classify_ebooks.py ~/Data/organize/ -s 12345 --ht --clfs ComplementNB LogisticRegression RidgeClassifier KNeighborsClassifier RandomForestClassifier NeaestCentroid LinearSVC SGDClassifier 
 
