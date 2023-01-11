@@ -395,7 +395,7 @@ Command used to generate the next plots::
    3           items      server  hardware         training               linux
    4            void  relational    driver   classification       vulnerability
 
-`:information_source:` It is getting too crowded and very hard to read! 🔎
+`:information_source:` The average feature effects plot is getting too crowded and very hard to read! 🔎
 
 - Obviously, the words that are part of the category constitute the best predictive features:
   security (positively correlated with computer security), dataset, intelligence, linux, neural.
