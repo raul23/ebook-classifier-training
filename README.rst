@@ -334,7 +334,7 @@ multiple models were tested by analyzing the trade-off between training/testing 
 
 Part 2: classifiers trained on the medium-size dataset
 ------------------------------------------------------
-TODO
+These are the classification results from models trained on the `medium-size dataset 202 documents <medium-size-dataset-202-documents-with-10-categories>`_ with ten categories: algorithms, artificial intelligence, artificial neural networks, compiler, computer security, data structures, database, linux, machine learning, penetration testing.
 
 Classifying with ``RandomModel`` (baseline)
 """""""""""""""""""""""""""""""""""""""""""
