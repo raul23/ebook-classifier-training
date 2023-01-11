@@ -355,15 +355,34 @@ Command used to generate the next plots::
 
 .. raw:: html
 
-   <p align="center"><img src="./images/confusion_matrix_ridgeclass_medium_dataset.png">
+   <p align="center"><img src="./images/confusion_matrix_ridgeclass_medium_dataset2.png">
    </p>
+
+`:nformation_source:` ``RidgeClassifier`` doing a perfect job even with default parameters.
+
+- ``RidgeClassifier`` struggles a lot with classifying *data structures* ebooks, confusing three of them as being documents about algorithms. 
+  On the other hand, it does perfectly in classifying ebooks about algorithms, getting all eight. The subject of data stuctures has a more 
+  specific vocabulary than algorithms and this might explain why it makes this misclassification with *data structures* ebooks 
+  only and not the opposite.
+- Artificial intelligence is another category that ``RidgeClassifier`` has difficulties in classifying. It confuses books
+  about AI for documents about artificial neural networks (no surprise), compiler, and computer security. I am curious about
+  investigating why it made the latter two misclassifications.
+- Machine learning really is a category that ``RidgeClassifier`` does a great job with getting 15 ebooks correctly over 16.
+- Not enough documents about database but it got all three correctly.
 
 |
 
 .. raw:: html
 
-   <p align="center"><img src="./images/average_feature_effect_ridgeclass_medium_dataset.png">
+   <p align="center"><img src="./images/average_feature_effect_ridgeclass_medium_dataset2.png">
    </p>
+
+`:nformation_source:` It is getting too crowded and hard to read!
+
+- Obviously, the words that are part of the category constitute the best predictive features:
+  security (positively correlated with computer security), dataset, intelligence, linux, neural.
+- Some words can be strongly positively correlated with more than two classes such as kernel (positively
+  associated with linux, machine learning and artificial neural networks).
 
 |
 
