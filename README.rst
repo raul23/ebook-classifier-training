@@ -228,6 +228,8 @@ Command used to generate the next plots::
 
  $ python classify_ebooks.py ~/Data/ebooks -s 12345 --clf ComplementNB alpha=1000
 
+`:information_source:` The parameter ``alpha=1000`` comes from `tuning its hyperparameters <#benchmarking-classifiers>`_.
+
 .. raw:: html
 
    <p align="center"><img src="./images/confusion_matrix_ComplementNB_small_dataset.png">
@@ -434,9 +436,50 @@ Command used to generate the next plots::
 - Some words can be strongly positively correlated with more than two classes such as kernel (positively
   associated with linux, machine learning and artificial neural networks).
 
-Classifying with ``ComplementNB``
-"""""""""""""""""""""""""""""""""
-TODO
+Classifying with ``ComplementNB`` (again odd results)❗❓
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Command used to generate the next plots::
+
+ $ python classify_ebooks.py ~/Data/organize -s 12345 --clf ComplementNB
+
+`:information_source:` I used the scikit-learn's default values for ``ComplementNB``'s parameters.
+
+.. raw:: html
+
+   <p align="center"><img src="./images/confusion_matrix_ComplementNB_medium_dataset.png">
+   </p>
+
+|
+
+.. raw:: html
+
+   <p align="center"><img src="./images/confusion_matrix_ComplementNB_medium_dataset.png">
+   </p>
+
+.. code-block::
+
+   top 5 keywords per class:
+     algorithms artificial intelligence artificial neural networks  compiler computer security
+   0   security                security                   security  security          security
+   1    integer                compiler                   compiler  compiler          compiler
+   2   compiler                 integer                     kernel   integer            kernel
+   3     kernel                  kernel                    integer    string           integer
+   4     string                  string                     string    kernel            server
+   
+   
+     data structures  database     linux machine learning penetration testing
+   0        security  security  security         security            security
+   1        compiler  compiler    kernel           kernel            compiler
+   2         integer   integer  compiler         compiler             integer
+   3          kernel    kernel     linux          integer              kernel
+   4          string    server   integer           string               linux
+
+
+`:information_source:` Again the same odd results like when ``ComplementNB`` was `trained on the `small dataset 
+<#classifying-with-complementnb-odd-results>`_.
+
+- The average feature effects look similar for all classes.
+- Same top 5 keywords for all classes.
 
 Benchmarking classifiers
 """"""""""""""""""""""""
