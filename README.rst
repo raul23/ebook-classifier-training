@@ -487,6 +487,10 @@ Benchmarking classifiers
 """"""""""""""""""""""""
 TODO
 
+.. python classify_ebooks.py ~/Data/organize/ -s 12345 --ht --clfs ComplementNB LogisticRegression RidgeClassifier KNeighborsClassifier RandomForestClassifier NeaestCentroid LinearSVC SGDClassifier 
+
+.. talk about hyper tune the other benchmarking results and add command for benchmarking
+
 Script ``classify_ebooks.py``
 =============================
 Dependencies
