@@ -431,7 +431,7 @@ Command used to generate the next plots::
   
   However, the classifiers are very robust in that they can work well even if the ebooks have pure gibberish
   as filenames or are wrongly named since these models only care about the content of the documents. Looking at my own 
-  collection of ebooks, I have a couple of them that were lazily named with odd titles that don't give much
+  collection of ebooks, I have some of them that were lazily named with odd titles that don't give much
   information about their content (e.g. ``2 copy.pdf``). But the classifiers should still be able to classify them
   without much problems.
 - Some words can be strongly positively correlated with more than two classes such as kernel (positively
