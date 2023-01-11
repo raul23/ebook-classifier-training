@@ -515,15 +515,27 @@ Benchmarking classifiers
 I will try eventually what they suggest: increase ``max_iter`` or do some `preprocessing 
 <https://scikit-learn.org/stable/modules/preprocessing.html>`_ of the dataset.
 
+|
+
+Command used to generate the next plots::
+
+ $ python classify_ebooks.py ~/Data/organize -s 12345 -b
+ 
+.. commit 3f2ae11
+
 .. python classify_ebooks.py ~/Data/organize/ -s 12345 --ht --clfs ComplementNB LogisticRegression RidgeClassifier KNeighborsClassifier RandomForestClassifier NeaestCentroid LinearSVC SGDClassifier 
 
 .. talk about hyper tune the other benchmarking results and add command for benchmarking
+
+|
 
 .. raw:: html
 
    <p align="center"><img src="./images/score_training_time_trade_off_medium.png">
    </p>
-   
+
+|
+
 .. raw:: html
 
    <p align="center"><img src="./images/score_test_time_trade_off_medium.png">
