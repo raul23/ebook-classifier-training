@@ -455,7 +455,7 @@ Command used to generate the next plots::
 
 .. raw:: html
 
-   <p align="center"><img src="./images/confusion_matrix_ComplementNB_medium_dataset.png">
+   <p align="center"><img src="./images/average_feature_effect_ComplementNB_medium_dataset.png">
    </p>
 
 .. code-block::
