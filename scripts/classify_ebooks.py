@@ -1373,7 +1373,7 @@ class DatasetManager:
             random_search = RandomizedSearchCV(
                 estimator=pipeline,
                 param_distributions=parameter_grid,
-                n_iter=2,
+                n_iter=40,
                 random_state=0,
                 n_jobs=2,
                 verbose=1,
