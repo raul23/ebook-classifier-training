@@ -85,8 +85,8 @@ A sample of the kind of ebooks included in this small dataset:
   - `The Inflationary Universe <https://www.amazon.com/Inflationary-Universe-Alan-Guth/dp/0201328402>`_
   - `The Strongest Magnetic Fields in the Universe <https://www.amazon.com/Strongest-Magnetic-Fields-Universe-Sciences-ebook/dp/B01JAK55B4/>`_
 
-Medium-size dataset: X documents with Y categories
---------------------------------------------------
+Medium-size dataset: 202 documents with 10 categories
+-----------------------------------------------------
 The second dataset consists of 202 English documents (``pdf`` and ``djvu``) from 10 categories:
 
 - ``algorithms``: with label 0 and 22 ebooks
@@ -342,7 +342,45 @@ TODO
 
 Classifying with ``RidgeClassifier``
 """"""""""""""""""""""""""""""""""""
-TODO
+A ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` was trained on the `dataset 
+of 202 documents <#sedium-size-dataset-202-documents-with-10-categories>`_ with ten categories. It is the same model with the same parameters as in scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#analysis-of-a-bag-of-words-document-classifier>`_.
+
+Command used to generate the next plots::
+
+ python classify_ebooks.py ~/Data/organize -s 12345
+
+.. commit with i==250
+
+.. raw:: html
+
+   <p align="center"><img src="./images/confusion_matrix_ridgeclass_medium_dataset.png">
+   </p>
+
+|
+
+.. raw:: html
+
+   <p align="center"><img src="./images/average_feature_effect_ridgeclass_medium_dataset.png">
+   </p>
+
+|
+
+.. code-block::
+
+     algorithms artificial intelligence artificial neural networks    compiler computer security
+   0   integers            intelligence                     neural    compiler          security
+   1    integer              artificial                      layer   compilers           attacks
+   2    sorting                  turing                 artificial  expression            attack
+   3        log                      ai                     vector      syntax            secure
+   4        mod                thinking               architecture     lexical    authentication
+
+
+       data structures    database     linux machine learning penetration testing
+   0             int    database     linux           vector         penetration
+   1           trees         sql    kernel           kernel            security
+   2           array        dbms    device       regression              python
+   3           items      server  hardware         training               linux
+   4            void  relational    driver   classification       vulnerability
 
 Classifying with ``ComplementNB``
 """""""""""""""""""""""""""""""""
