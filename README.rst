@@ -454,7 +454,7 @@ Command used to generate the next plots::
 
 `:information_source:` Overall, ``ComplementNB``'s predictions are not as good as those from ``RidgeClassifier``
 
-- *Data structures* continues being a very difficult category to predict. However, ``ComplementNB`` is doing a worse jobe
+- *Data structures* continues being a very difficult category to predict. However, ``ComplementNB`` is doing a worse job
   than ``RidgeClassifier`` in that respect: confusing 4 *data structures* ebooks for being about *algorithm* and being able
   to correctly categorize only one *data structures* ebook.
 - *Penetration testing* is another category that ``ComplementNB`` struggles more than ``RidgeClassifier`` does:
