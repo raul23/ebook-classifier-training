@@ -75,7 +75,8 @@ CLF = ['RidgeClassifier', 'tol=1e-02', 'solver=sparse_cg']
 # ===============
 CREATE_DATASET = False
 UPDATE_DATASET = False
-CATEGORIES = ['computer_science', 'mathematics', 'physics']
+# CATEGORIES = ['computer_science', 'mathematics', 'physics']
+CATEGORIES = None
 # TfidfVectorizer params
 VECT_PARAMS = ['max_df=0.5', 'min_df=5', 'ngram_range=(1, 1)', 'norm=l2']
 
@@ -791,10 +792,10 @@ def pdftotext(input_file, output_file, first_page_to_convert=None, last_page_to_
 def plot_confusion_matrix(clf, y_test, pred, target_names):
     fig, ax = plt.subplots(figsize=(10, 5))
     ConfusionMatrixDisplay.from_predictions(y_test, pred, ax=ax)
-    ax.xaxis.set_ticklabels(target_names)
+    ax.xaxis.set_ticklabels(target_names, rotation=90)
     ax.yaxis.set_ticklabels(target_names)
     _ = ax.set_title(
-        f"Confusion Matrix for {clf.__class__.__name__}\non the documents from small dataset"
+        f"Confusion Matrix for {clf.__class__.__name__}\non the documents from medium-size dataset"
     )
     plt.show()
 
@@ -839,7 +840,7 @@ def plot_feature_effects(clf, X_train, target_names, feature_names):
 
     print("top 5 keywords per class:")
     print(top)
-
+    # top.iloc[0:5, 5:]
     return ax
 
 
@@ -963,7 +964,8 @@ def setup_argparser():
     dataset_group.add_argument(
         '--cat', '--categories', metavar='CATEGORY', dest='categories',
         nargs='+', default=None,
-        help='Only include these categories in the dataset.' + get_default_message(' '.join(CATEGORIES)))
+        help='Only include these categories in the dataset.')
+        # help='Only include these categories in the dataset.' + get_default_message(' '.join(CATEGORIES)))
     dataset_group.add_argument(
         '--vp', '--vect-params', metavar='PARAMS', dest='vect_params',
         nargs='+', default=VECT_PARAMS,
@@ -1111,6 +1113,7 @@ class DatasetManager:
             self.__setattr__(k, v)
         self.dataset = Bunch(data=[], filenames=[], target_names=[], target=[], target_name_to_value={}, DESCR="")
         self.dataset_tmp = None
+        self.duplicate_folder_names = []
         self.ebook_formats = ['djvu', 'pdf']
         if isinstance(self.input_directory, list):
             self.input_directory = Path(self.input_directory[0])
@@ -1151,6 +1154,61 @@ class DatasetManager:
         del self.dataset_tmp
         self.dataset_tmp = None
 
+    def benchmark_classifiers(self, categories):
+        X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories)
+        results = []
+        for clf, name in (
+                (LogisticRegression(C=1000, max_iter=1000), "Logistic Regression"),
+                (RidgeClassifier(alpha=1e-06, solver="sparse_cg"), "Ridge Classifier"),
+                (KNeighborsClassifier(n_neighbors=5), "kNN"),
+                (RandomForestClassifier(), "Random Forest"),
+                # L2 penalty Linear SVC
+                (LinearSVC(C=1000, dual=True, max_iter=1000), "Linear SVC"),
+                # L2 penalty Linear SGD
+                (SGDClassifier(loss="log", alpha=1e-3), "log-loss SGD"),
+                # NearestCentroid (aka Rocchio classifier)
+                (NearestCentroid(), "NearestCentroid"),
+                # Sparse naive Bayes classifier
+                (ComplementNB(alpha=1000), "Complement naive Bayes"),
+        ):
+            print("=" * 80)
+            print(name)
+            results.append(benchmark(clf, X_train, y_train, X_test, y_test, name))
+
+        # Not used anywhere in tutorial
+        # indices = np.arange(len(results))
+
+        results = [[x[i] for x in results] for i in range(4)]
+
+        clf_names, score, training_time, test_time = results
+        training_time = np.array(training_time)
+        test_time = np.array(test_time)
+
+        fig, ax1 = plt.subplots(figsize=(10, 8))
+        ax1.scatter(score, training_time, s=60)
+        ax1.set(
+            title="Score-training time trade-off",
+            yscale="log",
+            xlabel="test accuracy",
+            ylabel="training time (s)",
+        )
+        fig, ax2 = plt.subplots(figsize=(10, 8))
+        ax2.scatter(score, test_time, s=60)
+        ax2.set(
+            title="Score-test time trade-off",
+            yscale="log",
+            xlabel="test accuracy",
+            ylabel="test time (s)",
+        )
+
+        for i, txt in enumerate(clf_names):
+            ax1.annotate(txt, (score[i], training_time[i]))
+            ax2.annotate(txt, (score[i], test_time[i]))
+
+        plt.show()
+
+        return 0
+
     @staticmethod
     def cache_folder_exists(folder):
         if Path(folder).exists():
@@ -1158,20 +1216,6 @@ class DatasetManager:
         else:
             logger.warning(f"{COLORS['YELLOW']}Cache folder not found:{COLORS['NC']} {folder}")
             return False
-
-    def _clean_params(self, params):
-        new_params = []
-        for param in params:
-            param_name, param_value = param.strip().split('=')
-            try:
-                # TODO: sanity check before calling eval
-                param_value = eval(param_value)
-            except NameError:
-                # e.g. NameError: name 'sparse_cg' is not defined
-                # SOLUTION: solver=sparse_cg --> solver="sparse_cg"
-                param_value = f'"{param_value}"'
-            new_params.append(f'{param_name}={param_value}')
-        return ', '.join(new_params)
 
     def classify_ebooks(self, clf_name_and_params, vect_params, categories):
         # TODO: check first clf is supported
@@ -1205,7 +1249,7 @@ class DatasetManager:
 
         try:
             plot_confusion_matrix(clf, y_test, pred, target_names)
-            plot_feature_effects(clf, X_train, target_names, feature_names).set_title("Average feature effect on the small dataset")
+            plot_feature_effects(clf, X_train, target_names, feature_names).set_title("Average feature effect on the medium-size dataset")
             plt.show()
         except AttributeError as e:
             # For KNN, RandomForestClassifier, NearestCentroid:
@@ -1219,6 +1263,20 @@ class DatasetManager:
             return 1
 
         return 0
+
+    def _clean_params(self, params):
+        new_params = []
+        for param in params:
+            param_name, param_value = param.strip().split('=')
+            try:
+                # TODO: sanity check before calling eval
+                param_value = eval(param_value)
+            except NameError:
+                # e.g. NameError: name 'sparse_cg' is not defined
+                # SOLUTION: solver=sparse_cg --> solver="sparse_cg"
+                param_value = f'"{param_value}"'
+            new_params.append(f'{param_name}={param_value}')
+        return ', '.join(new_params)
 
     @staticmethod
     def clear_cache(cache_folder):
@@ -1344,60 +1402,6 @@ class DatasetManager:
 
         return 0
 
-    def benchmark_classifiers(self, categories):
-        X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories)
-        results = []
-        for clf, name in (
-                (LogisticRegression(C=1000, max_iter=1000), "Logistic Regression"),
-                (RidgeClassifier(alpha=1e-06, solver="sparse_cg"), "Ridge Classifier"),
-                (KNeighborsClassifier(n_neighbors=5), "kNN"),
-                (RandomForestClassifier(), "Random Forest"),
-                # L2 penalty Linear SVC
-                (LinearSVC(C=1000, dual=True, max_iter=1000), "Linear SVC"),
-                # L2 penalty Linear SGD
-                (SGDClassifier(loss="log", alpha=1e-3), "log-loss SGD"),
-                # NearestCentroid (aka Rocchio classifier)
-                (NearestCentroid(), "NearestCentroid"),
-                # Sparse naive Bayes classifier
-                (ComplementNB(alpha=1000), "Complement naive Bayes"),
-        ):
-            print("=" * 80)
-            print(name)
-            results.append(benchmark(clf, X_train, y_train, X_test, y_test, name))
-
-        indices = np.arange(len(results))
-
-        results = [[x[i] for x in results] for i in range(4)]
-
-        clf_names, score, training_time, test_time = results
-        training_time = np.array(training_time)
-        test_time = np.array(test_time)
-
-        fig, ax1 = plt.subplots(figsize=(10, 8))
-        ax1.scatter(score, training_time, s=60)
-        ax1.set(
-            title="Score-training time trade-off",
-            yscale="log",
-            xlabel="test accuracy",
-            ylabel="training time (s)",
-        )
-        fig, ax2 = plt.subplots(figsize=(10, 8))
-        ax2.scatter(score, test_time, s=60)
-        ax2.set(
-            title="Score-test time trade-off",
-            yscale="log",
-            xlabel="test accuracy",
-            ylabel="test time (s)",
-        )
-
-        for i, txt in enumerate(clf_names):
-            ax1.annotate(txt, (score[i], training_time[i]))
-            ax2.annotate(txt, (score[i], test_time[i]))
-
-        plt.show()
-
-        return 0
-
     @staticmethod
     def number_items_in_cache(cache_folder):
         if DatasetManager.cache_folder_exists(cache_folder):
@@ -1440,9 +1444,14 @@ class DatasetManager:
     def _add_doc_to_dataset(self, filepath, text):
         self.dataset.data.append(text)
         self.dataset.filenames.append(filepath)
-        self.dataset.target.append(self.dataset.target_name_to_value[filepath.parent.name])
-        self.dataset.target_names.add(filepath.parent.name)
+        if filepath.parent.name in self.duplicate_folder_names:
+            target_name = filepath.parent.name + f' [{filepath.parent.parent.name}]'
+        else:
+            target_name = filepath.parent.name
+        self.dataset.target.append(self.dataset.target_name_to_value[target_name])
+        self.dataset.target_names.add(target_name)
 
+    # You want the targets to start at 0 and go incremental from there
     def _fix_target(self, dataset):
         dataset.target_names = sorted(dataset.target_names)
         new_target_name_to_value = dict(zip(dataset.target_names, [i for i in range(len(dataset.target_names))]))
@@ -1456,13 +1465,34 @@ class DatasetManager:
         dataset.target_names = list(dataset.target_names)
         dataset.target_name_to_value = new_target_name_to_value
 
+    def _get_target_names(self):
+        target_names_dict = {}
+        self.duplicate_folder_names = []
+        for i, file in enumerate(self.input_directory.rglob('*'), start=1):
+            if file.is_dir():
+                if file.name in target_names_dict:
+                    if target_names_dict[file.name][0]:
+                        target_names_dict[file.name + f' [{target_names_dict[file.name][1]}]'] = [True, target_names_dict[file.name][1]]
+                        self.duplicate_folder_names.append(file.name)
+                        target_names_dict[file.name][0] = False
+                    target_names_dict.setdefault(file.name + f' [{file.parent.name}]', [False, file.parent.name])
+                else:
+                    target_names_dict.setdefault(file.name, [True, file.parent.name])
+        for d in self.duplicate_folder_names:
+            del target_names_dict[d]
+        return target_names_dict.keys()
+
     def _generate_dataset(self):
-        folder_names = sorted([item.name for item in self.input_directory.iterdir() if item.is_dir()])
-        self.dataset.target_name_to_value = dict(zip(folder_names, [i for i in range(len(folder_names))]))
+        target_names = self._get_target_names()
+        self.dataset.target_name_to_value = dict(zip(target_names, [i for i in range(len(target_names))]))
         self.dataset.target_names = set()
         if not self.use_cache:
             logger.warning(yellow(f'use_cache={self.use_cache}'))
         self._generate_ebooks_dataset()
+        # Necessary if for example you have a folder (label) without any ebook
+        # You don't want to include this label (associated with an empty folder) in dataset.target_names
+        # You want the targets to start from and go incremental
+        # TODO: could it be done within _get_target_names()?
         self._fix_target(self.dataset)
 
     def _generate_ebooks_dataset(self):
@@ -1477,6 +1507,8 @@ class DatasetManager:
         file_hashes = []
         duplicates = []
         for i, filepath in enumerate(filepaths, start=1):
+            if i == 250:
+                break
             logger.info(f"{COLORS['BLUE']}Processing document {i} of {total}:{COLORS['NC']} {filepath.name[:92]}...")
             key_to_text = None
             cache_result = None
