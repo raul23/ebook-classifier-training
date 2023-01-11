@@ -85,6 +85,10 @@ A sample of the kind of ebooks included in this small dataset:
   - `The Inflationary Universe <https://www.amazon.com/Inflationary-Universe-Alan-Guth/dp/0201328402>`_
   - `The Strongest Magnetic Fields in the Universe <https://www.amazon.com/Strongest-Magnetic-Fields-Universe-Sciences-ebook/dp/B01JAK55B4/>`_
 
+Large dataset: X documents with Y categories
+--------------------------------------------
+TODO
+
 Results of classifying ebooks ⭐
 ================================
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
@@ -292,6 +296,10 @@ multiple models were tested by analyzing the trade-off between training/testing 
    Furthermore, the “curse of dimensionality” harms the ability of this model [KNN] to yield competitive accuracy in the 
    high dimensional feature space of text classification problems.
 - Random Forest 👎 is the slowest model to train and make predictions and on top of that with the worst test score.
+
+Part 2: classifiers trained on the large dataset
+------------------------------------------------
+TODO
 
 Script ``classify_ebooks.py``
 =============================
