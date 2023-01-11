@@ -126,8 +126,7 @@ Some stats about this medium-size dataset:
 
 Results of classifying ebooks ⭐
 ================================
-I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the most important and interesting part
-of this document.
+I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is the one the most important and interesting part of this document.
 
 Thus without further ado, here are the results from training multiple classifiers on `two different datasets of ebooks <#datasets>`_.
 
