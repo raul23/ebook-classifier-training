@@ -358,7 +358,7 @@ Command used to generate the next plots::
    <p align="center"><img src="./images/confusion_matrix_ridgeclass_medium_dataset2.png">
    </p>
 
-`:nformation_source:` ``RidgeClassifier`` doing a perfect job even with default parameters.
+`:information_source:` ``RidgeClassifier`` doing a perfect job even with default parameters.
 
 - ``RidgeClassifier`` struggles a lot with classifying *data structures* ebooks, confusing three of them as being documents about algorithms. 
   On the other hand, it does perfectly in classifying ebooks about algorithms, getting all eight. The subject of data stuctures has a more 
