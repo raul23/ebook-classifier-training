@@ -213,14 +213,14 @@ Command used to generate the next plots::
 `:information_source:` Insights from the words with the highest average feature effects 
 
 - The average feature effects are computed based on the training set.
-- This graph show words that are strongly positively correlated with one category and negatively associated 
+- This graph shows words that are strongly positively correlated with one category and negatively associated 
   with the other two categories such as zeta (positive for *mathematics*) and universe (positive for *physics*).
 
   Those words constitute good predictive features.
 - *Computer science* is a category that has lots of very good predictive features (e.g. programming and algorithm). No wonder that the     
   ``RidgeClassifier`` was able to correctly classify all ebooks from this category.
 - When you see the word 'energy' among books from the three categories, you are almost sure that they will be about *physics*.
-- Algorithm appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
+- *Algorithm* appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
   form of a word (TODO).
 
 Classifying with ``ComplementNB`` (odd results)❗❓
@@ -230,6 +230,8 @@ Command used to generate the next plots::
  $ python classify_ebooks.py ~/Data/ebooks -s 12345 --clf ComplementNB alpha=1000
 
 `:information_source:` The parameter ``alpha=1000`` comes from `tuning its hyperparameters <#benchmarking-classifiers>`_.
+
+|
 
 .. raw:: html
 
@@ -245,7 +247,7 @@ Command used to generate the next plots::
    <p align="center"><img src="./images/average_feature_effect_ComplementNB_small_dataset.png">
    </p>
 
-`:information_source:` What is really going on here? The average effects for each top 5 keywords seem to be almost the same for all class.
+`:information_source:` What is really going on here? The average effects for each top 5 keywords seem to be almost the same for all classes.
 
 - Average effects for each top 5 keywords per class::
 
@@ -277,7 +279,7 @@ Command used to generate the next plots::
    3            shall       shall       shall
    4         integers    integers    integers
 
-`:information_source:` The top 5 keywords (or any topK for that matter) are the same for all class. It seems that even though ``ComplementNB``'s 
+`:information_source:` The top 5 keywords (or any topK for that matter) are the same for all classes. It seems that even though ``ComplementNB``'s 
 coefficients are almost the same values between all classes, the small differences are enough to help the model to correctly differentiate when
 making its predictions!? 
 
@@ -337,7 +339,7 @@ multiple models were tested by analyzing the trade-off between training/testing 
 
 Part 2: classifiers trained on the medium-size dataset
 ------------------------------------------------------
-These are the classification results from models trained on the `medium-size dataset 202 documents <#medium-size-dataset-202-documents-with-10-categories>`_ with ten categories: algorithms, artificial intelligence, artificial neural networks, compiler, computer security, data structures, database, linux, machine learning, penetration testing.
+These are the classification results from models trained on the `medium-size dataset (202 documents) <#medium-size-dataset-202-documents-with-10-categories>`_ with ten categories: algorithms, artificial intelligence, artificial neural networks, compiler, computer security, data structures, database, linux, machine learning, penetration testing.
 
 Classifying with ``RandomModel`` (baseline)
 """""""""""""""""""""""""""""""""""""""""""
@@ -382,7 +384,7 @@ Command used to generate the next plots::
    <p align="center"><img src="./images/confusion_matrix_ridgeclass_medium_dataset2.png">
    </p>
 
-`:information_source:` ``RidgeClassifier`` is doing a perfect job even with its default parameters.
+`:information_source:` ``RidgeClassifier`` is doing a very good job even with its default parameters.
 
 - ``RidgeClassifier`` struggles a lot with classifying *data structures* ebooks, confusing three of them as *algorithms* documents. 
   On the other hand, it does perfectly in classifying ebooks about *algorithms*, getting all eight of them. The subject of *data stuctures* has a more 
@@ -458,13 +460,13 @@ Command used to generate the next plots::
   than ``RidgeClassifier`` in that respect: confusing 4 *data structures* ebooks for *algorithms* ones and being able
   to correctly categorize only one *data structures* ebook.
 - *Penetration testing* is another category that ``ComplementNB`` struggles more than ``RidgeClassifier`` does:
-  only one ebook was correctly classified as such vs 5 for ``RidgeClassifier`` (over 6 documents from that category).
+  only one ebook was correctly classified as such vs 5 for ``RidgeClassifier`` (over a total of 6 documents from that category).
   
   ``ComplementNB`` confused 5 *penetration testing* ebooks for *computer security* ones (which technically it is the case).
 - Like with ``RidgeClassifier``, ``ComplementNB`` does a perfect job in classifying all *algorithms* ebooks correctly.
 - Also, *machine learning* presents an easy category to classify: 14 ebooks correctly classify as such over a total 16 documents from that category.
 - Where ``ComplementNB`` is doing a relatively better job (but not that significant) than ``RidgeClassifier`` is with
-  the *computer security* category: only one misclassification vs two for ``RidgeClassifier`` (over 12 ebooks from that category).
+  the *computer security* category: only one misclassification vs two for ``RidgeClassifier`` (over a total of 12 ebooks from that category).
 
 |
 
