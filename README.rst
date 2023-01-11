@@ -477,7 +477,7 @@ Command used to generate the next plots::
    4          string    server   integer           string               linux
 
 
-`:information_source:` Again the same odd results like when ``ComplementNB`` was `trained on the `small dataset 
+`:information_source:` Again the same odd results like when ``ComplementNB`` was trained on the `small dataset 
 <#classifying-with-complementnb-odd-results>`_.
 
 - The average feature effects look similar for all classes.
