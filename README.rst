@@ -452,6 +452,18 @@ Command used to generate the next plots::
    <p align="center"><img src="./images/confusion_matrix_ComplementNB_medium_dataset.png">
    </p>
 
+`:information_source:` Overall, ``ComplementNB``'s predictions are not as good as those from ``RidgeClassifier``
+
+- Data structures continues being a very difficult category to predict. However, ``ComplementNB`` is doing a worse jobe
+  than ``RidgeClassifier`` in that respect: confusing 4 *data structures* ebooks for being about algorithm and being able
+  to correctly categorize only one *data structures* ebook.
+- Penetration testing is another category that ``ComplementNB`` struggles more than ``RidgeClassifier`` does:
+  only one ebook was correctly classified as such vs 5 for ``RidgeClassifier`` (over 6 documents from that category).
+- Like with ``RidgeClassifier``, ``ComplementNB`` does a perfect job in classifying all algorithms ebooks correctly.
+- Also, machine learning presents an easy category to classifiy: 14 ebooks correctly classify over 16 documents.
+- Where ``ComplementNB`` is doing a relatively better job (but not that significant) than ``RidgeClassifier`` is with
+  the *computer security* category: only one misclassification vs two for ``RidgeClassifier`` (over 12 ebooks from that category).
+
 |
 
 .. raw:: html
@@ -483,6 +495,8 @@ Command used to generate the next plots::
 
 - The average feature effects look similar for all classes.
 - Same top 5 keywords for all classes.
+- But even though ``ComplementNB`` is acting weird with its top 5 keywords, its scores on the test set are not terrible as it can be seen
+  from the previous confusion matrix.
 
 Benchmarking classifiers
 """"""""""""""""""""""""
