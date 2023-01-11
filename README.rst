@@ -421,7 +421,7 @@ Command used to generate the next plots::
 `:information_source:` The average feature effects plot is getting too crowded and very hard to read! 🔎
 
 - Obviously, the words that are part of the category constitute the best predictive features:
-  security (positively correlated with computer security), dataset, intelligence, linux, neural.
+  security (positively correlated with computer security), database, intelligence, linux, neural.
   
   If you could also rely on the filename, then the task of ebooks classification could be tried
   with regex. You might not achieve as good results as with machine learning but for some users
