@@ -185,12 +185,12 @@ Command used to generate the next plots::
 `:information_source:` Insights from the confusion matrix for ``RidgeClassifier``
 
 - The confusion matrix is plotted based on the predictions from the test set.
-- Among the three categories, this linear model has the most "difficulties" with the physics category. It confused two physics ebooks for mathematics 
-  documents which is to be expected since both domains share overlaps between words. The vice-versa situation is not found, i.e. no mathematics 
-  documents were incorrectly classified as physics ones which could mean that books about physics use a more specific vocabulary than for mathematics 
-  documents.
-- Mathematics ebooks are well classified but one such document was classified as a computer science one. 
-- The computer science category is the one that ``RidgeClassifier`` has the most success with all computer science ebooks being 
+- Among the three categories, this linear model has the most "difficulties" with the *physics* category. It confused two *physics* ebooks for 
+  *mathematics* documents which is to be expected since both domains share overlaps between words. The vice-versa situation is not found, i.e. no 
+  *mathematics* documents were incorrectly classified as *physics* ones which could mean that books about *physics* use a more specific vocabulary 
+  than for *mathematics* documents.
+- *Mathematics* ebooks are well classified but one such document was classified as a *computer science* one. 
+- The *computer science* category is the one that ``RidgeClassifier`` has the most success with all *computer science* ebooks being 
   correctly classified as such. 
 
 |
@@ -214,12 +214,12 @@ Command used to generate the next plots::
 
 - The average feature effects are computed based on the training set.
 - This graph show words that are strongly positively correlated with one category and negatively associated 
-  with the other two categories such as zeta (positive for mathematics) and universe (positive for physics).
+  with the other two categories such as zeta (positive for *mathematics*) and universe (positive for *physics*).
 
   Those words constitute good predictive features.
-- Computer science is a category that has lots of very good predictive features (e.g. programming and algorithm). No wonder that the     
+- *Computer science* is a category that has lots of very good predictive features (e.g. programming and algorithm). No wonder that the     
   ``RidgeClassifier`` was able to correctly classify all ebooks from this category.
-- When you see the word 'energy' among books from the three categories, you are almost sure that they will be about physics.
+- When you see the word 'energy' among books from the three categories, you are almost sure that they will be about *physics*.
 - Algorithm appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
   form of a word (TODO).
 
@@ -384,15 +384,15 @@ Command used to generate the next plots::
 
 `:information_source:` ``RidgeClassifier`` is doing a perfect job even with its default parameters.
 
-- ``RidgeClassifier`` struggles a lot with classifying *data structures* ebooks, confusing three of them as being documents about algorithms. 
-  On the other hand, it does perfectly in classifying ebooks about algorithms, getting all eight. The subject of data stuctures has a more 
-  specific vocabulary than algorithms and this might explain why it makes this misclassification with *data structures* ebooks 
+- ``RidgeClassifier`` struggles a lot with classifying *data structures* ebooks, confusing three of them as being documents about *algorithms*. 
+  On the other hand, it does perfectly in classifying ebooks about *algorithms*, getting all eight of them. The subject of *data stuctures* has a more 
+  specific vocabulary than *algorithms* and this might explain why it makes this misclassification with *data structures* ebooks 
   only and not the opposite.
-- Artificial intelligence is another category that ``RidgeClassifier`` has difficulties in classifying. It confuses books
-  about AI for documents about artificial neural networks (no surprise), compiler, and computer security. I am curious about
+- *Artificial intelligence* is another category that ``RidgeClassifier`` has difficulties in classifying. It confuses books
+  about *AI* for documents about *artificial neural networks* (no surprise), *compiler*, and *computer security*. I am curious about
   investigating why it made the latter two misclassifications.
-- Machine learning really is a category that ``RidgeClassifier`` does a great job with getting 15 ebooks correctly over 16.
-- Not enough documents about database but it got all three correctly.
+- *Machine learning* really is a category that ``RidgeClassifier`` does a great job with getting 15 ebooks correctly over 16.
+- Not enough documents about *database* but it got all three correctly.
 
 |
 
@@ -422,7 +422,7 @@ Command used to generate the next plots::
 `:information_source:` The average feature effects plot is getting too crowded and very hard to read! 🔎
 
 - Obviously, the words that are part of the category constitute the best predictive features:
-  security (positively correlated with computer security), database, intelligence, linux, neural.
+  security (positively correlated with *computer security*), database, intelligence, linux, neural.
   
   If you could also rely on the filename, then the task of ebooks classification could be tried
   with regex. You might not achieve as good results as with machine learning but for some users
@@ -435,7 +435,7 @@ Command used to generate the next plots::
   information about their content (e.g. ``2 copy.pdf``). But the classifiers should still be able to classify them
   without much problems.
 - Some words can be strongly positively correlated with more than two classes such as kernel (positively
-  associated with linux, machine learning and artificial neural networks).
+  associated with *linux*, *machine learning* and *artificial neural networks*).
 
 Classifying with ``ComplementNB`` (again odd results)❗❓
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -454,13 +454,13 @@ Command used to generate the next plots::
 
 `:information_source:` Overall, ``ComplementNB``'s predictions are not as good as those from ``RidgeClassifier``
 
-- Data structures continues being a very difficult category to predict. However, ``ComplementNB`` is doing a worse jobe
-  than ``RidgeClassifier`` in that respect: confusing 4 *data structures* ebooks for being about algorithm and being able
+- *Data structures* continues being a very difficult category to predict. However, ``ComplementNB`` is doing a worse jobe
+  than ``RidgeClassifier`` in that respect: confusing 4 *data structures* ebooks for being about *algorithm* and being able
   to correctly categorize only one *data structures* ebook.
-- Penetration testing is another category that ``ComplementNB`` struggles more than ``RidgeClassifier`` does:
+- *Penetration testing* is another category that ``ComplementNB`` struggles more than ``RidgeClassifier`` does:
   only one ebook was correctly classified as such vs 5 for ``RidgeClassifier`` (over 6 documents from that category).
-- Like with ``RidgeClassifier``, ``ComplementNB`` does a perfect job in classifying all algorithms ebooks correctly.
-- Also, machine learning presents an easy category to classifiy: 14 ebooks correctly classify over 16 documents.
+- Like with ``RidgeClassifier``, ``ComplementNB`` does a perfect job in classifying all *algorithms* ebooks correctly.
+- Also, *machine learning* presents an easy category to classifiy: 14 ebooks correctly classify as such over a total 16 documents from that category.
 - Where ``ComplementNB`` is doing a relatively better job (but not that significant) than ``RidgeClassifier`` is with
   the *computer security* category: only one misclassification vs two for ``RidgeClassifier`` (over 12 ebooks from that category).
 
