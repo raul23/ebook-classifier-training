@@ -512,7 +512,8 @@ Benchmarking classifiers
        https://scikit-learn.org/stable/modules/preprocessing.html
    Please also refer to the documentation for alternative solver options:
 
-I will try eventually what they suggest: increase ``max_iter`` or do some preprocessing of the dataset.
+I will try eventually what they suggest: increase ``max_iter`` or do some `preprocessing 
+<https://scikit-learn.org/stable/modules/preprocessing.html>`_ of the dataset.
 
 .. python classify_ebooks.py ~/Data/organize/ -s 12345 --ht --clfs ComplementNB LogisticRegression RidgeClassifier KNeighborsClassifier RandomForestClassifier NeaestCentroid LinearSVC SGDClassifier 
 
