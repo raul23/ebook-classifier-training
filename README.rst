@@ -21,7 +21,7 @@ Datasets
 ========
 
 - In the `first dataset (7MB) <#small-dataset-129-documents-with-3-categories>`_, the ebooks are simply divided into three large 
-  categories: computer science, mathematics and physics. 
+  categories: *computer science*, *mathematics* and *physics*. 
 - The `second dataset (17MB) <#medium-size-dataset-202-documents-with-10-categories>`_ focuses on *computer science* ebooks but the broad 
   category *computer science* is divided into multiple classes (10) in order to test how well the classifiers can differentiate *computer science* 
   ebooks. 
