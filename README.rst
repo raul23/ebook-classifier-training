@@ -390,7 +390,11 @@ multiple models were tested by analyzing the trade-off between training/testing 
 - ``RandomForestClassifier()`` 👎 is the slowest model to train and make predictions and on top of that with the worst test score.
 
   However, this is expected to happen when working with high-dimensional feature space since problems become more linearly separable and
-  hence linear models (e.g. ``RidgeClassifier``) exhibit better overall performance.
+  hence linear models (e.g. ``RidgeClassifier``) exhibit better overall performance as stated in scikit-learn's `tutorial 
+  <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#plot-accuracy-training-and-test-time-of-each-classifier>`_:
+  
+   for high-dimensional prediction problems, linear models are often better suited as most problems become linearly 
+   separable when the feature space has 10,000 dimensions or more.
 
 Part 2: classifiers trained on the medium-size dataset
 ------------------------------------------------------
