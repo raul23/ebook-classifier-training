@@ -792,7 +792,8 @@ def pdftotext(input_file, output_file, first_page_to_convert=None, last_page_to_
 def plot_confusion_matrix(clf, y_test, pred, target_names):
     fig, ax = plt.subplots(figsize=(10, 5))
     ConfusionMatrixDisplay.from_predictions(y_test, pred, ax=ax)
-    ax.xaxis.set_ticklabels(target_names, rotation=90)
+    rotation = 90 if len(target_names) > 4 else 0
+    ax.xaxis.set_ticklabels(target_names, rotation=rotation)
     ax.yaxis.set_ticklabels(target_names)
     _ = ax.set_title(
         f"Confusion Matrix for {clf.__class__.__name__}\non the documents from medium-size dataset"
