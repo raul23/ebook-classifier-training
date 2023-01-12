@@ -561,6 +561,24 @@ Command used to generate the next plots::
 
 - ``SGDClassifier(loss='log')`` 👍 is the model with the best trade-off between test time and training/testing time: highest test score and relatively 
   quick training/testing time.
+
+  For reference, here are the top 5 keywords per class for ``SGDClassifier``::
+  
+  top 5 keywords per class:
+     algorithms artificial intelligence artificial neural networks    compiler computer security
+   0    sorting            intelligence                     neural    compiler          security
+   1        mod                  turing                      layer      tokens            secure
+   2    solving              artificial                  nonlinear  expression               log
+   3        log                thinking               architecture   compilers             trust
+   4      graph                      ai             neuralnetworks      symbol           session
+   
+   
+     data structures    database          linux machine learning penetration testing
+   0           trees    database          linux       regression         penetration
+   1             int        dbms         kernel            https              python
+   2         records  relational       hardware           kernel       vulnerability
+   3           items      entity  configuration      statistical              import
+   4          record         sql           unix              org            security
 - ``Random Forest`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
 
 Script ``classify_ebooks.py``
