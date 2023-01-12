@@ -584,7 +584,7 @@ Command used to generate the next plots::
       
   ⚠️ 'https' and 'org' as top 5 key words for *machine learning*?
   
-  For comparison, here the top 5 key words for out-of-the-box `RidgeClassifier <#id7>`_.
+  For comparison, here are the top 5 key words for out-of-the-box `RidgeClassifier <#id7>`_.
 - ``RandomForestClassifier()`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
 
 Script ``classify_ebooks.py``
