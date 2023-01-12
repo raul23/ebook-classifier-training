@@ -41,6 +41,8 @@ It is the same dataset I `tested clustering <https://github.com/raul23/clusterin
 By default, only 10% of a given ebook is `converted to text <#dataset-creation>`_ and added to the dataset. Also if an ebook is 
 made of images, `OCR <#ocr>`_ is applied on 5 pages chosen randomly in the first 50% of the given ebook to extract the text.
 
+.. TODO: explain why 50% of ebook for OCR
+
 Some stats about this small dataset:
 
 .. code-block::
@@ -122,10 +124,9 @@ Some stats about this medium-size dataset:
 
    Categories size: [22 12 19 26 28 17 13 17 33 15]
    202 documents - 10 categories
-   121 documents - 10.22MB (training set)
    
+   121 documents - 10.22MB (training set)
    81 documents - 7.24MB (test set)
-   10 categories
    
    vectorize training done in 1.378s at 7.421MB/s
    n_samples: 121, n_features: 8549
@@ -142,6 +143,31 @@ The third dataset consists of 982 English ebooks (``pdf`` and ``djvu``) from 43 
    linux, machine learning, magnetism, non-euclidean geometry, partial differential equations, particle physics, 
    penetration testing, plasma, prime numbers, probability, programming, python, quantum computing, quantum field theory, 
    quantum mechanics, real analysis, riemann hypothesis, special relativity, statistics, superconductivity
+
+The train and test sets are splitted as follows:
+
+- train data: 589 ebooks (60%)
+- test data: 393 ebooks (40%)
+
+By default, only 10% of a given ebook is `converted to text <#dataset-creation>`_ and added to the dataset. Also if an ebook is 
+made of images, `OCR <#ocr>`_ is applied on 5 pages chosen randomly in the first 50% of the given ebook to extract the text.
+
+Some stats about this large dataset:
+
+.. code-block::
+
+   Categories size: [15 14 22  8 12 23 20 46 15 27 18 17 26 13 29 13 24 20 13 41 13 33 42 23 33 22 12 24 27 15  
+                     7 15 30 20 26  7 35 52 11 25 21 27 46]
+   982 documents - 43 categories
+   589 documents - 43.73MB (training set)
+   
+   393 documents - 30.44MB (test set)
+   43 categories
+   
+   vectorize training done in 6.496s at 6.732MB/s
+   n_samples: 589, n_features: 28446
+   vectorize testing done in 3.902s at 7.803MB/s
+   n_samples: 393, n_features: 28446
 
 Results of classifying ebooks ⭐
 ================================
