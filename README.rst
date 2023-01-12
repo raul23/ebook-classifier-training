@@ -20,12 +20,12 @@ multiple classifiers are used such as: ``RidgeClassifier``, ``LogisticRegression
 Datasets
 ========
 
-- In the `first dataset (7MB) <#small-dataset-129-documents-with-3-categories>`_, the ebooks are simply divided into three large 
+- In the `first dataset (129 documents, 7MB) <#small-dataset-129-documents-with-3-categories>`_, the ebooks are simply divided into 3 large 
   categories: *computer science*, *mathematics* and *physics*. 
-- The `second dataset (17MB) <#medium-size-dataset-202-documents-with-10-categories>`_ focuses on *computer science* ebooks but this broad 
-  category is divided into multiple subcategories (10) in order to test how well the classifiers can differentiate *computer science* 
+- The `second dataset (202 documents, 17MB) <#medium-size-dataset-202-documents-with-10-categories>`_ focuses on *computer science* ebooks but this 
+  broad category is divided into 10 multiple subcategories in order to test how well the classifiers can differentiate *computer science* 
   ebooks between them. 
-- The `third dataset (74MB) <#large-dataset-982-documents-with-43-categories>`_ is based on the second dataset but further divides 
+- The `third dataset (982 documents, 74MB) <#large-dataset-982-documents-with-43-categories>`_ is based on the second dataset but further divides 
   the other two broad categories (mathematics and physics) and includes more categories from *computer science*. A total of 43 subcategories 
   are found in this third dataset.
 
