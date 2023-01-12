@@ -323,7 +323,7 @@ multiple models were tested by analyzing the trade-off between training/testing 
 
 `:information_source:` Based on the trade-off between the test accuracy and the training/testing time, which model to choose?
 
-- **Complement naive Bayes** 👍 is the model with the best trade-off between test score and training/testing time.
+- ``ComplementNB(alpha=1000)`` 👍 is the model with the best trade-off between test score and training/testing time.
 
   Though ``RidgeClassifier`` is also a good choice since it has the highest test score and relatively quick training/testing time (especially
   the testing time).
@@ -338,7 +338,7 @@ multiple models were tested by analyzing the trade-off between training/testing 
   
    Furthermore, the “curse of dimensionality” harms the ability of this model [KNN] to yield competitive accuracy in the 
    high dimensional feature space of text classification problems.
-- Random Forest 👎 is the slowest model to train and make predictions and on top of that with the worst test score.
+- ``RandomForestClassifier()`` 👎 is the slowest model to train and make predictions and on top of that with the worst test score.
 
 Part 2: classifiers trained on the medium-size dataset
 ------------------------------------------------------
@@ -582,7 +582,7 @@ Command used to generate the next plots::
       2         records  relational       hardware           kernel       vulnerability
       3           items      entity  configuration      statistical              import
       4          record         sql           unix              org            security
-- ``Random Forest`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
+- ``RandomForestClassifier()`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
 
 Script ``classify_ebooks.py``
 =============================
