@@ -557,6 +557,12 @@ Command used to generate the next plots::
    <p align="center"><img src="./images/score_test_time_trade_off_medium.png">
    </p>
 
+`:information_source:` 
+
+- ``SGDClassifier(loss='log')`` 👍 is the model with the best trade-off between test time and training/testing time: highest test score and relatively 
+  quick training/testing time.
+- ``Random Forest`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
+
 Script ``classify_ebooks.py``
 =============================
 Dependencies
