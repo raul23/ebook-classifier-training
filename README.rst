@@ -148,7 +148,7 @@ Thus without further ado, here are the results from training multiple classifier
 
 Part 1: classifiers trained on the small dataset
 ------------------------------------------------
-These are the classification results from models trained on the `small dataset 129 documents <#small-dataset-129-documents-with-3-categories>`_ with three categories (computer_science, mathematics, physics).
+These are the classification results from models trained on the `small dataset (129 documents) <#small-dataset-129-documents-with-3-categories>`_ with three categories (computer_science, mathematics, physics).
 
 Classifying with ``RandomModel`` (baseline)
 """""""""""""""""""""""""""""""""""""""""""
