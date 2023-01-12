@@ -26,7 +26,7 @@ Datasets
   category is divided into multiple subcategories (10) in order to test how well the classifiers can differentiate *computer science* 
   ebooks between them. 
 - The `third dataset (74MB) <#large-dataset-982-documents-with-43-categories>`_ is based on the second dataset but further divides 
-  the other two categories (mathematics and physics) and includes more categories from *computer science*. A total of 43 categories 
+  the other two broad categories (mathematics and physics) and includes more categories from *computer science*. A total of 43 subcategories 
   are found in this third dataset.
 
 Small dataset: 129 documents with 3 categories
