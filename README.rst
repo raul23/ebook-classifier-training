@@ -19,6 +19,16 @@ multiple classifiers are used such as: ``RidgeClassifier``, ``LogisticRegression
 
 Datasets
 ========
+
+- In the `first dataset (7MB) <#small-dataset-129-documents-with-3-categories>`_, the ebooks are simply divided into three large 
+  categories: computer science, mathematics and physics. 
+- The `second dataset (17MB) <#medium-size-dataset-202-documents-with-10-categories>`_ focuses on *computer science* ebooks but the broad 
+  category *computer science* is divided into multiple classes (10) in order to test how well the classifiers can differentiate *computer science* 
+  ebooks. 
+- The `third dataset (74MB) <#large-dataset-982-documents-with-43-categories>`_ is based on the second dataset but further divides 
+  the other two categories (mathematics and physics) and includes more categories from *computer science*. A total of 43 categories 
+  are found in this third dataset.
+
 Small dataset: 129 documents with 3 categories
 ----------------------------------------------
 The first classifiers I am testing are those trained on a small dataset of 129 English documents (``pdf`` and ``djvu``) from 
@@ -103,12 +113,6 @@ The second dataset consists of 202 English documents (``pdf`` and ``djvu``) from
 - ``penetration testing``: with label 9 and 15 ebooks
 
 `:information_source:` As you can see, these classes are actually all sub-categories from the broader *computer science* category
-
-- In the `first dataset <#small-dataset-129-documents-with-3-categories>`_, the ebooks were simply divided into three large 
-  categories: computer science, mathematics and physics. 
-- In the second dataset, *computer science* is divided into multiple classes in order to test how well the classifiers 
-  can differentiate *computer science* ebooks. 
-- The `third dataset <#large-dataset-982-documents-with-43-categories>`_ further divides the other two categories (mathematics and physics).
 
 The train and test sets are splitted as follows:
 
