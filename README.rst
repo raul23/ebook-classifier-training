@@ -128,7 +128,7 @@ Some stats about this medium-size dataset:
 
 Large dataset: X documents with Y categories
 --------------------------------------------
-The second dataset consists of X English ebooks (``pdf`` and ``djvu``) from Y categories:
+The third dataset consists of X English ebooks (``pdf`` and ``djvu``) from Y categories:
 
 TODO
 
