@@ -112,7 +112,7 @@ The second dataset consists of 202 English documents (``pdf`` and ``djvu``) from
 - ``machine learning``: with label 8 and 33 ebooks
 - ``penetration testing``: with label 9 and 15 ebooks
 
-`:information_source:` As you can see, these classes are actually all sub-categories from the broader *computer science* category
+`:information_source:` As you can see, these classes are actually all sub-categories from the broader *computer science* category.
 
 The train and test sets are splitted as follows:
 
@@ -147,6 +147,9 @@ The third dataset consists of 982 English ebooks (``pdf`` and ``djvu``) from 43 
    linux, machine learning, magnetism, non-euclidean geometry, partial differential equations, particle physics, 
    penetration testing, plasma, prime numbers, probability, programming, python, quantum computing, quantum field theory, 
    quantum mechanics, real analysis, riemann hypothesis, special relativity, statistics, superconductivity
+
+`:information_source:` These classes are all sub-categories from the three broader categories: *computer science*, *mathematics*, and
+*physics*.
 
 The train and test sets are splitted as follows:
 
