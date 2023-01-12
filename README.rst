@@ -606,6 +606,8 @@ Command used to generate the next plots::
   For comparison, here are the top 5 key words for out-of-the-box `RidgeClassifier <#id7>`_.
 - ``RandomForestClassifier()`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
 
+  C'mon ``RandomForestClassifier``, you only had one job! 😞
+
 Part 3: classifiers trained on the large dataset
 ------------------------------------------------
 These are the classification results from models trained on the `large dataset (906 documents) <#large-dataset-906-documents-with-44-categories>`_ with 44 categories::
