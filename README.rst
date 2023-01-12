@@ -104,7 +104,7 @@ The second dataset consists of 202 English documents (``pdf`` and ``djvu``) from
 
 `:information_source:` As you can see, these classes are actually all sub-categories from the broader *computer science* category
 
-- In the `first dataset <#small-dataset-129-documents-with-3-categories>`_, the ebooks were divided into the three large 
+- In the `first dataset <#small-dataset-129-documents-with-3-categories>`_, the ebooks were simply divided into three large 
   categories: computer science, mathematics and physics. 
 - In the second dataset, *computer science* is divided into multiple classes in order to test how well the classifiers 
   can differentiate *computer science* ebooks. 
