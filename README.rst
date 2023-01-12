@@ -223,8 +223,8 @@ Command used to generate the next plots::
 - *Algorithm* appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
   form of a word (TODO).
 
-Classifying with ``ComplementNB`` (odd results)❗❓
-"""""""""""""""""""""""""""""""""""""""""""""""""""
+Classifying with ``ComplementNB`` (odd results)⁉️
+""""""""""""""""""""""""""""""""""""""""""""""""
 Command used to generate the next plots::
 
  $ python classify_ebooks.py ~/Data/ebooks -s 12345 --clf ComplementNB alpha=1000
@@ -442,8 +442,8 @@ Command used to generate the next plots::
 - Some words can be strongly positively correlated with more than two classes such as kernel (positively
   associated with *linux*, *machine learning* and *artificial neural networks*).
 
-Classifying with ``ComplementNB`` (again odd results)❗❓
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Classifying with ``ComplementNB`` (again odd results)⁉️
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Command used to generate the next plots::
 
  $ python classify_ebooks.py ~/Data/organize -s 12345 --clf ComplementNB
@@ -495,7 +495,6 @@ Command used to generate the next plots::
    2         integer   integer  compiler         compiler             integer
    3          kernel    kernel     linux          integer              kernel
    4          string    server   integer           string               linux
-
 
 `:information_source:` Again the same odd results like when ``ComplementNB`` was trained on the `small dataset 
 <#classifying-with-complementnb-odd-results>`_.
@@ -582,6 +581,8 @@ Command used to generate the next plots::
       2         records  relational       hardware           kernel       vulnerability
       3           items      entity  configuration      statistical              import
       4          record         sql           unix              org            security
+      
+  'https' and 'org' as top 5 key words for *machine learning*❔
 - ``RandomForestClassifier()`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
 
 Script ``classify_ebooks.py``
