@@ -102,11 +102,13 @@ The second dataset consists of 202 English documents (``pdf`` and ``djvu``) from
 - ``machine learning``: with label 8 and 33 ebooks
 - ``penetration testing``: with label 9 and 15 ebooks
 
-`:information_source:` As you can see, these classes are actually all sub-categories from the broader *computer science* category. In the
-`first dataset <#small-dataset-129-documents-with-3-categories>`_, the ebooks were divided into the three large categories: computer science,
-mathematics and physics. Here, computer science is divided into multiple classes in order to test how well the classifiers can 
-differentiate computer science ebooks. The `third dataset <#large-dataset-X-documents-with-Y-categories>`_ will further divide the other
-two categories (mathematics and physics).
+`:information_source:` As you can see, these classes are actually all sub-categories from the broader *computer science* category
+
+- In the `first dataset <#small-dataset-129-documents-with-3-categories>`_, the ebooks were divided into the three large 
+  categories: computer science, mathematics and physics. 
+- In the second dataset, *computer science* is divided into multiple classes in order to test how well the classifiers 
+  can differentiate *computer science* ebooks. 
+- The `third dataset <#large-dataset-X-documents-with-Y-categories>`_ will further divide the other two categories (mathematics and physics).
 
 The train and test sets are splitted as follows:
 
