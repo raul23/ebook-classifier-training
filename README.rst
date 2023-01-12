@@ -418,8 +418,8 @@ Command used to generate the confusion matrix shown next::
 `:information_source:` No feature effect plot could be generated since this random model doesn't have coefficients (no ``coef_``).
 
 
-Classifying with ``RidgeClassifier``
-""""""""""""""""""""""""""""""""""""
+Classifying with ``RidgeClassifier`` [medium]
+"""""""""""""""""""""""""""""""""""""""""""""
 A ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` was trained on the `dataset 
 of 202 documents <#medium-size-dataset-202-documents-with-10-categories>`_ with ten categories. It is the same model with the same parameters as in scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#analysis-of-a-bag-of-words-document-classifier>`_.
 
@@ -506,7 +506,8 @@ Command used to generate the next plots::
    <p align="center"><img src="./images/confusion_matrix_ComplementNB_medium_dataset.png">
    </p>
 
-`:information_source:` Overall, ``ComplementNB``'s predictions are not as good as those from ``RidgeClassifier``
+`:information_source:` Overall, ``ComplementNB``'s predictions are not as good as those from `RidgeClassifier 
+<#classifying-with-ridgeclassifier-medium>`_
 
 - *Data structures* continues being a very difficult category to predict. However, ``ComplementNB`` is doing a worse job
   than ``RidgeClassifier`` in that respect: confusing 4 *data structures* ebooks for *algorithms* ones and being able
@@ -553,8 +554,8 @@ Command used to generate the next plots::
 - But even though ``ComplementNB`` is acting weird with its top 5 keywords, its scores on the test set are not terrible as it can be seen
   from the previous confusion matrix.
 
-Benchmarking classifiers
-""""""""""""""""""""""""
+Benchmarking classifiers [medium]
+"""""""""""""""""""""""""""""""""
 `:information_source:` Having problems training ``LogisticRegression`` on the medium-size dataset (202 documents)::
 
    STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
@@ -633,7 +634,7 @@ Command used to generate the next plots::
       
   ⚠️ 'https' and 'org' as top 5 key words for *machine learning*?
   
-  For comparison, here are the top 5 key words for out-of-the-box `RidgeClassifier <#id7>`_.
+  For comparison, here are the top 5 key words for out-of-the-box `RidgeClassifier <#classifying-with-ridgeclassifier-medium>`_.
 - ``RandomForestClassifier()`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
 
   C'mon ``RandomForestClassifier``, you only had one job! 😞
@@ -653,12 +654,12 @@ Classifying with ``RandomModel`` (baseline)
 """""""""""""""""""""""""""""""""""""""""""
 TODO
 
-Classifying with ``RidgeClassifier``
-""""""""""""""""""""""""""""""""""""
+Classifying with ``RidgeClassifier`` [large]
+""""""""""""""""""""""""""""""""""""""""""""
 TODO
 
-Benchmarking classifiers
-""""""""""""""""""""""""
+Benchmarking classifiers [large]
+""""""""""""""""""""""""""""""""
 TODO
 
 Script ``classify_ebooks.py``
