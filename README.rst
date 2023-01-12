@@ -12,8 +12,6 @@ I am basing my experimentation with classifying text on the excellent scikit-lea
 
 I am following along their tutorial but using my own `three datasets <#datasets>`_ containing a bunch of ebooks (``pdf`` and ``djvu``). They are of different size and categories.
 
-`:information_source:` I have not finished building the large dataset with > 900 documents since I need to fix some bugs in the code.
-
 The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as artificial intelligence or calculus).
 
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
@@ -108,7 +106,7 @@ The second dataset consists of 202 English documents (``pdf`` and ``djvu``) from
   categories: computer science, mathematics and physics. 
 - In the second dataset, *computer science* is divided into multiple classes in order to test how well the classifiers 
   can differentiate *computer science* ebooks. 
-- The `third dataset <#large-dataset-X-documents-with-Y-categories>`_ further divides the other two categories (mathematics and physics).
+- The `third dataset <#large-dataset-982-documents-with-43-categories>`_ further divides the other two categories (mathematics and physics).
 
 The train and test sets are splitted as follows:
 
@@ -134,16 +132,16 @@ Some stats about this medium-size dataset:
    vectorize testing done in 0.941s at 7.686MB/s
    n_samples: 81, n_features: 8549
 
-Large dataset: 906 documents with 44 categories
+Large dataset: 982 documents with 43 categories
 -----------------------------------------------
-The third dataset consists of 906 English ebooks (``pdf`` and ``djvu``) from 44 categories::
+The third dataset consists of 982 English ebooks (``pdf`` and ``djvu``) from 43 categories::
 
    abstract algebra, algebra, algorithms, antimatter, artificial intelligence, artificial neural networks, astronomy, 
    black holes, c, calculus, category theory, chaos, compiler, complex analysis, computer security, cosmology, cpp, 
    data structures, database, general relativity, history [computer science], history [mathematics], history [physics], 
-   linux, machine learning, magnetism, non-euclidean geometry, number theory, partial differential equations, 
-   particle physics, penetration testing, plasma, prime numbers, probability, programming, python, quantum computing, 
-   quantum field theory, quantum mechanics, real analysis, riemann hypothesis, special relativity, statistics, superconductivity
+   linux, machine learning, magnetism, non-euclidean geometry, partial differential equations, particle physics, 
+   penetration testing, plasma, prime numbers, probability, programming, python, quantum computing, quantum field theory, 
+   quantum mechanics, real analysis, riemann hypothesis, special relativity, statistics, superconductivity
 
 Results of classifying ebooks ⭐
 ================================
@@ -610,14 +608,14 @@ Command used to generate the next plots::
 
 Part 3: classifiers trained on the large dataset
 ------------------------------------------------
-These are the classification results from models trained on the `large dataset (906 documents) <#large-dataset-906-documents-with-44-categories>`_ with 44 categories::
+These are the classification results from models trained on the `large dataset (982 documents) <#large-dataset-982-documents-with-43-categories>`_ with 43 categories::
 
    abstract algebra, algebra, algorithms, antimatter, artificial intelligence, artificial neural networks, astronomy, 
    black holes, c, calculus, category theory, chaos, compiler, complex analysis, computer security, cosmology, cpp, 
    data structures, database, general relativity, history [computer science], history [mathematics], history [physics], 
-   linux, machine learning, magnetism, non-euclidean geometry, number theory, partial differential equations, 
-   particle physics, penetration testing, plasma, prime numbers, probability, programming, python, quantum computing, 
-   quantum field theory, quantum mechanics, real analysis, riemann hypothesis, special relativity, statistics, superconductivity
+   linux, machine learning, magnetism, non-euclidean geometry, partial differential equations, particle physics, 
+   penetration testing, plasma, prime numbers, probability, programming, python, quantum computing, quantum field theory, 
+   quantum mechanics, real analysis, riemann hypothesis, special relativity, statistics, superconductivity
 
 Classifying with ``RandomModel`` (baseline)
 """""""""""""""""""""""""""""""""""""""""""
