@@ -605,6 +605,18 @@ Part 3: classifiers trained on the large dataset
 ------------------------------------------------
 These are the classification results from models trained on the `large dataset (X documents) <#large-dataset-X-documents-with-Y-categories>`_ with Y categories: TODO
 
+Classifying with ``RandomModel`` (baseline)
+"""""""""""""""""""""""""""""""""""""""""""
+TODO
+
+Classifying with ``RidgeClassifier``
+""""""""""""""""""""""""""""""""""""
+TODO
+
+Benchmarking classifiers
+""""""""""""""""""""""""
+TODO
+
 Script ``classify_ebooks.py``
 =============================
 Dependencies
