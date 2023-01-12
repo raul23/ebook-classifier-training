@@ -10,7 +10,7 @@ Introduction
 ============
 I am basing my experimentation with classifying text on the excellent scikit-learn's tutorial: `Classification of text documents using sparse features <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_.
 
-I am following along their tutorial but using my own `three datasets <#datasets>`_ containing a bunch of ebooks (``pdf`` and ``djvu``). They are of different size and categories.
+I am following along their tutorial but using my own `three datasets <#datasets>`_ containing a bunch of text from ebooks (``pdf`` and ``djvu``). They are of different size and categories.
 
 The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as artificial intelligence or calculus).
 
@@ -40,8 +40,8 @@ The first classifiers I am testing are those trained on a small dataset of 129 E
 
 The train and test sets are splitted as follows:
 
-- train data: 77 ebooks (60%)
-- test data: 52 ebooks (40%)
+- train data: 77 documents (60%)
+- test data: 52 documents (40%)
 
 This toy dataset can be interesting for quickly testing ideas about improving text classification since the training and 
 testing times are very reasonable.
@@ -72,7 +72,7 @@ The parameters for ``TfidfVectorizer``::
 
  max_df=0.5    min_df=5    ngram_range=(1, 1)   norm=l2
 
-A sample of the kind of ebooks included in this small dataset:
+A sample of the kind of ebooks that serve as the basis for this small dataset:
 
 - computer_science:
  
@@ -116,8 +116,8 @@ The second dataset consists of 202 English documents (``pdf`` and ``djvu``) from
 
 The train and test sets are splitted as follows:
 
-- train data: 121 ebooks (60%)
-- test data: 81 ebooks (40%)
+- train data: 121 documents (60%)
+- test data: 81 documents (40%)
 
 By default, only 10% of a given ebook is `converted to text <#dataset-creation>`_ and added to the dataset. No OCR was applied
 this time.
@@ -139,7 +139,7 @@ Some stats about this medium-size dataset:
 
 Large dataset: 982 documents with 43 categories
 -----------------------------------------------
-The third dataset consists of 982 English ebooks (``pdf`` and ``djvu``) from 43 categories::
+The third dataset consists of 982 English documents (``pdf`` and ``djvu``) from 43 categories::
 
    abstract algebra, algebra, algorithms, antimatter, artificial intelligence, artificial neural networks, astronomy, 
    black holes, c, calculus, category theory, chaos, compiler, complex analysis, computer security, cosmology, cpp, 
@@ -153,8 +153,8 @@ The third dataset consists of 982 English ebooks (``pdf`` and ``djvu``) from 43 
 
 The train and test sets are splitted as follows:
 
-- train data: 589 ebooks (60%)
-- test data: 393 ebooks (40%)
+- train data: 589 documents (60%)
+- test data: 393 documents (40%)
 
 By default, only 10% of a given ebook is `converted to text <#dataset-creation>`_ and added to the dataset. Also if an ebook is 
 made of images, `OCR <#ocr>`_ is applied on 5 pages chosen randomly in the first 50% of the given ebook to extract the text.
@@ -236,9 +236,9 @@ Command used to generate the next plots::
 - The confusion matrix is plotted based on the predictions from the test set.
 - Among the three categories, this linear model has the most "difficulties" with the *physics* category. It confused two *physics* ebooks for 
   *mathematics* documents which is to be expected since both domains share overlaps between words. The vice-versa situation is not found, i.e. no 
-  *mathematics* documents were incorrectly classified as *physics* ones which could mean that books about *physics* use a more specific vocabulary 
-  than for *mathematics* documents.
-- *Mathematics* ebooks are well classified but one such document was classified as a *computer science* one. 
+  *mathematics* ebooks were incorrectly classified as *physics* ones which could mean that books about *physics* use a more specific vocabulary 
+  than for *mathematics* ones.
+- *Mathematics* ebooks are well classified but one such document was classified as a *computer science* ebook. 
 - The *computer science* category is the one that ``RidgeClassifier`` has the most success with all *computer science* ebooks being 
   correctly classified as such. 
 
@@ -268,7 +268,7 @@ Command used to generate the next plots::
   Those words constitute good predictive features.
 - *Computer science* is a category that has lots of very good predictive features (e.g. programming and algorithm). No wonder that the     
   ``RidgeClassifier`` was able to correctly classify all ebooks from this category.
-- When you see the word 'energy' among books from the three categories, you are almost sure that they will be about *physics*.
+- When you see the word 'energy' among ebooks from the three categories, you are almost sure that they will be about *physics*.
 - *Algorithm* appears twice as good features, in the singular and plural forms. Need to do something about keeping only one
   form of a word (TODO).
 
@@ -446,14 +446,14 @@ Command used to generate the next plots::
 `:information_source:` ``RidgeClassifier`` is doing a very good job even with its default parameters.
 
 - ``RidgeClassifier`` struggles a lot with classifying *data structures* ebooks, confusing three of them as *algorithms* documents. 
-  On the other hand, it does perfectly in classifying ebooks about *algorithms*, getting all eight of them. The subject of *data stuctures* has a more 
-  specific vocabulary than *algorithms* and this might explain why it makes this misclassification with *data structures* ebooks 
-  only and not the opposite.
-- *Artificial intelligence* is another category that ``RidgeClassifier`` has difficulties in classifying. It confuses books
+  On the other hand, it does perfectly in classifying ebooks about *algorithms*, getting all eight of them. The subject of 
+  *data stuctures* has a more specific vocabulary than *algorithms* and this might explain why it makes this misclassification 
+  with *data structures* ebooks only and not the opposite.
+- *Artificial intelligence* is another category that ``RidgeClassifier`` has difficulties in classifying. It confuses ebooks
   about *AI* for documents expressly about *artificial neural networks* (no surprise), *compiler*, and *computer security*. I am curious about
   investigating why it made the latter two misclassifications.
-- *Machine learning* really is a category that ``RidgeClassifier`` does a great job with getting 15 ebooks correctly over 16.
-- Not enough documents about *database* but it got all three correctly.
+- *Machine learning* really is a category that ``RidgeClassifier`` does a great job with getting 15 ebooks correctly over a total of 16 documents.
+- Not enough ebooks about *database* but it got all three correctly.
 
 |
 
@@ -793,7 +793,7 @@ To **quickly** start the classification of ebooks, all you need is to provide th
  python classify_ebooks.py ~/Data/ebooks
  
 The script will generate the dataset and then train the default classifier (``RidgeClassifier``) and 
-display the confusion matrix and features effect graph.
+display the confusion matrix and features effects graph.
 
 To specify a classifier with its parameters, use the ``--clf`` option::
 
