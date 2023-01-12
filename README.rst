@@ -600,6 +600,8 @@ Here are the benchmarking results of multiple classifiers trained on the `medium
 
 |
 
+The next two plots about the trade-off between test score and training/test time will help us in determing the best classifier to choose:
+
 .. raw:: html
 
    <p align="center"><img src="./images/score_training_time_trade_off_medium.png">
