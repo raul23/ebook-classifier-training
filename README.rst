@@ -581,6 +581,9 @@ Command used to generate the next plots::
 
 |
 
+Here are the benchmarking results of multiple classifiers trained on the `medium-size dataset 
+<#medium-size-dataset-202-documents-with-10-categories>`_:
+
 +-----------------+---------------------------------------------------+-------------------------+---------------------------+------------------+-----------------------------------------+--------------------+----------------------------+
 |                 | RidgeClassifier(alpha=0.001, solver='sparse_cg')  | KNeighborsClassifier()  | RandomForestClassifier()  | LinearSVC(C=10)  | SGDClassifier(alpha=1e-06, loss='log')  | NearestCentroid()  | ComplementNB(alpha=10000)  |
 +=================+===================================================+=========================+===========================+==================+=========================================+====================+============================+
