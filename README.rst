@@ -134,11 +134,16 @@ Some stats about this medium-size dataset:
    vectorize testing done in 0.941s at 7.686MB/s
    n_samples: 81, n_features: 8549
 
-Large dataset: X documents with Y categories
---------------------------------------------
-The third dataset consists of X English ebooks (``pdf`` and ``djvu``) from Y categories:
+Large dataset: 906 documents with 44 categories
+-----------------------------------------------
+The third dataset consists of 906 English ebooks (``pdf`` and ``djvu``) from 44 categories::
 
-TODO
+   abstract algebra, algebra, algorithms, antimatter, artificial intelligence, artificial neural networks, astronomy, 
+   black holes, c, calculus, category theory, chaos, compiler, complex analysis, computer security, cosmology, cpp, 
+   data structures, database, general relativity, history [computer science], history [mathematics], history [physics], 
+   linux, machine learning, magnetism, non-euclidean geometry, number theory, partial differential equations, 
+   particle physics, penetration testing, plasma, prime numbers, probability, programming, python, quantum computing, 
+   quantum field theory, quantum mechanics, real analysis, riemann hypothesis, special relativity, statistics, superconductivity
 
 Results of classifying ebooks ⭐
 ================================
@@ -603,7 +608,14 @@ Command used to generate the next plots::
 
 Part 3: classifiers trained on the large dataset
 ------------------------------------------------
-These are the classification results from models trained on the `large dataset (X documents) <#large-dataset-X-documents-with-Y-categories>`_ with Y categories: TODO
+These are the classification results from models trained on the `large dataset (906 documents) <#large-dataset-906-documents-with-44-categories>`_ with 44 categories::
+
+   abstract algebra, algebra, algorithms, antimatter, artificial intelligence, artificial neural networks, astronomy, 
+   black holes, c, calculus, category theory, chaos, compiler, complex analysis, computer security, cosmology, cpp, 
+   data structures, database, general relativity, history [computer science], history [mathematics], history [physics], 
+   linux, machine learning, magnetism, non-euclidean geometry, number theory, partial differential equations, 
+   particle physics, penetration testing, plasma, prime numbers, probability, programming, python, quantum computing, 
+   quantum field theory, quantum mechanics, real analysis, riemann hypothesis, special relativity, statistics, superconductivity
 
 Classifying with ``RandomModel`` (baseline)
 """""""""""""""""""""""""""""""""""""""""""
