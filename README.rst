@@ -389,7 +389,7 @@ multiple models were tested by analyzing the trade-off between training/testing 
    high dimensional feature space of text classification problems.
 - ``RandomForestClassifier()`` 👎 is the slowest model to train and make predictions and on top of that with the worst test score.
 
-  However, this is expected to happen when working with high-dimensional feature space since problems become more linearly separable and
+  However, this is expected to happen when working with high-dimensional feature space since most problems become linearly separable and
   hence linear models (e.g. ``RidgeClassifier``) exhibit better overall performance as stated in scikit-learn's `tutorial 
   <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#plot-accuracy-training-and-test-time-of-each-classifier>`_:
   
