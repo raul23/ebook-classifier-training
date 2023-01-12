@@ -172,7 +172,7 @@ Results of classifying ebooks ⭐
 ================================
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is one the most important and interesting part of this document.
 
-Thus without further ado, here are the results from training multiple classifiers on `two different datasets of ebooks <#datasets>`_.
+Thus without further ado, here are the results from training multiple classifiers on `three different datasets of ebooks <#datasets>`_.
 
 Part 1: classifiers trained on the small dataset
 ------------------------------------------------
