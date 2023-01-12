@@ -126,6 +126,12 @@ Some stats about this medium-size dataset:
    vectorize testing done in 0.941s at 7.686MB/s
    n_samples: 81, n_features: 8549
 
+Large dataset: X documents with Y categories
+--------------------------------------------
+The second dataset consists of X English ebooks (``pdf`` and ``djvu``) from Y categories:
+
+TODO
+
 Results of classifying ebooks ⭐
 ================================
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is one the most important and interesting part of this document.
@@ -586,6 +592,10 @@ Command used to generate the next plots::
   
   For comparison, here are the top 5 key words for out-of-the-box `RidgeClassifier <#id7>`_.
 - ``RandomForestClassifier()`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
+
+Part 3: classifiers trained on the large dataset
+------------------------------------------------
+These are the classification results from models trained on the `large dataset (X documents) <#large-dataset-X-documents-with-Y-categories>`_ with Y categories: TODO
 
 Script ``classify_ebooks.py``
 =============================
