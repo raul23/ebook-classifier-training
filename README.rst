@@ -324,6 +324,9 @@ multiple models were tested by analyzing the trade-off between training/testing 
 `:information_source:` Based on the trade-off between the test accuracy and the training/testing time, which model to choose?
 
 - **Complement naive Bayes** 👍 is the model with the best trade-off between test score and training/testing time.
+
+  Though ``RidgeClassifier`` is also a good choice since it has the highest test score and relatively quick training/testing time (especially
+  the testing time).
 - KNN is the model with the best training time and test accuracy trade-off. However KNN is the second worst model in terms of testing time, i.e.
   it is very slow to make predictions.
 
