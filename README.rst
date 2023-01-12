@@ -159,10 +159,9 @@ Some stats about this large dataset:
    Categories size: [15 14 22  8 12 23 20 46 15 27 18 17 26 13 29 13 24 20 13 41 13 33 42 23 33 22 12 24 27 15  
                      7 15 30 20 26  7 35 52 11 25 21 27 46]
    982 documents - 43 categories
-   589 documents - 43.73MB (training set)
    
+   589 documents - 43.73MB (training set)
    393 documents - 30.44MB (test set)
-   43 categories
    
    vectorize training done in 6.496s at 6.732MB/s
    n_samples: 589, n_features: 28446
