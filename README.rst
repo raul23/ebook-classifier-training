@@ -108,7 +108,7 @@ The second dataset consists of 202 English documents (``pdf`` and ``djvu``) from
   categories: computer science, mathematics and physics. 
 - In the second dataset, *computer science* is divided into multiple classes in order to test how well the classifiers 
   can differentiate *computer science* ebooks. 
-- The `third dataset <#large-dataset-X-documents-with-Y-categories>`_ will further divide the other two categories (mathematics and physics).
+- The `third dataset <#large-dataset-X-documents-with-Y-categories>`_ further divides the other two categories (mathematics and physics).
 
 The train and test sets are splitted as follows:
 
