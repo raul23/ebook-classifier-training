@@ -582,7 +582,7 @@ Command used to generate the next plots::
       3           items      entity  configuration      statistical              import
       4          record         sql           unix              org            security
       
-  'https' and 'org' as top 5 key words for *machine learning*❔
+  ⚠️ 'https' and 'org' as top 5 key words for *machine learning*?
 - ``RandomForestClassifier()`` 👎 `continues <#benchmarking-classifiers>`_ to underperform with text classification: worst in all respects.
 
 Script ``classify_ebooks.py``
