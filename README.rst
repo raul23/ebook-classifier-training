@@ -561,8 +561,8 @@ Command used to generate the next plots::
 
 `:information_source:` 
 
-- ``SGDClassifier(loss='log')`` 👍 is the model with the best trade-off between test score and training/testing time: highest test score and 
-  relatively quick training/testing time.
+- ``SGDClassifier(loss='log')`` 👍 is the model with the best trade-off between test score and training/testing time: highest test score (0.877) and 
+  relatively quick training/testing time (both under 0.05s).
 
   For reference, here are the top 5 keywords per class for ``SGDClassifier``::
   
