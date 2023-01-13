@@ -821,7 +821,6 @@ Top 5 keywords per class (for all 43 categories):
 
 .. code-block::
 
-   top 5 keywords per class:
      abstract algebra         algebra  algorithms  antimatter artificial intelligence artificial neural networks  astronomy    black holes
    0         integers         algebra   algorithm  antimatter            intelligence                    network      stars          black
    1            prove              ir  algorithms    universe                 program                   learning        sun          holes
