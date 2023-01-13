@@ -780,6 +780,56 @@ Command used to generate the next plot::
    <p align="center"><img src="./images/confusion_matrix_ridgeclass_large_dataset.png">
    </p>
 
+.. code-block::
+
+   top 5 keywords per class:
+     abstract algebra         algebra  algorithms  antimatter artificial intelligence artificial neural networks  astronomy    black holes
+   0         integers         algebra   algorithm  antimatter            intelligence                    network      stars          black
+   1            prove              ir  algorithms    universe                 program                   learning        sun          holes
+   2          integer              ca    integers       stars                      ai                     vector        sky           hole
+   3              mod  multiplication       trees      energy              artificial                     neural  astronomy      spacetime
+   4          theorem         formula     sorting   particles                    test                     output       moon  gravitational
+   
+   
+             c  calculus  category theory     chaos   compiler complex analysis computer security   cosmology       cpp data structures
+   0       int     graph         category     chaos   compiler            plane          security   cosmology   classes      structures
+   1  variable        2x       categories    random       code         analytic            server    universe  template       algorithm
+   2      file    domain       structures     shall    machine              sin              user    galaxies  operator      algorithms
+   3   program    graphs         identity   initial   language               oo            secure      cosmic  compiler             int
+   4      char  calculus  transformations  behavior  languages          formula            attack  relativity     const         program
+
+
+      database general relativity history [computer science] history [mathematics] history [physics]   linux machine learning  magnetism
+   0  database         relativity                    machine               history           history   linux         learning   magnetic
+   1  security      gravitational                    century                square            motion  kernel          machine  magnetism
+   2    access           einstein                   machines               ancient          theories   shell       algorithms       axis
+   3  instance             tensor                 processing               algebra        scientific    user        algorithm   electric
+   4     users              frame                 historical                 greek        philosophy    code          feature     moment
+
+
+     non-euclidean geometry partial differential equations particle physics penetration testing     plasma prime numbers   probability
+   0               geometry                   differential         particle         penetration     plasma        primes   probability
+   1                  plane                             dx        particles             testing   magnetic         prime        random
+   2              euclidean                       boundary          nuclear            security   electric       theorem        events
+   3                     ab                           wave             spin               tools  radiation       density  distribution
+   4               triangle                        partial       scattering                 web  electrons          base        sample
+
+   
+      programming  python quantum computing quantum field theory quantum mechanics real analysis riemann hypothesis special relativity
+   0  programming  python           quantum              quantum           quantum      sequence            riemann         relativity
+   1     programs    code       computation              feynman         mechanics       integer               zeta            lorentz
+   2         code      py                le            invariant              wave      rational         hypothesis           geometry
+   3       design   press            michel                dirac          particle        metric              prime       relativistic
+   4      program  module            vector                   eq            energy         limit            formula           einstein
+
+
+       statistics  superconductivity
+   0  probability  superconductivity
+   1   statistics        temperature
+   2  statistical    superconductors
+   3   experiment    superconducting
+   4       sample     superconductor
+
 Benchmarking classifiers [large]
 """"""""""""""""""""""""""""""""
 TODO
