@@ -784,7 +784,7 @@ Command used to generate the next plot::
 
 - *Special and General relativity*: 
 
-  - ``RidgeClassifier`` confuses more *special relativity* ebooks for general ones than vice versa.
+  - ``RidgeClassifier`` confuses more *special relativity* ebooks for *general relativity* ones than vice versa.
   - 6 over 23 ebooks about *general relativity* were confused for *black holes* documents which is understandable but I will have
     to think about how to help the model better differentiate ebooks from these two categories (e.g. increase the number of pages
     converted to text, add more ebooks about both classes, perform preprocessing, ...) [TODO]
