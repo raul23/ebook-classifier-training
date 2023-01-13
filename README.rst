@@ -204,7 +204,7 @@ Command used to generate the confusion matrix shown next::
 
 |
 
-Model accuracy::
+``RandomModel`` accuracy on small dataset::
 
  Score (normalized): 0.308
  Score (count): 16
@@ -239,7 +239,7 @@ Command used to generate the next plots::
 
 |
 
-Model accuracy::
+``RidgeClassifier`` accuracy on small dataset::
  
  Score (normalized): 0.942
  Score (count): 49
@@ -305,7 +305,7 @@ Command used to generate the next plots::
 
 |
 
-Model accuracy::
+``ComplementNB`` accuracy on small dataset::
 
  Score (normalized): 0.942
  Score (count): 49
@@ -450,7 +450,7 @@ Command used to generate the confusion matrix shown next::
 
 |
 
-Model accuracy::
+``RandomModel`` accuracy on medium-size dataset::
 
  Score (normalized): 0.111
  Score (count): 9
@@ -479,7 +479,7 @@ Command used to generate the next plots::
 
 |
 
-Model accuracy::
+``RidgeClassifier`` accuracy on medium-size dataset::
 
  Score (normalized): 0.815
  Score (count): 66
@@ -559,7 +559,7 @@ Command used to generate the next plots::
 
 |
 
-Model accuracy::
+``ComplementNB`` accuracy on medium-size dataset::
 
  Score (normalized): 0.679
  Score (count): 55
@@ -740,7 +740,7 @@ Command used to generate the confusion matrix shown next::
 
 |
 
-Model accuracy::
+``RandomModel`` accuracy on medium-size dataset::
 
  Score (normalized): 0.022900763358778626
  Score (count): 9.0
