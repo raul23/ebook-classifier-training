@@ -204,6 +204,8 @@ Command used to generate the confusion matrix shown next::
 
 |
 
+Model accuracy::
+
  Score (normalized): 0.308
  Score (count): 16
  Total count: 52
