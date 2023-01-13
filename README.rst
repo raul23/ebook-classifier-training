@@ -415,6 +415,16 @@ Command used to generate the confusion matrix shown next::
 
  python classify_ebooks.py ~/Data/organize -s 12345 --clf RandomModel
 
+.. commit=dce386f074472f72684bf4efb95ea59bc23312e2
+
+|
+
+Model accuracy::
+
+ Score (normalized): 0.111
+ Score (count): 9
+ Total count: 81
+
 |
 
 .. raw:: html
@@ -434,7 +444,15 @@ Command used to generate the next plots::
 
  python classify_ebooks.py ~/Data/organize -s 12345
 
-.. commit with i==250
+.. commit dce386f074472f72684bf4efb95ea59bc23312e2 with i==250 for generating medium dataset
+
+|
+
+Model accuracy::
+
+ Score (normalized): 0.81
+ Score (count): 66
+ Total count: 81
 
 |
 
@@ -504,9 +522,19 @@ Command used to generate the next plots::
 
  $ python classify_ebooks.py ~/Data/organize -s 12345 --clf ComplementNB
 
+.. commit dce386f074472f72684bf4efb95ea59bc23312e2 with i==250 for generating medium dataset
+
 `:information_source:` I used the scikit-learn's default values for ``ComplementNB``'s parameters.
 
 |
+
+Model accuracy::
+
+ Score (normalized): 0.679
+ Score (count): 55
+ Total count: 81
+
+| 
 
 .. raw:: html
 
@@ -679,6 +707,13 @@ Command used to generate the confusion matrix shown next::
  
 .. commit dce386f074472f72684bf4efb95ea59bc23312e2
 
+|
+
+Model accuracy::
+
+ Score (normalized): 0.022900763358778626
+ Score (count): 9.0
+ 
 |
 
 .. raw:: html
