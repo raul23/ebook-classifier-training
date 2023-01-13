@@ -789,11 +789,11 @@ Command used to generate the next plot::
     to think about how to help the model better differentiate ebooks from these two categories (e.g. increase the number of pages
     converted to text, add more ebooks about both classes, perform preprocessing, ...) [TODO]
   - Many of the ebooks from these two categories focus on both subjects. Maybe I could create another category ( 
-    *Special and General Relativity*) for ebooks that treat both topics extensively.
+    *Special and General Relativity*) for ebooks that treat both topics extensively. [TODO]
 - *C vs CPP*: programming languages
 
   - ``RidgeClassifier`` confuses more *c* ebooks for *cpp* ones than vice versa.
-  - Again work to be done to improve the model's accuracy with these cases [TODO]
+  - Again work to be done to improve the model's accuracy with these cases. [TODO]
 - Some categories that ``RidgeClassifier`` achieved great accuracy:
 
   - *Black holes*: 20/21
