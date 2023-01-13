@@ -442,7 +442,7 @@ def convert(input_file, output_file=None,
             logger.info("Conversion terminated, will not try OCR")
             check_conversion = False
         else:
-            logger.info("{COLORS['YELLOW']}Conversion failed!{COLORS['NC']} Will try OCR...")
+            logger.info(f"{COLORS['YELLOW']}Conversion failed!{COLORS['NC']} Will try OCR...")
             if ocr_file(input_file, output_file, mime_type, ocr_command, ocr_only_random_pages):
                 logger.warning(yellow("OCR failed!"))
                 logger.warning(f"{COLORS['YELLOW']}File couldn't be converted to txt:{COLORS['NC']} {input_file}")
@@ -741,7 +741,10 @@ def ocr_file(file_path, output_file, mime_type,
 
     # Pre-compute the list of pages to process based on ocr_only_random_pages
     if ocr_only_random_pages:
-        pages_to_process = sorted(random.sample(range(1, int(0.5*num_pages)), ocr_only_random_pages))
+        if int(0.5*num_pages) <= ocr_only_random_pages:
+            pages_to_process = range(1, num_pages + 1)
+        else:
+            pages_to_process = sorted(random.sample(range(1, int(0.5*num_pages)), ocr_only_random_pages))
     else:
         # `ocr_only_random_pages` is False
         logger.debug('ocr_only_random_pages is False')
@@ -791,12 +794,17 @@ def pdftotext(input_file, output_file, first_page_to_convert=None, last_page_to_
 
 def plot_confusion_matrix(clf, y_test, pred, target_names):
     fig, ax = plt.subplots(figsize=(10, 5))
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111)
     ConfusionMatrixDisplay.from_predictions(y_test, pred, ax=ax)
     rotation = 90 if len(target_names) > 4 else 0
+    ax.set_xticks(range(len(target_names)))
+    ax.set_yticks(range(len(target_names)))
     ax.xaxis.set_ticklabels(target_names, rotation=rotation)
     ax.yaxis.set_ticklabels(target_names)
+    # TODO: add option for name of confusion matrix
     _ = ax.set_title(
-        f"Confusion Matrix for {clf.__class__.__name__}\non the documents from medium-size dataset"
+        f"Confusion Matrix for {clf.__class__.__name__}\non the documents from large dataset"
     )
     plt.show()
 
@@ -955,6 +963,7 @@ def setup_argparser():
     # ===============
     # Dataset options
     # ===============
+    # TODO: add option for naming dataset
     dataset_group = parser.add_argument_group(title=yellow('Dataset options'))
     dataset_group.add_argument(
         '--cd', '--create-dataset', dest='create_dataset', action='store_true',
@@ -1114,7 +1123,7 @@ class DatasetManager:
             self.__setattr__(k, v)
         self.dataset = Bunch(data=[], filenames=[], target_names=[], target=[], target_name_to_value={}, DESCR="")
         self.dataset_tmp = None
-        self.duplicate_folder_names = []
+        self.duplicate_folder_names = []  # TODO: not used for the moment, see _get_target_names_v2
         self.ebook_formats = ['djvu', 'pdf']
         if isinstance(self.input_directory, list):
             self.input_directory = Path(self.input_directory[0])
@@ -1129,6 +1138,8 @@ class DatasetManager:
                                size_limit=cache_size_bytes)
         else:
             self.cache = None
+        # TODO: put the rest in a method?
+        # TODO: change name to create and other such places
         # Dataset generation/updating/loading
         generate_dataset = True
         if self.update_dataset and self.dataset_path.exists():
@@ -1136,15 +1147,15 @@ class DatasetManager:
             logger.info("Loading dataset ...")
             self._load_dataset()
         elif not self.update_dataset and not self.dataset_path.exists():
-            logger.info(blue('Generating dataset ...'))
+            logger.info(blue('Creating dataset ...'))
         elif self.update_dataset and not self.dataset_path.exists():
             self.update_dataset = False
             logger.info(f"{COLORS['YELLOW']}Dataset not found:{COLORS['NC']} {self.dataset_path}")
-            logger.info(blue('Generating dataset ...'))
+            logger.info(blue('Creating dataset ...'))
         else:
             generate_dataset = False
             if self.create_dataset:
-                logger .info('Dataset is already created!')
+                logger.info('Dataset is already created!')
             else:
                 logger.info(blue("Loading dataset ..."))
                 self._load_dataset()
@@ -1317,7 +1328,7 @@ class DatasetManager:
                 dataset.target.append(self.dataset.target[i])
                 dataset.target_names.add(self.dataset.filenames[i].parent.name)
             else:
-                # TODO: replace COLORS with yellow() and for the others too
+                # TODO: replace COLORS with yellow() and other such places
                 logger.warning(f"{COLORS['YELLOW']}[WARNING] Document rejected:{COLORS['NC']} "
                                f"{str(self.dataset.filenames[i])[:100]}")
                 number_ebooks_rejected += 1
@@ -1450,6 +1461,14 @@ class DatasetManager:
     def _add_doc_to_dataset(self, filepath, text):
         self.dataset.data.append(text)
         self.dataset.filenames.append(filepath)
+        target_name = filepath.parent.name
+        self.dataset.target.append(self.dataset.target_name_to_value[target_name])
+        self.dataset.target_names.add(target_name)
+
+    # See note for _get_target_names_v2()
+    def _add_doc_to_dataset_v2(self, filepath, text):
+        self.dataset.data.append(text)
+        self.dataset.filenames.append(filepath)
         if filepath.parent.name in self.duplicate_folder_names:
             target_name = filepath.parent.name + f' [{filepath.parent.parent.name}]'
         else:
@@ -1457,7 +1476,7 @@ class DatasetManager:
         self.dataset.target.append(self.dataset.target_name_to_value[target_name])
         self.dataset.target_names.add(target_name)
 
-    # You want the targets to start at 0 and go incremental from there
+    # You want the targets to start from 0 and go incremental from there
     def _fix_target(self, dataset):
         dataset.target_names = sorted(dataset.target_names)
         new_target_name_to_value = dict(zip(dataset.target_names, [i for i in range(len(dataset.target_names))]))
@@ -1471,23 +1490,6 @@ class DatasetManager:
         dataset.target_names = list(dataset.target_names)
         dataset.target_name_to_value = new_target_name_to_value
 
-    def _get_target_names(self):
-        target_names_dict = {}
-        self.duplicate_folder_names = []
-        for i, file in enumerate(self.input_directory.rglob('*'), start=1):
-            if file.is_dir():
-                if file.name in target_names_dict:
-                    if target_names_dict[file.name][0]:
-                        target_names_dict[file.name + f' [{target_names_dict[file.name][1]}]'] = [True, target_names_dict[file.name][1]]
-                        self.duplicate_folder_names.append(file.name)
-                        target_names_dict[file.name][0] = False
-                    target_names_dict.setdefault(file.name + f' [{file.parent.name}]', [False, file.parent.name])
-                else:
-                    target_names_dict.setdefault(file.name, [True, file.parent.name])
-        for d in self.duplicate_folder_names:
-            del target_names_dict[d]
-        return target_names_dict.keys()
-
     def _generate_dataset(self):
         target_names = self._get_target_names()
         self.dataset.target_name_to_value = dict(zip(target_names, [i for i in range(len(target_names))]))
@@ -1495,9 +1497,9 @@ class DatasetManager:
         if not self.use_cache:
             logger.warning(yellow(f'use_cache={self.use_cache}'))
         self._generate_ebooks_dataset()
-        # Necessary if for example you have a folder (label) without any ebook
-        # You don't want to include this label (associated with an empty folder) in dataset.target_names
-        # You want the targets to start from and go incremental
+        # Necessary if for example you have a folder (=label) without any ebook
+        # You don't want to include this empty folder in the list dataset.target_names
+        # You want the targets to start from 0 and go incremental from there
         # TODO: could it be done within _get_target_names()?
         self._fix_target(self.dataset)
 
@@ -1513,7 +1515,7 @@ class DatasetManager:
         file_hashes = []
         duplicates = []
         for i, filepath in enumerate(filepaths, start=1):
-            if i == 250:
+            if False and i == 250:  # TODO: debug code
                 break
             logger.info(f"{COLORS['BLUE']}Processing document {i} of {total}:{COLORS['NC']} {filepath.name[:92]}...")
             key_to_text = None
@@ -1563,7 +1565,7 @@ class DatasetManager:
                                      f"'{file_hash}' + {key_to_text}")
                         cache_result.update(dict_text)
                     else:
-                        logger.debug('First time adding text in cache')
+                        # logger.debug('First time adding text in cache')
                         cache_result = dict_text
                     self.cache.set(file_hash, cache_result)
                     text_added_cache.append(filepath)
@@ -1589,6 +1591,34 @@ class DatasetManager:
             return self.pdf_convert_method
         else:
             return None
+
+    def _get_target_names(self):
+        target_names = []
+        for i, file in enumerate(self.input_directory.rglob('*'), start=1):
+            if file.is_dir():
+                target_names.append(file.name)
+        return target_names
+
+    # case where you have multiple folders with the same folder name, e.g. history folder found
+    # Within computer science, mathematics, physics
+    def _get_target_names_v2(self):
+        target_names_dict = {}
+        self.duplicate_folder_names = []
+        for i, file in enumerate(self.input_directory.rglob('*'), start=1):
+            if file.is_dir():
+                if file.name in target_names_dict:
+                    if target_names_dict[file.name][0]:
+                        target_names_dict[file.name + f' [{target_names_dict[file.name][1]}]'] = [True,
+                                                                                                  target_names_dict[
+                                                                                                      file.name][1]]
+                        self.duplicate_folder_names.append(file.name)
+                        target_names_dict[file.name][0] = False
+                    target_names_dict.setdefault(file.name + f' [{file.parent.name}]', [False, file.parent.name])
+                else:
+                    target_names_dict.setdefault(file.name, [True, file.parent.name])
+        for d in self.duplicate_folder_names:
+            del target_names_dict[d]
+        return target_names_dict.keys()
 
     def _load_dataset(self):
         with open(self.dataset_path, 'rb') as f:
