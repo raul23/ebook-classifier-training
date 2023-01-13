@@ -782,13 +782,13 @@ Command used to generate the next plot::
 
 `:information_source:` Since there are so many categories to analyze, I will just focus on the most interesting cases
 
-- *Special relativity* vs *General relativity*: 
+- *Special relativity* and *General relativity*: 
 
   - ``RidgeClassifier`` confuses more *special relativity* ebooks for *general relativity* ones than vice versa.
   - 6 over 23 ebooks about *general relativity* were confused for *black holes* documents which is understandable but I will have
     to think about how to help the model better differentiate ebooks from these two categories (e.g. increase the number of pages
     converted to text, add more ebooks about both classes, perform preprocessing, ...) [TODO]
-  - Many of the ebooks from these two categories (*special relativity* vs *general relativity*) focus on 
+  - Many of the ebooks from these two categories (*special relativity* and *general relativity*) focus on 
     both subjects. Maybe I could create another category (*Special and General Relativity*) for ebooks that treat 
     both topics extensively. [TODO]
 - *C vs CPP*: programming languages
