@@ -744,8 +744,9 @@ Command used to generate the confusion matrix shown next::
 
 ``RandomModel`` accuracy on large dataset::
 
- Score (normalized): 0.022900763358778626
- Score (count): 9.0
+ Score (normalized): 0.0229
+ Score (count): 9
+ Total count: 393
  
 |
 
