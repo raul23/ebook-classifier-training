@@ -780,6 +780,38 @@ Command used to generate the next plot::
    <p align="center"><img src="./images/confusion_matrix_ridgeclass_large_dataset.png">
    </p>
 
+`:information_source:` Since there are so many categories to analyze, I will just focus on the most interesting cases
+
+- *Special and General relativity*: 
+
+  - ``RidgeClassifier`` confuses more *special relativity* ebooks for general ones than vice versa.
+  - 6 over 23 ebooks about *general relativity* were confused for *black holes* documents which is understandable but I will have
+    to think about how to help the model better differentiate ebooks from these two categories (e.g. increase the number of pages
+    converted to text, add more ebooks about both classes, perform preprocessing, ...) [TODO]
+- *C vs CPP*: programming languages
+
+  - ``RidgeClassifier`` confuses more *c* ebooks for *cpp* ones than vice versa.
+  - Again work to be done to improve the model's accuracy with these cases [TODO]
+- Some categories that ``RidgeClassifier`` achieved great accuracy:
+
+  - *Black holes*: 20/21
+  - *Compiler*: 9/9
+  - *History [mathematics]*: 11/11
+  - *Machine learning*: 15/15
+  - *Probability*: 9/10
+  - *Python*: 11/11
+  - *Quantum mechanics*: 17/19
+  - *Superconductivity*: 11/11
+
+- Some categories that ``RidgeClassifier`` achieved low accuracy:
+
+  - *Artificial neural networks*: 4/12 [8 ebooks were confused for *machine learning* ones]
+  - *Complex analysis*: 4/8 [3 ebooks were confused for *Riemann hypothesis* ones]
+  - *Prime numbers*: 0/5 [All ebooks were confused for *Riemann hypothesis* ones]
+- Some categories where I need to add more ebooks in the test set: *antimatter* (1), *cosmology* (2), *history [computer science]* (0),
+  *plasma* (1), *quantum computing* (2)
+|
+
 .. code-block::
 
    top 5 keywords per class:
