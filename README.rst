@@ -198,7 +198,15 @@ the ebooks to be classified:
 
 Command used to generate the confusion matrix shown next::
 
- python classify_ebooks.py ~/Data/ebooks -s 12345 --clf RandomModel
+ python classify_ebooks.py ~/Data/ebooks -s 12345 --clf RandomModel --cat computer_science mathematics physics
+ 
+.. commit=dce386f074472f72684bf4efb95ea59bc23312e2
+
+|
+
+ Score (normalized): 0.308
+ Score (count): 16
+ Total count: 52
 
 |
 
@@ -217,12 +225,23 @@ mathematics, physics). It is the same model with the same parameters as in sciki
 
 Command used to generate the next plots::
 
- python classify_ebooks.py ~/Data/ebooks -s 12345
+ python classify_ebooks.py ~/Data/ebooks -s 12345 --cat computer_science mathematics physics
  
-`:information_source:` When not specifying any particular classifier with the option ``--clf``, the default classifier
-``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` is used.
+.. commit=dce386f074472f72684bf4efb95ea59bc23312e2
+ 
+`:information_source:` 
 
-.. commit 0dbfcce1c1ce3a5c70c4a42b592c1a8845de3a96
+- When not specifying any particular classifier with the option ``--clf``, the default classifier 
+  ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` is used.
+- The option ``--cat`` specifies the only categories to include in the dataset.
+
+|
+
+Model accuracy::
+ 
+ Score (normalized): 0.942
+ Score (count): 49
+ Total count: 52
 
 |
 
@@ -276,9 +295,19 @@ Classifying with ``ComplementNB`` (odd results)⁉️
 """"""""""""""""""""""""""""""""""""""""""""""""
 Command used to generate the next plots::
 
- $ python classify_ebooks.py ~/Data/ebooks -s 12345 --clf ComplementNB alpha=1000
+ $ python classify_ebooks.py ~/Data/ebooks -s 12345 --clf ComplementNB alpha=1000 --cat computer_science mathematics physics
+
+.. commit=dce386f074472f72684bf4efb95ea59bc23312e2
 
 `:information_source:` The parameter ``alpha=1000`` comes from `tuning its hyperparameters <#benchmarking-classifiers>`_.
+
+|
+
+Model accuracy::
+
+ Score (normalized): 0.942
+ Score (count): 49
+ Total count: 52
 
 |
 
@@ -450,7 +479,7 @@ Command used to generate the next plots::
 
 Model accuracy::
 
- Score (normalized): 0.81
+ Score (normalized): 0.815
  Score (count): 66
  Total count: 81
 
