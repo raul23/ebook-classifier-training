@@ -231,7 +231,7 @@ Command used to generate the next plots::
  
 .. commit=dce386f074472f72684bf4efb95ea59bc23312e2
  
-`:information_source:` 
+`:information_source:` Explaining the script's options
 
 - When not specifying any particular classifier with the option ``--clf``, the default classifier 
   ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` is used.
