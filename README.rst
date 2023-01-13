@@ -788,6 +788,8 @@ Command used to generate the next plot::
   - 6 over 23 ebooks about *general relativity* were confused for *black holes* documents which is understandable but I will have
     to think about how to help the model better differentiate ebooks from these two categories (e.g. increase the number of pages
     converted to text, add more ebooks about both classes, perform preprocessing, ...) [TODO]
+  - Many of the ebooks from these two categories focus on both subjects. Maybe I could create another category ( 
+    *Special and General Relativity*) for ebooks that treat both topics extensively.
 - *C vs CPP*: programming languages
 
   - ``RidgeClassifier`` confuses more *c* ebooks for *cpp* ones than vice versa.
