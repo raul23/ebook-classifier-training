@@ -817,6 +817,8 @@ Command used to generate the next plot::
   *plasma* (1), *quantum computing* (2)
 |
 
+Top 5 keywords per class (for all 43 categories):
+
 .. code-block::
 
    top 5 keywords per class:
