@@ -740,7 +740,7 @@ Command used to generate the confusion matrix shown next::
 
 |
 
-``RandomModel`` accuracy on medium-size dataset::
+``RandomModel`` accuracy on large dataset::
 
  Score (normalized): 0.022900763358778626
  Score (count): 9.0
@@ -756,7 +756,29 @@ Command used to generate the confusion matrix shown next::
 
 Classifying with ``RidgeClassifier`` [large]
 """"""""""""""""""""""""""""""""""""""""""""
-TODO
+A ``RidgeClassifier(solver='sparse_cg', tol=1e-02)`` was trained on the `dataset 
+of 982 documents <#medium-size-dataset-982-documents-with-43-categories>`_ with 43 categories. It is the same model with the same parameters as in scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html#analysis-of-a-bag-of-words-document-classifier>`_.
+
+Command used to generate the next plot::
+
+ python classify_ebooks.py ~/Data/organize -s 12345
+
+.. commit dce386f074472f72684bf4efb95ea59bc23312e2
+
+|
+
+``RidgeClassifier`` accuracy on large dataset::
+
+ Score (normalized): 0.728
+ Score (count): 286
+ Total count: 393
+
+|
+
+.. raw:: html
+
+   <p align="center"><img src="./images/confusion_matrix_ridgeclass_large_dataset.png">
+   </p>
 
 Benchmarking classifiers [large]
 """"""""""""""""""""""""""""""""
