@@ -12,7 +12,9 @@ I am basing my experimentation with classifying text on the excellent scikit-lea
 
 I am following along their tutorial but using my own `three datasets <#datasets>`_ containing a bunch of text from ebooks (``pdf`` and ``djvu``). They are of different size and categories.
 
-The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as artificial intelligence or calculus).
+.. The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an 
+   ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as 
+   artificial intelligence or calculus).
 
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
 multiple classifiers are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
