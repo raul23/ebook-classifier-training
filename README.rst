@@ -782,7 +782,7 @@ Command used to generate the next plot::
 
 `:information_source:` Since there are so many categories to analyze, I will just focus on the most interesting cases
 
-- *Special and General relativity*: 
+- *Special relativity* vs *General relativity*: 
 
   - ``RidgeClassifier`` confuses more *special relativity* ebooks for *general relativity* ones than vice versa.
   - 6 over 23 ebooks about *general relativity* were confused for *black holes* documents which is understandable but I will have
