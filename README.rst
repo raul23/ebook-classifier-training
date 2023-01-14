@@ -929,22 +929,22 @@ was choosen as the model with the best trade-off between test score and training
 - `medium-size (202 documents) dataset <#benchmarking-classifiers-medium>`_::
 
    accuracy       = 0.877
-   training time  = 0.0429s
-   testing time   = 0.0021s
+   train time     = 0.0429s
+   test time      = 0.0021s
    dimensionality = 8549
-- `large (982 documents) dataset<#benchmarking-classifiers-large>`_::
+- `large (982 documents) dataset <#benchmarking-classifiers-large>`_::
 
-  accuracy       = 0.758
-  training time  = 1.49s
-  testing time   = 0.0568s
-  dimensionality = 28446
+   accuracy       = 0.758
+   train time     = 1.49s
+   test time      = 0.0568s
+   dimensionality = 28446
   
 On the `small dataset (129 documents) <#benchmarking-classifiers>`_, it was ``ComplementNB`` that was selected as the classifier
 with the best overall performance::
 
   accuracy       = 0.942
-  training time  = 0.00229s
-  testing time   = 0.000572s
+  train time     = 0.00229s
+  test time      = 0.000572s
   dimensionality = 5436
 
 Script ``classify_ebooks.py``
