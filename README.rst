@@ -948,6 +948,13 @@ with the best overall performance::
   test time      = 0.000572s
   dimensionality = 5436
 
+``SGDClassifier`` fared very well also on the small dataset (though since it an easy dataset, many models did great on this small dataset)::
+
+  accuracy       = 0.942
+  train time     = 0.00832s
+  test time      = 0.000608s
+  dimensionality = 5436
+
 Next, I will be trying to improve the test score on the large dataset which is a tough one since all the test scores achieved on that dataset are
 below 0.8 Preprocessing and tuning better the hyperparameters (I am not exploring enough different sets of hyperparameters) are avenues I will
 be exploring.
