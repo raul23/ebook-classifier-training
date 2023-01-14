@@ -28,7 +28,7 @@ from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression, RidgeClassifier, SGDClassifier
-from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.naive_bayes import ComplementNB
 from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
@@ -757,13 +757,13 @@ def ocr_file(file_path, output_file, mime_type,
         # Make temporary files
         tmp_file = tempfile.mkstemp()[1]
         tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
-        logger.debug(f'Running OCR of page {page} ...')
+        logger.debug(f'Running OCR of page {page}...')
         logger.debug(f'Using tmp files {tmp_file} and {tmp_file_txt}')
         # doc(pdf, djvu) --> image(png, tiff)
         result = page_convert_cmd(page, file_path, tmp_file)
         logger.debug(f"Result of {page_convert_cmd.__repr__()}:\n{result}")
         # image --> text
-        logger.debug(f"Running the '{ocr_command}' ...")
+        logger.debug(f"Running the '{ocr_command}'...")
         result = eval(f'{ocr_command}("{tmp_file}", "{tmp_file_txt}")')
         logger.debug(f"Result of '{ocr_command.__repr__()}':\n{result}")
         with open(tmp_file_txt, 'r') as f:
@@ -1143,21 +1143,21 @@ class DatasetManager:
         # Dataset generation/updating/loading
         generate_dataset = True
         if self.update_dataset and self.dataset_path.exists():
-            logger.info(blue('Updating dataset ...'))
-            logger.info("Loading dataset ...")
+            logger.info(blue('Updating dataset...'))
+            logger.info("Loading dataset...")
             self._load_dataset()
         elif not self.update_dataset and not self.dataset_path.exists():
-            logger.info(blue('Creating dataset ...'))
+            logger.info(blue('Creating dataset...'))
         elif self.update_dataset and not self.dataset_path.exists():
             self.update_dataset = False
             logger.info(f"{COLORS['YELLOW']}Dataset not found:{COLORS['NC']} {self.dataset_path}")
-            logger.info(blue('Creating dataset ...'))
+            logger.info(blue('Creating dataset...'))
         else:
             generate_dataset = False
             if self.create_dataset:
                 logger.info('Dataset is already created!')
             else:
-                logger.info(blue("Loading dataset ..."))
+                logger.info(blue("Loading dataset..."))
                 self._load_dataset()
         if generate_dataset:
             self._generate_dataset()
@@ -1172,21 +1172,26 @@ class DatasetManager:
         for clf, name in (
                 # (LogisticRegression(C=1000, max_iter=1000), "Logistic Regression"),
                 # (RidgeClassifier(alpha=1e-06, solver="sparse_cg"), "Ridge Classifier"),
-                (RidgeClassifier(alpha=0.001, solver="sparse_cg"), "Ridge Classifier"),
+                # (RidgeClassifier(alpha=0.001, solver="sparse_cg"), "Ridge Classifier"),  # medium
+                (RidgeClassifier(alpha=0.001, solver="sparse_cg"), "Ridge Classifier"),  # large
                 # (KNeighborsClassifier(n_neighbors=5), "kNN"),
-                (KNeighborsClassifier(n_neighbors=5), "kNN"),
+                # (KNeighborsClassifier(n_neighbors=5), "kNN"),  # medium
+                (KNeighborsClassifier(n_neighbors=10), "kNN"),  # large
                 (RandomForestClassifier(), "Random Forest"),
                 # L2 penalty Linear SVC
                 # (LinearSVC(C=1000, dual=True, max_iter=1000), "Linear SVC"),
-                (LinearSVC(C=10, dual=True, max_iter=1000), "Linear SVC"),
+                # (LinearSVC(C=10, dual=True, max_iter=1000), "Linear SVC"),  # medium
+                (LinearSVC(C=10, dual=True, max_iter=500), "Linear SVC"),  # large
                 # L2 penalty Linear SGD
                 # (SGDClassifier(loss="log", alpha=1e-3), "log-loss SGD"),
-                (SGDClassifier(loss="log", alpha=1e-06), "log-loss SGD"),
+                # (SGDClassifier(loss="log", alpha=1e-06), "log-loss SGD"),  # medium
+                (SGDClassifier(loss="log", alpha=1e-06), "log-loss SGD"),  # large
                 # NearestCentroid (aka Rocchio classifier)
                 (NearestCentroid(), "NearestCentroid"),
                 # Sparse naive Bayes classifier
                 # (ComplementNB(alpha=1000), "Complement naive Bayes"),
-                (ComplementNB(alpha=10000), "Complement naive Bayes"),
+                # (ComplementNB(alpha=10000), "Complement naive Bayes"),  # medium
+                (ComplementNB(alpha=1e-06), "Complement naive Bayes"),  # large
         ):
             print("=" * 80)
             print(name)
@@ -1263,6 +1268,11 @@ class DatasetManager:
         # clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
         clf.fit(X_train, y_train)
         pred = clf.predict(X_test)
+        score_normalized = accuracy_score(y_test, pred)
+        score_count = int(score_normalized * y_test.shape[0])
+        logger.info(f'Score (normalized): {score_normalized:.3}')
+        logger.info(f'Score (count): {score_count}')
+        logger.info(f'Total count: {y_test.shape[0]}')
 
         try:
             plot_confusion_matrix(clf, y_test, pred, target_names)
@@ -1628,10 +1638,10 @@ class DatasetManager:
                 self.dataset = pickle.load(f)
 
     def _split_dataset(self, categories, train_prop=0.6):
-        logger.info(blue('Filtering dataset ...'))
+        logger.info(blue('Filtering dataset...'))
         dataset = self.filter_dataset(categories_to_keep=categories)
 
-        logger.info(blue('Shuffling dataset ...'))
+        logger.info(blue('Shuffling dataset...'))
         self.shuffle_dataset(dataset)
 
         # Create train (60%) and test (40%) sets
