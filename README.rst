@@ -916,7 +916,10 @@ The next two plots about the trade-off between test score and training/test time
 
 - ``SGDClassifier(loss='log')`` 👍 is the model with the best trade-off between test score and training/testing time: second 
   highest test score (0.758) and relatively quick training/testing time (both under 1.5s).
-- The training time on this large dataset is very high for some models: 11.4s for ``RidgeClassifier`` with a good test score though (0.758)
+- The training time on this large dataset is very high for some models: 
+
+  - 11.4s for ``RidgeClassifier`` with a good test score though (0.758)
+  - 7.28s for ``LinearSVC`` with the best test score though (0.766)
 
 Script ``classify_ebooks.py``
 =============================
