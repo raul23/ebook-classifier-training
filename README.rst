@@ -916,17 +916,36 @@ The next two plots about the trade-off between test score and training/test time
 
 - ``SGDClassifier(loss='log')`` 👍 is the model with the best trade-off between test score and training/testing time: second 
   highest test score (0.758) and relatively quick training/testing time (both under 1.5s).
-  
-  In conclusion, it looks like ``SGDClassifier`` is your model of choice if you are working with relatively large dataset. It
-  was choosen as the model with the best trade-off between test score and training/testing time for both datasets: 
-  `medium-size (202 documents) <#benchmarking-classifiers-medium>`_ and large (982) datasets. 
-  
-  On the `small dataset (129 documents) <#benchmarking-classifiers>`_, it was ``ComplementNB`` that was selected as the classifier
-  with best overall performance.
 - The training time on this large dataset is very high for some models: 
 
   - 11.4s for ``RidgeClassifier`` with a good test score though (0.758)
   - 7.28s for ``LinearSVC`` with the best test score though (0.766)
+
+Conclusion
+==========
+In conclusion, it looks like ``SGDClassifier`` is your model of choice if you are working with relatively large dataset. It
+was choosen as the model with the best trade-off between test score and training/testing time for both datasets: 
+
+- `medium-size (202 documents) dataset <#benchmarking-classifiers-medium>`_::
+
+   accuracy       = 0.877
+   training time  = 0.0429s
+   testing time   = 0.0021s
+   dimensionality = 8549
+- `large (982 documents) dataset<#benchmarking-classifiers-large>`_::
+
+  accuracy       = 0.758
+  training time  = 1.49s
+  testing time   = 0.0568s
+  dimensionality = 28446
+  
+On the `small dataset (129 documents) <#benchmarking-classifiers>`_, it was ``ComplementNB`` that was selected as the classifier
+with the best overall performance::
+
+  accuracy       = 0.942
+  training time  = 0.00229s
+  testing time   = 0.000572s
+  dimensionality = 5436
 
 Script ``classify_ebooks.py``
 =============================
