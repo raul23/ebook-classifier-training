@@ -898,7 +898,7 @@ The next two plots about the trade-off between test score and training/test time
 
 .. raw:: html
 
-   <p align="center"><img src="./images/score_training_time_trade_off_large.png">
+   <p align="center"><img src="./images/score_train_time_trade_off_large.png">
    </p>
 
 |
