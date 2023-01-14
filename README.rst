@@ -871,7 +871,48 @@ Top 5 keywords per class (for all 43 categories):
 
 Benchmarking classifiers [large]
 """"""""""""""""""""""""""""""""
-TODO
+Command used to generate the next plots::
+
+ $ python classify_ebooks.py ~/Data/organize -s 12345 -b
+ 
+.. commit 7767bf6fb8e0484926975d847a610336ad101daf
+
+|
+
+Here are the benchmarking results of multiple classifiers trained on the `large dataset 
+<#large-dataset-202-documents-with-43-categories>`_:
+
++-----------------+---------------------------------------------------+---------------------------------------+---------------------------+--------------------------------+-----------------------------------------+--------------------+----------------------------+
+|                 | RidgeClassifier(alpha=0.001, solver='sparse_cg')  | KNeighborsClassifier(n_neighbors=10)  | RandomForestClassifier()  | LinearSVC(C=10, max_iter=500)  | SGDClassifier(alpha=1e-06, loss='log')  | NearestCentroid()  | ComplementNB(alpha=1e-06)  |
++=================+===================================================+=======================================+===========================+================================+=========================================+====================+============================+
+| train time      | 11.4s                                             | 0.00441s                              | 1.96s                     | 7.28s                          | 1.49s                                   | 0.053s             | 0.177s                     |
+| test time       | 0.0634s                                           | 0.304s                                | 0.307s                    | 0.0546s                        | 0.0568s                                 | 0.0621s            | 0.0714s                    |
+| accuracy        | 0.758                                             | 0.656                                 | 0.618                     | 0.766                          | 0.758                                   | 0.692              | 0.634                      |
+| dimensionality  | 28446                                             | -                                     | -                         | 28446                          | 28446                                   | -                  | 28446                      |
+| density         | 1.0                                               | -                                     | -                         | 0.941                          | 1.0                                     | -                  | 1.0                        |
++-----------------+---------------------------------------------------+---------------------------------------+---------------------------+--------------------------------+-----------------------------------------+--------------------+----------------------------+
+
+|
+
+The next two plots about the trade-off between test score and training/test time will help us in determining the best classifier to choose:
+
+.. raw:: html
+
+   <p align="center"><img src="./images/score_training_time_trade_off_large.png">
+   </p>
+
+|
+
+.. raw:: html
+
+   <p align="center"><img src="./images/score_test_time_trade_off_large.png">
+   </p>
+
+`:information_source:` 
+
+- ``SGDClassifier(loss='log')`` 👍 is the model with the best trade-off between test score and training/testing time: second 
+  highest test score (0.877) and relatively quick training/testing time (both under 1.5s).
+- The training time on this large dataset is very high for some models: 11.4s for ``RidgeClassifier`` with a good test score though (0.758)
 
 Script ``classify_ebooks.py``
 =============================
