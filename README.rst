@@ -916,6 +916,13 @@ The next two plots about the trade-off between test score and training/test time
 
 - ``SGDClassifier(loss='log')`` 👍 is the model with the best trade-off between test score and training/testing time: second 
   highest test score (0.758) and relatively quick training/testing time (both under 1.5s).
+  
+  In conclusion, it looks like ``SGDClassifier`` is your model of choice if you are working with relatively large dataset. It
+  was choosen as the model with the best trade-off between test score and training/testing time for both datasets: 
+  `medium-size (202 documents) <#benchmarking-classifiers-medium>`_ and large (982) datasets. 
+  
+  On the `small dataset (129 documents) <#benchmarking-classifiers>`_, it was ``ComplementNB`` that was selected as the classifier
+  with best overall performance.
 - The training time on this large dataset is very high for some models: 
 
   - 11.4s for ``RidgeClassifier`` with a good test score though (0.758)
