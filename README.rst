@@ -923,8 +923,9 @@ The next two plots about the trade-off between test score and training/test time
 
 Conclusion
 ==========
-In conclusion, it looks like ``SGDClassifier`` is your model of choice if you are working with relatively large dataset. It
-was choosen as the model with the best trade-off between test score and training/testing time for both medium-size and large datasets: 
+In conclusion, it looks like ``SGDClassifier`` is your model of choice if you are working with a relatively large dataset of text
+from ebooks. It was choosen as the model with the best trade-off between test score and training/testing time for both 
+medium-size and large datasets: 
 
 - `medium-size (202 documents) dataset <#benchmarking-classifiers-medium>`_::
 
