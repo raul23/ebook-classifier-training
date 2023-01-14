@@ -41,7 +41,7 @@ Cache = None
 nltk = None
 RE_BAD_CHARS = regex.compile(r"[\p{Cc}\p{Cs}]+")
 
-logger = logging.getLogger('clustering')
+logger = logging.getLogger('classifying')
 __version__ = '0.1'
 _DEFAULT_MSG = ' (default: {})'
 
@@ -890,7 +890,7 @@ def required_length(nmin, nmax):
                           'arguments'.format(f=self.dest, nmin=nmin, nmax=nmax)
                 raise argparse.ArgumentTypeError(msg)
             setattr(args, self.dest, values)
-    return
+    return RequiredLength
 
 
 def setup_argparser():
