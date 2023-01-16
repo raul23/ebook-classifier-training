@@ -956,8 +956,9 @@ with the best overall performance::
   dimensionality = 5436
 
 Next, I will be trying to improve the test score on the large dataset which is a tough one since all the test scores achieved so far 
-on that dataset are below 0.8 Preprocessing and tuning better the hyperparameters (I am not exploring enough different sets of 
-hyperparameters) are avenues I will be exploring.
+on that dataset are below 0.8 
+
+Preprocessing and tuning better the hyperparameters (I am not exploring enough different sets of hyperparameters) are avenues I will be exploring.
 
 Script ``classify_ebooks.py``
 =============================
