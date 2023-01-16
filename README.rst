@@ -181,7 +181,7 @@ Results of classifying ebooks ⭐
 ================================
 I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is one of the most important and interesting part of this document.
 
-Thus without further ado, here are the results from training multiple classifiers on `three different datasets of ebooks text <#datasets>`_.
+Thus without further ado, here are the results from training multiple classifiers on `three different datasets of ebook text <#datasets>`_.
 
 Part 1: classifiers trained on the small dataset
 ------------------------------------------------
@@ -923,7 +923,7 @@ The next two plots about the trade-off between test score and training/test time
 
 Conclusion
 ==========
-In conclusion, it looks like ``SGDClassifier`` is your model of choice if you are working with a relatively large dataset of ebooks text.
+In conclusion, it looks like ``SGDClassifier`` is your model of choice if you are working with a relatively large dataset of ebook text.
 It was choosen as the model with the best trade-off between test score and training/testing time for both 
 medium-size and large datasets: 
 
