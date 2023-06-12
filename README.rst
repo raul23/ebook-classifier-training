@@ -183,7 +183,7 @@ I put the results section at the top before explaining the `script <#script-clas
 
 Thus without further ado, here are the results from training multiple classifiers on `three different datasets of ebook text <#datasets>`_.
 
-Part 1: classifiers trained on the small dataset
+Part A: classifiers trained on the small dataset
 ------------------------------------------------
 These are the classification results from models trained on the `small dataset (129 documents) <#small-dataset-129-documents-with-3-categories>`_ with three categories (computer_science, mathematics, physics).
 
@@ -429,7 +429,7 @@ multiple models were tested by analyzing the trade-off between training/testing 
    for high-dimensional prediction problems, linear models are often better suited as most problems become linearly 
    separable when the feature space has 10,000 dimensions or more.
 
-Part 2: classifiers trained on the medium-size dataset
+Part B: classifiers trained on the medium-size dataset
 ------------------------------------------------------
 These are the classification results from models trained on the `medium-size dataset (202 documents) <#medium-size-dataset-202-documents-with-10-categories>`_ with ten categories: algorithms, artificial intelligence, artificial neural networks, compiler, computer security, data structures, database, linux, machine learning, penetration testing.
 
@@ -712,7 +712,7 @@ The next two plots about the trade-off between test score and training/test time
 
   C'mon ``RandomForestClassifier``, you only had one job! 😞
 
-Part 3: classifiers trained on the large dataset
+Part C: classifiers trained on the large dataset
 ------------------------------------------------
 These are the classification results from models trained on the `large dataset (982 documents) <#large-dataset-982-documents-with-43-categories>`_ with 43 categories::
 
