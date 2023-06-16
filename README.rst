@@ -1,5 +1,5 @@
 ===============================================
-Part 1 of Experimenting with classifying ebooks
+Part 1 of Experimenting with Classifying Ebooks
 ===============================================
 .. contents:: **Contents**
    :depth: 3
