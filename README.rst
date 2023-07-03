@@ -1,6 +1,6 @@
-===============================================
-Part 1 of Experimenting with Classifying Ebooks
-===============================================
+=====================================
+Experimenting with Classifying Ebooks
+=====================================
 .. contents:: **Contents**
    :depth: 3
    :local:
