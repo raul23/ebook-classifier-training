@@ -962,4 +962,4 @@ Preprocessing and tuning better the hyperparameters (I am not exploring enough d
 
 Script ``classify_ebooks.py``
 =============================
-To know how to use the script ``classify_ebooks.py``, go `here <./README_script.rst>`_ to read the documentation.
+To know how to use the script ``classify_ebooks.py``, go `here <./README_script.rst>`_ to read its documentation.
