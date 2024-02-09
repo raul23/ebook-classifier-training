@@ -1,13 +1,12 @@
 =====================================
-Experimenting with Classifying Ebooks
+Script ``classify_ebooks.py``
 =====================================
 .. contents:: **Contents**
    :depth: 3
    :local:
    :backlinks: top
 
-Script ``classify_ebooks.py``
-=============================
+------------
 Dependencies
 ------------
 This is the environment on which the script `classify_ebooks.py <./scripts/classify_ebooks.py>`_ was tested:
@@ -41,6 +40,7 @@ Optionally:
   better results. OCR is disabled by default since it is a slow resource-intensive process.
 - `Ghostscript <https://www.ghostscript.com/>`_ for converting ``pdf`` to ``png`` when applying OCR on a given document.
 
+--------------
 Script options
 --------------
 To display the script's list of options and their descriptions::
@@ -119,6 +119,7 @@ I won't list all options (too many) but here are some of the important and inter
     failed to convert an ebook to ``txt`` or resulted in an empty file, the OCR method will be used.
   - 'false': never use OCR, only use the other simpler conversion tools (``pdftotext`` and ``djvutxt``).
 
+-------------------------------------
 Start the classification of ebooks ⭐
 -------------------------------------
 To **quickly** start the classification of ebooks, all you need is to provide the directory containing said ebooks::
@@ -132,6 +133,7 @@ To specify a classifier with its parameters, use the ``--clf`` option::
 
  python classify_ebooks.py ~/Data/ebooks --clf 
 
+-------
 Caching
 -------
 `:information_source:` About the caching option (``--use-cache``) supported by the script ``classify_ebooks.py.py``
@@ -180,6 +182,7 @@ Caching
   by default it is the least-recently-stored eviction policy (check the
   ``--eviction-policy`` option).
 
+----------------
 Ebooks directory
 ----------------
 `:warning:` In order to run the script `classify_ebooks.py <./scripts/classify_ebooks.py>`_, you need first to have a main directory (e.g. ``./ebooks/``) with all the ebooks (``pdf`` and ``djvu``) you want to test classification on. Each ebook should be in a folder whose name should correspond to the category of said ebook.
@@ -196,6 +199,7 @@ Then, you need to give the path to the main directory to the script, like this::
  
 The next section explains in details the generation of a dataset containing text from these ebooks.
 
+----------------
 Dataset creation
 ----------------
 To start creating a dataset containing texts from ebooks after you have setup your `directory of ebooks <#ebooks-directory>`_, the option
@@ -289,6 +293,7 @@ added to the dataset and cache, books rejected and duplicates found
    <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/dataset_generation_end_results2.png">
    </p>
 
+---
 OCR
 ---
 For those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``), 
@@ -327,6 +332,7 @@ Results at the end of applying OCR to all problematic ebooks (made up of images)
    
 `:information_source:` All 14 problematic ebooks (made up of images) were successfully converted to ``txt`` and added to the dataset and cache.
 
+------------------
 Updating a dataset
 ------------------
 After a dataset is created and saved, you can update it with new texts from more ebooks by using the ``--ud`` option::
@@ -340,6 +346,7 @@ After a dataset is created and saved, you can update it with new texts from more
    
 `:information_source:` ``--ud`` tells the script to update the dataset pickle file saved within the main ebooks directory (e.g. ``~/Data/ebooks``).
 
+---------------------------------------------------------------------------
 Filtering a dataset: select texts only in English and from valid categories
 ---------------------------------------------------------------------------
 After the dataset containing texts from ebooks is generated, you can launch the classification by providing only the input directory
