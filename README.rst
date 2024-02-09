@@ -1,6 +1,6 @@
-=====================================
-Experimenting with Classifying Ebooks
-=====================================
+=======================================================
+Part 1: Experimenting with Training an Ebook Classifier
+=======================================================
 .. contents:: **Contents**
    :depth: 3
    :local:
@@ -8,12 +8,12 @@ Experimenting with Classifying Ebooks
 
 Introduction
 ============
-I am basing my experimentation with classifying text on the excellent scikit-learn's tutorial: `Classification of text documents using sparse features <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_.
+I am basing my experimentation with training a text classifier on the excellent scikit-learn's tutorial: `Classification of text documents using sparse features <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_.
 
 I am following along their tutorial but using my own `three datasets <#datasets>`_ containing a bunch of text from ebooks (``pdf`` and ``djvu``). They are of different size and categories.
 
 .. The main motivation of experimenting with text classification is to use the best trained models in order to eventually build an 
-   ebooks organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as 
+   ebook organizer that will automatically categorize ebooks into their corresponding folders (associated with labels such as 
    artificial intelligence or calculus).
 
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
