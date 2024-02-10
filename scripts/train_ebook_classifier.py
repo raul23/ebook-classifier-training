@@ -896,7 +896,8 @@ def required_length(nmin, nmax):
 def setup_argparser():
     width = os.get_terminal_size().columns - 5
     name_input = 'input_directory'
-    msg = f'Classify ebooks based on the specified categories. By default, categories = {CATEGORIES}'
+    msg = 'Train an ebook classifier based on the specified categories. By ' \
+          f'default, categories = {CATEGORIES}'
     parser = ArgumentParser(
         description="",
         usage=f"{COLORS['BLUE']}python %(prog)s [OPTIONS] {{{name_input}}}{COLORS['NC']}\n\n{msg}",
