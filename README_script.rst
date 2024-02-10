@@ -1,5 +1,5 @@
 =====================================
-Script ``classify_ebooks.py``
+Script ``train_classifier.py``
 =====================================
 .. contents:: **Contents**
    :depth: 3
