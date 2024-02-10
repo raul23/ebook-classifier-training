@@ -59,7 +59,7 @@ SEED = 123456
 # Cache options
 # =============
 USE_CACHE = True
-CACHE_FOLDER = os.path.expanduser('~/.classify_ebooks')
+CACHE_FOLDER = os.path.expanduser('~/.train_ebook_classifier')
 EVICTION_POLICY = 'least-recently-stored'
 # In gigabytes (GiB)
 CACHE_SIZE_LIMIT = 1
@@ -1240,7 +1240,7 @@ class DatasetManager:
             logger.warning(f"{COLORS['YELLOW']}Cache folder not found:{COLORS['NC']} {folder}")
             return False
 
-    def classify_ebooks(self, clf_name_and_params, vect_params, categories):
+    def train_ebook_classifier(self, clf_name_and_params, vect_params, categories):
         # TODO: check first clf is supported
         if not clf_name_and_params:
             logger.warning(yellow('No classifier was specified!'))
@@ -1745,7 +1745,7 @@ def main():
                 elif args.benchmark:
                     exit_code = data_manager.benchmark_classifiers(categories)
                 else:
-                    exit_code = data_manager.classify_ebooks(clf, args.vect_params, categories)
+                    exit_code = data_manager.train_ebook_classifier(clf, args.vect_params, categories)
         else:
             logger.warning(yellow('Missing input directory'))
             exit_code = 2
