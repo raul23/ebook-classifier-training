@@ -36,9 +36,10 @@ You also need recent versions of:
 Optionally:
 
 - `diskcache <http://www.grantjenks.com/docs/diskcache/>`_: **v5.4.0** for caching persistently the converted files into ``txt``
+- `Ghostscript <https://www.ghostscript.com/>`_ for converting ``pdf`` to ``png`` when applying OCR on a given document.
+- `nltk <https://www.nltk.org/>`_ for detecting the language of a given ebook
 - `Tesseract <https://github.com/tesseract-ocr/tesseract>`_ for running OCR on books - version 4 gives 
   better results. OCR is disabled by default since it is a slow resource-intensive process.
-- `Ghostscript <https://www.ghostscript.com/>`_ for converting ``pdf`` to ``png`` when applying OCR on a given document.
 
 --------------
 Script options
