@@ -19,6 +19,9 @@ I am following along their tutorial but using my own `three datasets <#datasets>
 Also as in the scikit-learn's `tutorial <https://scikit-learn.org/stable/auto_examples/text/plot_document_classification_20newsgroups.html>`_,
 multiple classifiers are used such as: ``RidgeClassifier``, ``LogisticRegression``, and ``ComplementNB``.
 
+The best classifier will then be used for `part 2 <https://github.com/raul23/automated-ebook-organization>`_ 
+to automate the organization of ebooks within the filesystem.
+
 Datasets
 ========
 
