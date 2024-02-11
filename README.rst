@@ -951,7 +951,8 @@ with the best overall performance::
   test time      = 0.000572s
   dimensionality = 5436
 
-``SGDClassifier`` fared very well also on this small dataset (though since it is an easy dataset to predict, many models did great as well)::
+``SGDClassifier`` fared very well also on this small dataset (it is an easy dataset to predict since it has only
+three book categories; hence many models did great as well)::
 
   accuracy       = 0.942
   train time     = 0.00832s
@@ -965,4 +966,4 @@ Preprocessing and tuning better the hyperparameters (I am not exploring enough d
 
 Script ``classify_ebooks.py``
 =============================
-To know how to use the script ``classify_ebooks.py``, go `here <./README_script.rst>`_ to read its documentation.
+To know how to use the script ``train_classifier.py``, go `here <./README_script.rst>`_ to read its documentation.
