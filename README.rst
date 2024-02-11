@@ -964,6 +964,6 @@ on that dataset are below 0.8
 
 Preprocessing and tuning better the hyperparameters (I am not exploring enough different sets of hyperparameters) are avenues I will be exploring.
 
-Script ``classify_ebooks.py``
+Script ``train_classifier.py``
 =============================
 To know how to use the script ``train_classifier.py``, go `here <./README_script.rst>`_ to read its documentation.
