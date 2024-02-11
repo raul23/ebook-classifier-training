@@ -15,37 +15,25 @@ import subprocess
 import tempfile
 from argparse import Namespace
 from pathlib import Path
+from pprint import pprint
 from time import time
+# from timeit import default_timer as timer
 from types import SimpleNamespace
 
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
 import pycld2
 import regex
-from pprint import pprint
-from sklearn import metrics
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression, RidgeClassifier, SGDClassifier
-from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay
-from sklearn.model_selection import RandomizedSearchCV
-from sklearn.naive_bayes import ComplementNB
-from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
-from sklearn.pipeline import Pipeline
-from sklearn.svm import LinearSVC
-from sklearn.utils import Bunch
-from sklearn.utils.extmath import density
 
-Cache = None
-nltk = None
-RE_BAD_CHARS = regex.compile(r"[\p{Cc}\p{Cs}]+")
+# Lazy imports of diskcache.Cache, matplotlib, nltk, numpy, pandas, sklearn
 
-logger = logging.getLogger('classifying')
-__version__ = '0.1'
+# import ipdb
+
+logger = logging.getLogger('train_classifier')
+
+__version__ = '0.2'
 _DEFAULT_MSG = ' (default: {})'
 
 ENGLISH_VOCAB = None
+RE_BAD_CHARS = regex.compile(r"[\p{Cc}\p{Cs}]+")
 
 # =====================
 # Default config values
@@ -343,6 +331,98 @@ def catdoc(input_file, output_file):
     return convert_result_from_shell_cmd(result)
 
 
+def check_file_for_corruption(file_path):
+    """Checks the supplied file for different kinds of corruption:
+
+     - If it's zero-sized or contains only \0
+     - If it has a pdf extension but different mime type
+     - If it's a pdf and `pdfinfo` returns an error
+
+    The next test is not done:
+     - If it has an archive extension but `7z t` returns an error
+
+    Add following parameter if the archive test is done:
+    ``tested_archive_extensions=TESTED_ARCHIVE_EXTENSIONS``
+
+    Ref.: https://bit.ly/2JLpqgf
+
+    """
+    file_err = ''
+    logger.debug(f"Testing '{Path(file_path).name}' for corruption...")
+    logger.debug(f"Full path: {file_path}")
+
+    # TODO: test that it is the same as
+    # if [[ "$(tr -d '\0' < "$file_path" | head -c 1)" == "" ]]; then
+    # Ref.: https://bit.ly/2jpX0xf
+    if is_file_empty(file_path):
+        file_err = 'The file is empty or contains only zeros!'
+        logger.debug(file_err)
+        return 2, file_err
+
+    num_pages = get_pages_in_pdf(file_path).stdout
+    if num_pages:
+        logger.debug(f'Number of pages: {num_pages}')
+    else:
+        file_err = "Couldn't compute the number of pages"
+        logger.debug(file_err)
+        return 2, file_err
+
+    ext = Path(file_path).suffix[1:]  # Remove the dot from extension
+    mime_type = get_mime_type(file_path)
+
+    if mime_type == 'application/octet-stream' and \
+            re.match('^(pdf|djv|djvu)$', mime_type):
+        file_err = f"The file has a {ext} extension but '{mime_type}' MIME type!"
+        logger.debug(file_err)
+        return 1, file_err
+    elif mime_type == 'application/pdf':
+        logger.debug('Checking pdf file for integrity...')
+        if not command_exists('pdfinfo'):
+            file_err = 'pdfinfo does not exist, could not check if pdf is OK'
+            logger.debug(file_err)
+            return 1, file_err
+        else:
+            pdfinfo_output = pdfinfo(file_path)
+            if pdfinfo_output.stderr:
+                logger.debug('pdfinfo returned an error!')
+                logger.debug(f'Error:\n{pdfinfo_output.stderr}')
+                file_err = 'Has pdf MIME type or extension, but pdfinfo ' \
+                           'returned an error!'
+                logger.debug(file_err)
+                return 1, file_err
+            else:
+                logger.debug('pdfinfo returned successfully')
+                logger.debug(f'Output of pdfinfo:\n{pdfinfo_output.stdout}')
+                if re.search('^Page size:\s*0 x 0 pts$', pdfinfo_output.stdout):
+                    logger.debug('pdf is corrupt anyway, page size property is '
+                                 'empty!')
+                    file_err = 'pdf can be parsed, but page size is 0 x 0 pts!'
+                    logger.debug(file_err)
+                    return 2, file_err
+
+    # Not testing if it is an archive
+    """
+    if re.match(tested_archive_extensions, ext):
+        logger.debug(f"The file has a '{ext}' extension, testing with 7z...")
+        log = test_archive(file_path)
+        if log.stderr:
+            logger.debug('Test failed!')
+            logger.debug(log.stderr)
+            file_err = 'Looks like an archive, but testing it with 7z failed!'
+            return file_err
+        else:
+            logger.debug('Test succeeded!')
+            logger.debug(log.stdout)
+    """
+
+    if file_err == '':
+        logger.debug('Corruption not detected!')
+    else:
+        logger.warning(yellow(f'We are at the end of the function and '
+                       f'file_err="{file_err}"; it should be empty!'))
+    return 0, file_err
+
+
 # Ref.: https://stackoverflow.com/a/28909933
 def command_exists(cmd):
     return shutil.which(cmd) is not None
@@ -481,16 +561,19 @@ def convert(input_file, output_file=None,
         return 0
 
 
-# Tries to convert the supplied ebook file into .txt. It uses calibre's
-# ebook-convert tool. For optimization, if present, it will use pdftotext
-# for pdfs, catdoc for word files and djvutxt for djvu files.
-# Ref.: https://bit.ly/2HXdf2I
 def convert_to_txt(input_file, output_file, mime_type,
                    convert_only_percentage_ebook=CONVERT_ONLY_PERCENTAGE_EBOOK,
                    djvu_convert_method=DJVU_CONVERT_METHOD,
                    epub_convert_method=EPUB_CONVERT_METHOD,
                    msword_convert_method=MSWORD_CONVERT_METHOD,
                    pdf_convert_method=PDF_CONVERT_METHOD, **kwargs):
+    """Tries to convert the supplied ebook file into .txt. It uses calibre's
+    ebook-convert tool. For optimization, if present, it will use pdftotext
+    for pdfs, catdoc for word files and djvutxt for djvu files.
+
+    Ref.: https://bit.ly/2HXdf2I
+
+    """
     if mime_type.startswith('image/vnd.djvu') \
          and djvu_convert_method == 'djvutxt' and command_exists('djvutxt'):
         logger.debug('The file looks like a djvu, using djvutxt to extract the text')
@@ -619,19 +702,104 @@ def get_pages_in_pdf(file_path, cmd='mdls'):
     return convert_result_from_shell_cmd(result)
 
 
-def import_modules(english_detector='pycld2', use_cache=False):
+# Lazy imports
+def import_cache_nltk(english_detector='pycld2', use_cache=False):
     global Cache, ENGLISH_VOCAB, nltk
+    if use_cache:
+        logger.debug('importing diskcache...')
+        from diskcache import Cache
     if english_detector == 'nltk':
-        logger.debug('importing nltk')
+        logger.debug('importing nltk...')
         import nltk
         ENGLISH_VOCAB = set(w.lower() for w in nltk.corpus.words.words())
-    if use_cache:
-        logger.debug('importing diskcache')
-        from diskcache import Cache
+
+
+# Lazy imports of Bunch (sklearn) and numpy
+def import_bunch_numpy():
+    global np, Bunch
+
+    logger.debug('importing numpy...')
+    import numpy as np
+
+    logger.debug('importing sklearn.utils.Bunch...')
+    from sklearn.utils import Bunch
+
+
+# Lazy imports when benchmarking classifiers
+def import_for_benchmarking():
+    global plt, metrics, RandomForestClassifier, TfidfVectorizer, \
+        RidgeClassifier, SGDClassifier, ComplementNB, \
+        KNeighborsClassifier, NearestCentroid, LinearSVC, density
+
+    logger.debug('importing matplotlib...')
+    import matplotlib.pyplot as plt
+
+    logger.debug('importing sklearn...')
+    from sklearn import metrics
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.linear_model import RidgeClassifier, SGDClassifier
+    from sklearn.naive_bayes import ComplementNB
+    from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
+    from sklearn.svm import LinearSVC
+    from sklearn.utils.extmath import density
+
+
+# Lazy imports when performing hyperparameter tuning
+def import_for_hyperparam():
+    global RandomForestClassifier, TfidfVectorizer, LogisticRegression, \
+        RidgeClassifier, SGDClassifier, RandomizedSearchCV, ComplementNB, \
+        KNeighborsClassifier, NearestCentroid, Pipeline, LinearSVC
+
+    logger.debug('importing sklearn...')
+    # TODO: is it better to import in `hyperparam_tuning()`, more preciscely in
+    # the first `for loop`. See also for other cases, e.g. `import_for_training()`
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.linear_model import LogisticRegression, RidgeClassifier, SGDClassifier
+    from sklearn.model_selection import RandomizedSearchCV
+    from sklearn.naive_bayes import ComplementNB
+    from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
+    from sklearn.pipeline import Pipeline
+    from sklearn.svm import LinearSVC
+
+
+# Lazy imports when training ebook classifier
+def import_for_training():
+    global plt, pd, RandomForestClassifier, TfidfVectorizer, RidgeClassifier, \
+        SGDClassifier, accuracy_score, ConfusionMatrixDisplay, ComplementNB, \
+        KNeighborsClassifier, NearestCentroid, LinearSVC
+
+    logger.debug('importing matplotlib...')
+    import matplotlib.pyplot as plt
+
+    logger.debug('importing pandas...')
+    import pandas as pd
+
+    logger.debug('importing sklearn...')
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.linear_model import RidgeClassifier, SGDClassifier
+    from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay
+    from sklearn.naive_bayes import ComplementNB
+    from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
+    from sklearn.svm import LinearSVC
 
 
 def init_list(list_):
     return [] if list_ is None else list_
+
+
+# Ref.: https://stackoverflow.com/a/15924160
+def is_file_empty(file_path):
+    # TODO: test when file doesn't exist
+    # TODO: see if the proposed solution @ https://stackoverflow.com/a/15924160
+    # is equivalent to using try and catch the `OSError`
+    try:
+        return not os.path.getsize(file_path) > 0
+    except OSError as e:
+        logger.error(f'Error: {e.filename} - {e.strerror}.')
+        return False
 
 
 def is_text_english(text, method='pycld2', threshold=25):
@@ -780,6 +948,13 @@ def ocr_file(file_path, output_file, mime_type,
     with open(output_file, 'w') as f:
         f.write(text)
     return 0
+
+
+def pdfinfo(file_path):
+    cmd = f'pdfinfo "{file_path}"'
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
 
 
 def pdftotext(input_file, output_file, first_page_to_convert=None, last_page_to_convert=None):
@@ -934,7 +1109,7 @@ def setup_argparser():
     mutual_cache_group = cache_group.add_mutually_exclusive_group()
     mutual_cache_group.add_argument(
         '-c', '--clear-cache', dest='clear_cache', action='store_true',
-        help='Clear the cache. Be careful before using this option since everything '
+        help='Clear the cache. Be careful when using this option since everything '
              'in cache will be deleted including the text conversions.')
     mutual_cache_group.add_argument(
         '-r', '--remove-keys', metavar='KEY', dest='remove_keys',
@@ -945,13 +1120,6 @@ def setup_argparser():
     mutual_cache_group.add_argument(
         '-n', '--number-items', dest='check_number_items', action='store_true',
         help='Show number of items stored in cache.')
-    # ====================
-    # Benchmarking options
-    # ====================
-    benchmark_group = parser.add_argument_group(title=yellow('Benchmarking options'))
-    benchmark_group.add_argument(
-        '-b', '--benchmark', dest='benchmark', action='store_true',
-        help='Benchmarking classifiers.')
     # =======================
     # Convert-to-text options
     # =======================
@@ -961,6 +1129,20 @@ def setup_argparser():
         metavar='PAGES', default=CONVERT_ONLY_PERCENTAGE_EBOOK,
         help='Convert this percentage of a given ebook to text.'
              + get_default_message(CONVERT_ONLY_PERCENTAGE_EBOOK))
+    # ===========
+    # OCR options
+    # ===========
+    ocr_group = parser.add_argument_group(title=yellow('OCR options'))
+    ocr_group.add_argument(
+        "-o", "--ocr-enabled", dest='ocr_enabled', default=OCR_ENABLED,
+        choices=['always', 'true', 'false'],
+        help='Whether to enable OCR for .pdf, .djvu and image files. It is '
+             'disabled by default.' + get_default_message(OCR_ENABLED))
+    ocr_group.add_argument(
+        '--oorp', '--ocr-only-random-pages', dest='ocr_only_random_pages', type=int,
+        metavar='PAGES', default=OCR_ONLY_RANDOM_PAGES,
+        help='OCR only these number of pages chosen randomly in the first 50%% of a given ebook.'
+             + get_default_message(OCR_ONLY_RANDOM_PAGES))
     # ===============
     # Dataset options
     # ===============
@@ -976,38 +1158,31 @@ def setup_argparser():
         '--cat', '--categories', metavar='CATEGORY', dest='categories',
         nargs='+', default=None,
         help='Only include these categories in the dataset.')
-        # help='Only include these categories in the dataset.' + get_default_message(' '.join(CATEGORIES)))
+    # help='Only include these categories in the dataset.' + get_default_message(' '.join(CATEGORIES)))
     dataset_group.add_argument(
         '--vp', '--vect-params', metavar='PARAMS', dest='vect_params',
         nargs='+', default=VECT_PARAMS,
         help='The parameters to be used by TfidfVectorizer for vectorizing the dataset.'
              + get_default_message(' '.join(VECT_PARAMS).replace('(', "'(").replace(')', ")'")))
+    # ====================
+    # Benchmarking options
+    # ====================
+    benchmark_group = parser.add_argument_group(title=yellow('Benchmarking options'))
+    benchmark_group.add_argument(
+        '-b', '--benchmark', dest='benchmark', action='store_true',
+        help='Benchmarking classifiers.')
     # =============================
     # Hyperparameter tuning options
     # =============================
     hyper_group = parser.add_argument_group(title=yellow('Hyperparameter tuning options'))
     hyper_group.add_argument(
-        '--ht', '--hyper-tune', dest='hyper_tune', action='store_true',
+        '--ht', '--hyper-tuning', dest='hyper_tuning', action='store_true',
         help='Perform hyperparameter tuning.')
     hyper_group.add_argument(
         '--clfs', metavar='CLF', dest='clfs',
         nargs='*', default=CLFS,
         help='The names of classifiers whose hyperparameters will be tuned with grid search.'
              + get_default_message(' '.join(CLFS)))
-    # ===========
-    # OCR options
-    # ===========
-    ocr_group = parser.add_argument_group(title=yellow('OCR options'))
-    ocr_group.add_argument(
-        "-o", "--ocr-enabled", dest='ocr_enabled', default=OCR_ENABLED,
-        choices=['always', 'true', 'false'],
-        help='Whether to enable OCR for .pdf, .djvu and image files. It is '
-             'disabled by default.' + get_default_message(OCR_ENABLED))
-    ocr_group.add_argument(
-        '--oorp', '--ocr-only-random-pages', dest='ocr_only_random_pages', type=int,
-        metavar='PAGES', default=OCR_ONLY_RANDOM_PAGES,
-        help='OCR only these number of pages chosen randomly in the first 50%% of a given ebook.'
-             + get_default_message(OCR_ONLY_RANDOM_PAGES))
     # ======================
     # Classification options
     # ======================
@@ -1133,12 +1308,14 @@ class DatasetManager:
         random.seed(self.seed)
         # Setup cache
         cache_size_bytes = round(self.cache_size_limit * float(1 << 30), 2)
+        # start_cache = timer()
         if self.use_cache:
             self.cache = Cache(directory=self.cache_folder,
                                eviction_policy=self.eviction_policy,
                                size_limit=cache_size_bytes)
         else:
             self.cache = None
+        # logger.warning(yellow(f"Caching takes: {timer() - start_cache}"))
         # TODO: put the rest in a method?
         # TODO: change name to create and other such places
         # Dataset generation/updating/loading
@@ -1159,7 +1336,9 @@ class DatasetManager:
                 logger.info('Dataset is already created!')
             else:
                 logger.info(blue("Loading dataset..."))
+                # start = timer()
                 self._load_dataset()
+                # logger.warning(yellow(f"Loading dataset takes: {timer() - start}"))
         if generate_dataset:
             self._generate_dataset()
             logger.info(f"{COLORS['BLUE']}Saving dataset:{COLORS['NC']} {self.dataset_path}")
@@ -1184,9 +1363,13 @@ class DatasetManager:
                 # (LinearSVC(C=10, dual=True, max_iter=1000), "Linear SVC"),  # medium
                 (LinearSVC(C=10, dual=True, max_iter=500), "Linear SVC"),  # large
                 # L2 penalty Linear SGD
-                # (SGDClassifier(loss="log", alpha=1e-3), "log-loss SGD"),
-                # (SGDClassifier(loss="log", alpha=1e-06), "log-loss SGD"),  # medium
-                (SGDClassifier(loss="log", alpha=1e-06), "log-loss SGD"),  # large
+                # NOTE: The 'loss' parameter of `SGDClassifier` must be a str among
+                # {'squared_error', 'huber', 'perceptron', 'modified_huber', 'hinge',
+                # 'log_loss', 'squared_hinge', 'squared_epsilon_insensitive',
+                # 'epsilon_insensitive'}.
+                # (SGDClassifier(loss="log_loss", alpha=1e-3), "log-loss SGD"),
+                # (SGDClassifier(loss="log_loss", alpha=1e-06), "log-loss SGD"),  # medium
+                (SGDClassifier(loss="log_loss", alpha=1e-06), "log-loss SGD"),  # large
                 # NearestCentroid (aka Rocchio classifier)
                 (NearestCentroid(), "NearestCentroid"),
                 # Sparse naive Bayes classifier
@@ -1240,72 +1423,6 @@ class DatasetManager:
             logger.warning(f"{COLORS['YELLOW']}Cache folder not found:{COLORS['NC']} {folder}")
             return False
 
-    def train_ebook_classifier(self, clf_name_and_params, vect_params, categories):
-        # TODO: check first clf is supported
-        if not clf_name_and_params:
-            logger.warning(yellow('No classifier was specified!'))
-            return 0
-        vect_params_dict = {}
-        for param in vect_params:
-            param_name, param_value = param.split('=')
-            try:
-                # TODO: sanity check before calling eval
-                param_value = eval(param_value)
-            except NameError:
-                # e.g. NameError: name 'l2' is not defined
-                pass
-            vect_params_dict.setdefault(param_name, param_value)
-        X_train, X_test, y_train, y_test, feature_names, target_names = self._vectorize_dataset(categories, **vect_params_dict)
-
-        clf_name = clf_name_and_params[0]
-        clf_params = clf_name_and_params[1:]
-        clf_params = self._clean_params(clf_params)
-        if clf_name == 'RandomModel':
-            clf_params = len(target_names)
-        # TODO: sanity check before calling eval
-        logger.info(f"{blue('Classifier:')} {clf_name}")
-        logger.info(f"{blue('Parameters:')} {clf_params}")
-        clf = eval(f'{clf_name}({clf_params})')
-        # clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
-        clf.fit(X_train, y_train)
-        pred = clf.predict(X_test)
-        score_normalized = accuracy_score(y_test, pred)
-        score_count = int(score_normalized * y_test.shape[0])
-        logger.info(f'Score (normalized): {score_normalized:.3}')
-        logger.info(f'Score (count): {score_count}')
-        logger.info(f'Total count: {y_test.shape[0]}')
-
-        try:
-            plot_confusion_matrix(clf, y_test, pred, target_names)
-            plot_feature_effects(clf, X_train, target_names, feature_names).set_title("Average feature effect on the medium-size dataset")
-            plt.show()
-        except AttributeError as e:
-            # For KNN, RandomForestClassifier, NearestCentroid:
-            # AttributeError: 'KNeighborsClassifier' object has no attribute 'coef_'
-            # No feature effects for them
-            if not hasattr(clf, 'coef_'):
-                logger.error(red(f'{e}'))
-                logger.info('Thus, no feature effects could be plotted')
-            else:
-                logger.exception(e)
-            return 1
-
-        return 0
-
-    def _clean_params(self, params):
-        new_params = []
-        for param in params:
-            param_name, param_value = param.strip().split('=')
-            try:
-                # TODO: sanity check before calling eval
-                param_value = eval(param_value)
-            except NameError:
-                # e.g. NameError: name 'sparse_cg' is not defined
-                # SOLUTION: solver=sparse_cg --> solver="sparse_cg"
-                param_value = f'"{param_value}"'
-            new_params.append(f'{param_name}={param_value}')
-        return ', '.join(new_params)
-
     @staticmethod
     def clear_cache(cache_folder):
         if DatasetManager.cache_folder_exists(cache_folder):
@@ -1347,7 +1464,16 @@ class DatasetManager:
         self._fix_target(dataset)
         return dataset
 
-    def hyperparams_tuning(self, clf_names, categories=None):
+    @staticmethod
+    def get_number_items_in_cache(cache_folder):
+        if DatasetManager.cache_folder_exists(cache_folder):
+            cache = Cache(cache_folder)
+            logger.info(f'Cache: {cache_folder}')
+            n_items = len([k for k in cache.iterkeys()])
+            ending = 's' if n_items > 1 else ''
+            logger.info(f"There are {COLORS['GREEN']}{n_items} item{ending}{COLORS['NC']} in cache")
+
+    def hyperparam_tuning(self, clf_names, categories=None):
         if not clf_names:
             logger.warning(yellow('No classifiers were specified!'))
             return 0
@@ -1431,15 +1557,6 @@ class DatasetManager:
         return 0
 
     @staticmethod
-    def number_items_in_cache(cache_folder):
-        if DatasetManager.cache_folder_exists(cache_folder):
-            cache = Cache(cache_folder)
-            logger.info(f'Cache: {cache_folder}')
-            n_items = len([k for k in cache.iterkeys()])
-            ending = 's' if n_items > 1 else ''
-            logger.info(f"There are {COLORS['GREEN']}{n_items} item{ending}{COLORS['NC']} in cache")
-
-    @staticmethod
     def remove_keys_from_cache(cache_folder, keys):
          if DatasetManager.cache_folder_exists(cache_folder):
             cache = Cache(cache_folder)
@@ -1469,6 +1586,61 @@ class DatasetManager:
             elif isinstance(v, np.ndarray):
                 setattr(dataset, attr, v[idx])
 
+    def train_ebook_classifier(self, clf_name_and_params, vect_params, categories):
+        # TODO: check first clf is supported
+        if not clf_name_and_params:
+            logger.warning(yellow('No classifier was specified!'))
+            return 0
+        vect_params_dict = {}
+        for param in vect_params:
+            param_name, param_value = param.split('=')
+            try:
+                # TODO: sanity check before calling eval
+                param_value = eval(param_value)
+            except NameError:
+                # e.g. NameError: name 'l2' is not defined
+                pass
+            vect_params_dict.setdefault(param_name, param_value)
+        X_train, X_test, y_train, y_test, feature_names, target_names = \
+            self._vectorize_dataset(categories, **vect_params_dict)
+
+        clf_name = clf_name_and_params[0]
+        clf_params = clf_name_and_params[1:]
+        clf_params = self._clean_params(clf_params)
+        if clf_name == 'RandomModel':
+            clf_params = len(target_names)
+        # TODO: sanity check before calling eval
+        logger.info(f"{blue('Classifier:')} {clf_name}")
+        logger.info(f"{blue('Parameters:')} {clf_params}")
+        clf = eval(f'{clf_name}({clf_params})')
+        # clf = RidgeClassifier(tol=1e-2, solver="sparse_cg")
+        clf.fit(X_train, y_train)
+        pred = clf.predict(X_test)
+        score_normalized = accuracy_score(y_test, pred)
+        score_count = int(score_normalized * y_test.shape[0])
+        logger.info(f'Score (normalized): {score_normalized:.3}')
+        logger.info(f'Score (count): {score_count}')
+        logger.info(f'Total count: {y_test.shape[0]}')
+
+        try:
+            plot_confusion_matrix(clf, y_test, pred, target_names)
+            # TODO: add option to specify name of the dataset
+            plot_feature_effects(clf, X_train, target_names, feature_names).set_title(
+                "Average feature effect on the medium-size dataset")
+            plt.show()
+        except AttributeError as e:
+            # For KNN, RandomForestClassifier, NearestCentroid:
+            # AttributeError: 'KNeighborsClassifier' object has no attribute 'coef_'
+            # No feature effects for them
+            if not hasattr(clf, 'coef_'):
+                logger.error(red(f'{e}'))
+                logger.info('Thus, no feature effects could be plotted')
+            else:
+                logger.exception(e)
+            return 1
+
+        return 0
+
     def _add_doc_to_dataset(self, filepath, text):
         self.dataset.data.append(text)
         self.dataset.filenames.append(filepath)
@@ -1487,10 +1659,38 @@ class DatasetManager:
         self.dataset.target.append(self.dataset.target_name_to_value[target_name])
         self.dataset.target_names.add(target_name)
 
+    @staticmethod
+    def _check_file_for_corruption(filepath):
+        err_code, file_err = check_file_for_corruption(filepath)
+        if err_code == 2:
+            logger.warning(yellow(f"[WARNING] File '{filepath.name}' is "
+                                  f"corrupt with error: {file_err}"))
+        elif err_code == 1:
+            logger.debug(f"File '{filepath.name}' was checked for corruption: "
+                         f"{file_err}")
+        else:
+            logger.debug(f"File '{filepath.name}' is not corrupted")
+        return err_code
+
+    def _clean_params(self, params):
+        new_params = []
+        for param in params:
+            param_name, param_value = param.strip().split('=')
+            try:
+                # TODO: sanity check before calling eval
+                param_value = eval(param_value)
+            except NameError:
+                # e.g. NameError: name 'sparse_cg' is not defined
+                # SOLUTION: solver=sparse_cg --> solver="sparse_cg"
+                param_value = f'"{param_value}"'
+            new_params.append(f'{param_name}={param_value}')
+        return ', '.join(new_params)
+
     # You want the targets to start from 0 and go incremental from there
     def _fix_target(self, dataset):
         dataset.target_names = sorted(dataset.target_names)
-        new_target_name_to_value = dict(zip(dataset.target_names, [i for i in range(len(dataset.target_names))]))
+        new_target_name_to_value = dict(
+            zip(dataset.target_names, [i for i in range(len(dataset.target_names))]))
         target_value_to_name = dict(zip(self.dataset.target_name_to_value.values(),
                                         self.dataset.target_name_to_value.keys()))
         new_target = []
@@ -1503,43 +1703,55 @@ class DatasetManager:
 
     def _generate_dataset(self):
         target_names = self._get_target_names()
-        self.dataset.target_name_to_value = dict(zip(target_names, [i for i in range(len(target_names))]))
+        self.dataset.target_name_to_value = \
+            dict(zip(target_names, [i for i in range(len(target_names))]))
         self.dataset.target_names = set()
         if not self.use_cache:
             logger.warning(yellow(f'use_cache={self.use_cache}'))
         self._generate_ebooks_dataset()
         # Necessary if for example you have a folder (=label) without any ebook
-        # You don't want to include this empty folder in the list dataset.target_names
-        # You want the targets to start from 0 and go incremental from there
-        # TODO: could it be done within _get_target_names()?
+        # You don't want to include this empty folder in the list
+        # `dataset.target_names`. You want the targets to start from 0 and go
+        # incremental from there
+        # TODO: could it be done within `_get_target_names()`?
         self._fix_target(self.dataset)
 
     def _generate_ebooks_dataset(self):
         self.DESC = "Dataset containing text from ebooks"
         filepaths = [filepath for filepath in self.input_directory.rglob('*')
-                     if filepath.is_file() and filepath.suffix.split('.')[-1] in self.ebook_formats]
+                     if filepath.is_file() and filepath.suffix.split('.')[-1]
+                     in self.ebook_formats]
         total = len(filepaths)
         add_text_to_cache = False
         text_added_dataset = []
         text_added_cache = []
-        filepaths_rejected = []
+        filepaths_conversion_failed = []
+        filepaths_corrupt = []
         file_hashes = []
         duplicates = []
         for i, filepath in enumerate(filepaths, start=1):
-            if False and i == 250:  # TODO: debug code
-                break
-            logger.info(f"{COLORS['BLUE']}Processing document {i} of {total}:{COLORS['NC']} {filepath.name[:92]}...")
+            logger.info(f"{COLORS['BLUE']}Processing document {i} of {total}:"
+                        f"{COLORS['NC']} {filepath.name[:92]}...")
+
+            # TODO: remove for debugging
+            if False and i != 47:
+                continue
+
+            # Check for duplicates based on the ebook's hash
             key_to_text = None
             cache_result = None
             file_hash = get_hash(filepath)
             logger.debug(f'File hash: {file_hash}')
             if file_hash in file_hashes:
-                logger.info(f"{COLORS['GREEN']}Found duplicate:{COLORS['NC']} {filepath}")
+                logger.info(f"{COLORS['GREEN']}Found duplicate:{COLORS['NC']} "
+                            f"{filepath.name}")
                 logger.info('It will be rejected from dataset and cache')
-                duplicates.append(filepath)
+                duplicates.append(filepath.name)
                 continue
             else:
                 file_hashes.append(file_hash)
+
+            # Update the dataset
             if self.update_dataset:
                 if filepath in self.dataset_tmp.filenames:
                     idx = self.dataset_tmp.filenames.index(filepath)
@@ -1548,22 +1760,36 @@ class DatasetManager:
                     self._add_doc_to_dataset(filepath, text)
                     continue
                 else:
-                    logger.info('Document not found in the loaded dataset. Will try to add it.')
+                    logger.info('Document not found in the loaded dataset. '
+                                'Will try to add it.')
+
+            # Check cache
             if self.use_cache:
                 cache_result = self.cache.get(file_hash)
                 convert_method = self._get_convert_method(filepath)
-                key_to_text = f'{convert_method}+{self.convert_only_percentage_ebook}+{self.ocr_only_random_pages}'
+                key_to_text = f'{convert_method}+' \
+                              f'{self.convert_only_percentage_ebook}+' \
+                              f'{self.ocr_only_random_pages}'
                 logger.debug(f'key_to_text: {key_to_text}')
                 if cache_result and cache_result.get(key_to_text):
                     text = cache_result[key_to_text]
                     logger.info('Found text in cache')
                 else:
-                    logger.debug('Text not found in cache. Will try to convert document to text')
+                    if self._check_file_for_corruption(filepath) == 2:
+                        filepaths_corrupt.append(filepath.name)
+                        continue
+                    logger.debug('Text not found in cache. Will try to '
+                                 'convert document to text')
                     text = convert(filepath, **self.__dict__)
                     add_text_to_cache = True
             else:
+                if self._check_file_for_corruption(filepath) == 2:
+                    filepaths_corrupt.append(filepath.name)
+                    continue
                 logger.debug('Converting document to text')
                 text = convert(filepath, **self.__dict__)
+
+            # Add text to dataset
             if isinstance(text, str):
                 logger.info('Adding text to dataset')
                 self._add_doc_to_dataset(filepath, text)
@@ -1572,26 +1798,34 @@ class DatasetManager:
                     logger.info('Adding text to cache')
                     dict_text = {key_to_text: text}
                     if cache_result:
-                        logger.debug("Updating the dictionary in cache associated with the file hash "
-                                     f"'{file_hash}' + {key_to_text}")
+                        logger.debug("Updating the dictionary in cache associated "
+                                     f"with the file hash '{file_hash}' + "
+                                     f"{key_to_text}")
                         cache_result.update(dict_text)
                     else:
                         # logger.debug('First time adding text in cache')
                         cache_result = dict_text
                     self.cache.set(file_hash, cache_result)
-                    text_added_cache.append(filepath)
+                    text_added_cache.append(filepath.name)
             else:
-                logger.warning(yellow("[WARNING] Document couldn't be converted to text (it could be formed of "
-                                      f"images, try with OCR): {filepath}"))
+                logger.warning(yellow("[WARNING] Document couldn't be converted "
+                                      "to text (it could be formed of images, "
+                                      f"try with OCR): {filepath.name}"))
                 logger.debug(f'Return code: {text}')
-                filepaths_rejected.append(filepath)
+                filepaths_conversion_failed.append(filepath.name)
             add_text_to_cache = False
+
+        # Display some stats
         logger.info(violet('Results from dataset creation:'))
         logger.info(f'Number of text added to dataset: {len(text_added_dataset)}')
         logger.info(f'Number of text added to cache: {len(text_added_cache)}')
-        logger.info(f'Number of filepaths rejected: {len(filepaths_rejected)}')
+        logger.info(f'Number of corrupt filepaths: {len(filepaths_corrupt)}')
+        logger.info('Number of filepaths with failed text conversion: '
+                    f'{len(filepaths_conversion_failed)}')
         logger.info(f'Number of duplicates: {len(duplicates)}')
-        logger.debug(f'Filepaths rejected: {filepaths_rejected}')
+        logger.debug(f'Filepaths with corruption: {filepaths_corrupt}')
+        logger.debug('Filepaths with failed text conversion: '
+                     f'{filepaths_conversion_failed}')
         logger.debug(f'Duplicates: {duplicates}')
 
     def _get_convert_method(self, filepath):
@@ -1610,8 +1844,8 @@ class DatasetManager:
                 target_names.append(file.name)
         return target_names
 
-    # case where you have multiple folders with the same folder name, e.g. history folder found
-    # Within computer science, mathematics, physics
+    # Case where you have multiple folders with the same folder name,
+    # e.g. history folder found within computer science, mathematics, physics
     def _get_target_names_v2(self):
         target_names_dict = {}
         self.duplicate_folder_names = []
@@ -1656,7 +1890,7 @@ class DatasetManager:
         logger.info(f'{len(dataset.data)} documents - {true_k} categories')
         end_position = int(train_prop * dataset_size)
 
-        # split dataset in a training set and a test set
+        # Split dataset in a training set and a test set
         train_data = dataset.data[:end_position]
         y_train = dataset.target[:end_position]
         # train_filenames = dataset.filenames[:end_position]
@@ -1698,7 +1932,15 @@ class DatasetManager:
                 f"{data_train_size_mb:.2f}MB (training set)"
             )
             print(f"{len(test_data)} documents - {data_test_size_mb:.2f}MB (test set)")
-            print(f"{len(target_names)} categories")
+            print(f"Total number of categories: {len(target_names)}")
+            train_frequency_list = np.bincount(y_train).tolist()
+            if len(np.bincount(y_train)) == len(target_names) - 1:
+                train_frequency_list.append(0)
+            test_frequency_list = np.bincount(y_test).tolist()
+            if len(np.bincount(y_test)) == len(target_names) - 1:
+                test_frequency_list.append(0)
+            print(f"Number of documents per categories (train set): {train_frequency_list}")
+            print(f"Number of documents per categories (test set): {test_frequency_list}")
             print(
                 f"vectorize training done in {duration_train:.3f}s "
                 f"at {data_train_size_mb / duration_train:.3f}MB/s"
@@ -1721,30 +1963,38 @@ def main():
         args = parser.parse_args()
         QUIET = args.quiet
         setup_log(args.quiet, args.verbose, args.logging_level, args.logging_formatter)
+
+        # Cache option
         if args.use_cache or args.check_number_items or args.clear_cache or args.remove_keys:
             use_cache = True
         else:
             use_cache = False
-        import_modules(english_detector='pycld2', use_cache=use_cache)
+        import_cache_nltk(english_detector='pycld2', use_cache=use_cache)
+
         # Actions
         if args.check_number_items:
-            DatasetManager.number_items_in_cache(CACHE_FOLDER)
+            DatasetManager.get_number_items_in_cache(CACHE_FOLDER)
         elif args.clear_cache:
             DatasetManager.clear_cache(CACHE_FOLDER)
         elif args.remove_keys:
             DatasetManager.remove_keys_from_cache(CACHE_FOLDER, args.remove_keys)
         elif args.input_directory:
+            import_bunch_numpy()
+
             data_manager = DatasetManager(**namespace_to_dict(args))
             categories = CATEGORIES if args.categories is None else args.categories
             clfs = args.clfs if args.clfs else CLFS
             clf = args.clf if args.clf else CLF
+
             # Tasks
             if not (args.create_dataset or args.update_dataset):
-                if args.hyper_tune:
-                    exit_code = data_manager.hyperparams_tuning(clfs, categories)
+                if args.hyper_tuning:
+                    exit_code = data_manager.hyperparam_tuning(clfs, categories)
                 elif args.benchmark:
+                    import_for_benchmarking()
                     exit_code = data_manager.benchmark_classifiers(categories)
                 else:
+                    import_for_training()
                     exit_code = data_manager.train_ebook_classifier(clf, args.vect_params, categories)
         else:
             logger.warning(yellow('Missing input directory'))
