@@ -9,7 +9,7 @@ Script ``train_classifier.py``
 ------------
 Dependencies
 ------------
-This is the environment on which the script `classify_ebooks.py <./scripts/classify_ebooks.py>`_ was tested:
+This is the environment on which the script `train_classifier.py <./scripts/train_classifier.py>`_ was tested:
 
 * **Platform:** macOS
 * **Python**: version **3.7**
