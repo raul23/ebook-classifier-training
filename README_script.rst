@@ -120,9 +120,9 @@ I won't list all options (too many) but here are some of the important and inter
     failed to convert an ebook to ``txt`` or resulted in an empty file, the OCR method will be used.
   - 'false': never use OCR, only use the other simpler conversion tools (``pdftotext`` and ``djvutxt``).
 
--------------------------------------
-Start the classification of ebooks ⭐
--------------------------------------
+---------------------------------------------
+Start the training of the ebook classifier ⭐
+---------------------------------------------
 To **quickly** start the classification of ebooks, all you need is to provide the directory containing said ebooks::
 
  python classify_ebooks.py ~/Data/ebooks
