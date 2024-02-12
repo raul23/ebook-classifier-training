@@ -44,18 +44,18 @@ Script options
 --------------
 To display the script's list of options and their descriptions::
 
- $ python classify_ebooks.py -h
- usage: python classify_ebooks.py [OPTIONS] {input_directory}
+ $ python train_classifier.py -h
+ usage: python train_classifier.py [OPTIONS] {input_directory}
 
 I won't list all options (too many) but here are some of the important and interesting ones:
-
-**Benchmarking options:**
-
--b                                     Benchmarking classifiers.
 
 **Cache options:**
 
 -u                                     Highly recommended to use cache to speed up **dataset re-creation**.
+
+**OCR options:**
+
+-o                                     Whether to enable OCR for ``pdf``, ``djvu`` and image files. It is disabled by default. (default: false)
 
 **Dataset options:**
 
@@ -65,15 +65,15 @@ I won't list all options (too many) but here are some of the important and inter
 --vect-params PARAMS                  The parameters to be used by TfidfVectorizer for vectorizing the dataset. 
                                       (default: max_df=0.5 min_df=5 ngram_range='(1, 1)' norm=l2)
 
+**Benchmarking options:**
+
+-b                                     Benchmarking classifiers.
+
 **Hyperparameter tuning options:**
 
---hyper-tune                           Perform hyperparameter tuning.
+--hyper-tuning                         Perform hyperparameter tuning.
 --clfs CLF                             The names of classifiers whose hyperparameters will be tuned with grid search.
                                        (default: RidgeClassifier ComplementNB)
-
-**OCR options:**
-
--o                                     Whether to enable OCR for ``pdf``, ``djvu`` and image files. It is disabled by default. (default: false)
 
 **Classification options:**
 
@@ -88,7 +88,7 @@ I won't list all options (too many) but here are some of the important and inter
 
   The following options require to specify an ``input_directory``:
   
-  - ``--hyper-tune``: hyperparameter tuning
+  - ``--hyper-tuning``: hyperparameter tuning
   - ``-b``: benchmarking
 - ``-b`` uses right now hard-coded parameter values for multiple classifiers. However, I will eventualy
   make it possible to upload a JSON file with custom parameter values for different classifiers when
@@ -105,11 +105,11 @@ I won't list all options (too many) but here are some of the important and inter
   (e.g. ``ngram_range=\(1,1)\)``).
 - ``--clfs [CLF [CLF ...]]``: the names of the classifiers are those used in scikit-learn's modules. For example::
 
-   python classify_ebooks.py ~/Data/ebooks --hyper-tune --clfs KNeighborsClassifier NearestCentroid LogisticRegression
+   python train_classifier.py ~/Data/ebooks --hyper-tune --clfs KNeighborsClassifier NearestCentroid LogisticRegression
    
 - ``--clf CLF_PARAMS``: the name of the classifier and its parameters are the ones used in scikit-learn's modules. For example::
   
-   python classify_ebooks.py ~/Data/ebooks --clf KNeighborsClassifier n_neighbors=5
+   python train_classifier.py ~/Data/ebooks --clf KNeighborsClassifier n_neighbors=5
 - The choices for ``-o`` are ``{always, true, false}``
   
   - 'always': always use OCR first when doing text conversion. If the converson fails, then use the other simpler conversion tools
@@ -121,27 +121,27 @@ I won't list all options (too many) but here are some of the important and inter
 ---------------------------------------------
 Start the training of the ebook classifier ⭐
 ---------------------------------------------
-To **quickly** start the classification of ebooks, all you need is to provide the directory containing said ebooks::
+To **quickly** start the training of the ebook classifier, all you need is to provide the directory containing said ebooks::
 
- python classify_ebooks.py ~/Data/ebooks
+ python train_classifier.py ~/Data/ebooks
  
 The script will generate the dataset and then train the default classifier (``RidgeClassifier``) and 
 display the confusion matrix and features effects graph.
 
 To specify a classifier with its parameters, use the ``--clf`` option::
 
- python classify_ebooks.py ~/Data/ebooks --clf 
+ python train_classifier.py ~/Data/ebooks --clf 
 
 -------
 Caching
 -------
-`:information_source:` About the caching option (``--use-cache``) supported by the script ``classify_ebooks.py.py``
+`:information_source:` About the caching option (``--use-cache``) supported by the script ``train_classifier.py.py``
 
 - Cache is used to save the converted ebook files into ``txt`` to
   avoid re-converting them which can be a time consuming process. 
   `DiskCache <http://www.grantjenks.com/docs/diskcache/>`_, a disk and file 
-  backed cache library, is used by the ``classify_ebooks.py.py`` script.
-- Default cache folder used: ``~/.classify_ebooks``
+  backed cache library, is used by the ``train_classifier.py.py`` script.
+- Default cache folder used: ``~/.train_ebook_classifier``
 - The MD5 hashes of the ebook files are used as keys to the file-based cache.
 - These hashes of ebooks (keys) are then mapped to a dictionary with the following structure:
 
@@ -165,13 +165,13 @@ Caching
 
 `:warning:` Important things to keep in mind when using the caching option
 
-* When enabling the cache with the flag ``--use-cache``, the ``classify_ebooks.py`` 
+* When enabling the cache with the flag ``--use-cache``, the ``train_classifier.py`` 
   script has to cache the converted ebooks (``txt``) if they were
   not already saved in previous runs. Therefore, the speed up of some of the
   tasks (dataset re-creation and updating) will be seen in subsequent executions of the 
   script.
 * Keep in mind that caching has its caveats. For instance if a given ebook
-  is modified (e.g. a page is deleted) then the ``classify_ebooks.py`` 
+  is modified (e.g. a page is deleted) then the ``train_classifier.py`` 
   script has to run the text conversion again since the keys in the cache are the MD5 hashes of
   the ebooks.
 * There is no problem in the
@@ -184,7 +184,7 @@ Caching
 ----------------
 Ebooks directory
 ----------------
-`:warning:` In order to run the script `classify_ebooks.py <./scripts/classify_ebooks.py>`_, you need first to have a main directory (e.g. ``./ebooks/``) with all the ebooks (``pdf`` and ``djvu``) you want to test classification on. Each ebook should be in a folder whose name should correspond to the category of said ebook.
+`:warning:` In order to run the script `train_classifier.py <./scripts/train_classifier.py>`_, you need first to have a main directory (e.g. ``./ebooks/``) with all the ebooks (``pdf`` and ``djvu``) you want to test classification on. Each ebook should be in a folder whose name should correspond to the category of said ebook.
 
 For example:
 
@@ -194,7 +194,7 @@ For example:
 
 Then, you need to give the path to the main directory to the script, like this::
 
- $ python classify_ebooks.py ~/Data/ebooks/
+ $ python train_classifier.py ~/Data/ebooks/
  
 The next section explains in details the generation of a dataset containing text from these ebooks.
 
@@ -204,7 +204,7 @@ Dataset creation
 To start creating a dataset containing texts from ebooks after you have setup your `directory of ebooks <#ebooks-directory>`_, the option
 ``--cd`` and the input directory are necessary::
 
- $ python classify_ebooks.py --cd ~/Data/ebooks/
+ $ python train_classifier.py --cd ~/Data/ebooks/
  
 `:information_source:` Explaining the text conversion procedure
 
@@ -242,7 +242,7 @@ The next times the script is run, the dataset will be loaded from disk as long a
 
 Creating the ebooks dataset using cache (``-u`` option) without OCR support (i.e. the ``-o true`` option is not used)::
 
- $ python classify_ebooks.py --cd -u ~/Data/ebooks/
+ $ python train_classifier.py --cd -u ~/Data/ebooks/
 
 First time running the script with a cleared cache:
 
@@ -298,7 +298,7 @@ OCR
 For those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``), 
 you can update the dataset using the  options ``--ud`` (update) and ``-o true`` (enable OCR)::
 
- $ python classify_ebooks.py -u --ud -o true ~/Data/ebooks/
+ $ python train_classifier.py -u --ud -o true ~/Data/ebooks/
 
 `:information_source:` Explaining the options:
 
@@ -336,7 +336,7 @@ Updating a dataset
 ------------------
 After a dataset is created and saved, you can update it with new texts from more ebooks by using the ``--ud`` option::
 
- $ python classify_ebooks.py --ud ~/Data/ebooks/
+ $ python train_classifier.py --ud ~/Data/ebooks/
 
 .. raw:: html
 
@@ -352,9 +352,9 @@ After the dataset containing texts from ebooks is generated, you can launch the 
 containing the saved pickle file of the dataset. During the text classification, the dataset is loaded and filtered by removing 
 text that is not English and not part of the specified categories (e.g. ``computer_science``, ``mathematics``, ``physics``).
 
-Here are some samples of output from the script ``classify_ebooks.py``::
+Here are some samples of output from the script ``train_classifier.py``::
 
- python classify_ebooks.py ~/Data/ebooks/ --verbose
+ python train_classifier.py ~/Data/ebooks/ --verbose
  
 `:information_source:` Explaining the options:
 
@@ -363,7 +363,7 @@ Here are some samples of output from the script ``classify_ebooks.py``::
 - By default, the three mentioned categories are choosen. But you can control the categories you want to include in the filtered dataset with the
   ``--cat`` option::
 
-   python classify_ebooks.py -u ~/Data/ebooks/ --cat chemistry physics
+   python train_classifier.py -u ~/Data/ebooks/ --cat chemistry physics
 
 | 
  
