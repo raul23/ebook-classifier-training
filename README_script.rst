@@ -118,7 +118,6 @@ I won't list all options (too many) but here are some of the important and inter
     failed to convert an ebook to ``txt`` or resulted in an empty file, the OCR method will be used.
   - 'false': never use OCR, only use the other simpler conversion tools (``pdftotext`` and ``djvutxt``).
 
----------------------------------------------
 Start the training of the ebook classifier ⭐
 ---------------------------------------------
 To **quickly** start the training of the ebook classifier, all you need is to provide the directory containing said ebooks::
@@ -132,7 +131,6 @@ To specify a classifier with its parameters, use the ``--clf`` option::
 
  python train_classifier.py ~/Data/ebooks --clf 
 
--------------
 Cache options
 -------------
 `:information_source:` About the caching option (``--use-cache``) supported by the script ``train_classifier.py.py``
@@ -181,12 +179,11 @@ Cache options
   by default it is the least-recently-stored eviction policy (check the
   ``--eviction-policy`` option).
 
----------------
 Dataset options
 ---------------
 
 Ebooks directory
-----------------
+****************
 `:warning:` In order to run the script `train_classifier.py <./scripts/train_classifier.py>`_, you need first to have a main directory (e.g. ``./ebooks/``) with all the ebooks (``pdf`` and ``djvu``) you want to test classification on. Each ebook should be in a folder whose name should correspond to the category of said ebook.
 
 For example:
@@ -202,7 +199,7 @@ Then, you need to give the path to the main directory to the script, like this::
 The next section explains in details the generation of a dataset containing text from these ebooks.
 
 Dataset creation
-----------------
+****************
 To start creating a dataset containing texts from ebooks after you have setup your `directory of ebooks <#ebooks-directory>`_, the option
 ``--cd`` and the input directory are necessary::
 
@@ -295,7 +292,7 @@ added to the dataset and cache, books rejected and duplicates found
    </p>
 
 Updating a dataset
-------------------
+******************
 After a dataset is created and saved, you can update it with new texts from more ebooks by using the ``--ud`` option::
 
  $ python train_classifier.py --ud ~/Data/ebooks/
@@ -308,7 +305,7 @@ After a dataset is created and saved, you can update it with new texts from more
 `:information_source:` ``--ud`` tells the script to update the dataset pickle file saved within the main ebooks directory (e.g. ``~/Data/ebooks``).
 
 Filtering a dataset: select texts only in English and from valid categories
----------------------------------------------------------------------------
+***************************************************************************
 After the dataset containing texts from ebooks is generated, you can launch the classification by providing only the input directory
 containing the saved pickle file of the dataset. During the text classification, the dataset is loaded and filtered by removing 
 text that is not English and not part of the specified categories (e.g. ``computer_science``, ``mathematics``, ``physics``).
@@ -366,7 +363,6 @@ filtering is completed
 `:information_source:` You will see in my list of ebooks that the text from the ebook ``abstract algebra.pdf`` was rejected even though it
 is from an English mathematics ebook. ``pycld2`` detected the text as not being in English because the text conversion (``pdftotext``) didn't 100% succeeded and introduced too many odd characters (e.g. ``0ß Å ÞBð``) mixed with english words. It seems that it is the only ebook over 153 converted documents that has this problem.
 
------------
 OCR options
 -----------
 For those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``), 
