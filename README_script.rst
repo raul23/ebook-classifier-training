@@ -42,7 +42,7 @@ Optionally:
 --------------
 Script options
 --------------
-To display the script's list of options and their descriptions::
+To display the script's list of options and their description::
 
  $ python train_classifier.py -h
  usage: python train_classifier.py [OPTIONS] {input_directory}
@@ -132,9 +132,9 @@ To specify a classifier with its parameters, use the ``--clf`` option::
 
  python train_classifier.py ~/Data/ebooks --clf 
 
--------
-Caching
--------
+-------------
+Cache options
+-------------
 `:information_source:` About the caching option (``--use-cache``) supported by the script ``train_classifier.py.py``
 
 - Cache is used to save the converted ebook files into ``txt`` to
@@ -181,7 +181,10 @@ Caching
   by default it is the least-recently-stored eviction policy (check the
   ``--eviction-policy`` option).
 
-----------------
+---------------
+Dataset options
+---------------
+
 Ebooks directory
 ----------------
 `:warning:` In order to run the script `train_classifier.py <./scripts/train_classifier.py>`_, you need first to have a main directory (e.g. ``./ebooks/``) with all the ebooks (``pdf`` and ``djvu``) you want to test classification on. Each ebook should be in a folder whose name should correspond to the category of said ebook.
@@ -198,7 +201,6 @@ Then, you need to give the path to the main directory to the script, like this::
  
 The next section explains in details the generation of a dataset containing text from these ebooks.
 
-----------------
 Dataset creation
 ----------------
 To start creating a dataset containing texts from ebooks after you have setup your `directory of ebooks <#ebooks-directory>`_, the option
@@ -292,46 +294,6 @@ added to the dataset and cache, books rejected and duplicates found
    <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/dataset_generation_end_results2.png">
    </p>
 
----
-OCR
----
-For those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``), 
-you can update the dataset using the  options ``--ud`` (update) and ``-o true`` (enable OCR)::
-
- $ python train_classifier.py -u --ud -o true ~/Data/ebooks/
-
-`:information_source:` Explaining the options:
-
-- ``-u`` enables the cache in order to add the converted text to the cache.
-- The ``--ud`` flag refers to the action of updating the dataset pickle file that was already saved within the main ebooks directory
-  (e.g. ``~/Data/ebooks/``)
-- ``-o true`` enables OCR. The choices for ``-o, --ocr-enabled`` are: ``{always, true, false}``. See `Script options <#script-options>`_ for an 
-  explanation of these values.
-- The OCR procedure is resource intensive, thus the conversion for those problematic ebooks might take longer than usual.
-- By default, OCR is applied on only 5 pages chosen randomly in the first 50% of a given ebook. This number is controlled by
-  the option ``--ocr-only-random-pages PAGES``.
-
-|
-
-Loading a dataset and applying OCR to those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``):
-
-.. raw:: html
-
-   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/updating_dataset_ocr.png">
-   </p>
-
-|
-
-Results at the end of applying OCR to all problematic ebooks (made up of images):
-
-.. raw:: html
-
-   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/updating_dataset_ocr_end_results.png">
-   </p>
-   
-`:information_source:` All 14 problematic ebooks (made up of images) were successfully converted to ``txt`` and added to the dataset and cache.
-
-------------------
 Updating a dataset
 ------------------
 After a dataset is created and saved, you can update it with new texts from more ebooks by using the ``--ud`` option::
@@ -345,7 +307,6 @@ After a dataset is created and saved, you can update it with new texts from more
    
 `:information_source:` ``--ud`` tells the script to update the dataset pickle file saved within the main ebooks directory (e.g. ``~/Data/ebooks``).
 
----------------------------------------------------------------------------
 Filtering a dataset: select texts only in English and from valid categories
 ---------------------------------------------------------------------------
 After the dataset containing texts from ebooks is generated, you can launch the classification by providing only the input directory
@@ -404,3 +365,42 @@ filtering is completed
 
 `:information_source:` You will see in my list of ebooks that the text from the ebook ``abstract algebra.pdf`` was rejected even though it
 is from an English mathematics ebook. ``pycld2`` detected the text as not being in English because the text conversion (``pdftotext``) didn't 100% succeeded and introduced too many odd characters (e.g. ``0ß Å ÞBð``) mixed with english words. It seems that it is the only ebook over 153 converted documents that has this problem.
+
+-----------
+OCR options
+-----------
+For those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``), 
+you can update the dataset using the  options ``--ud`` (update) and ``-o true`` (enable OCR)::
+
+ $ python train_classifier.py -u --ud -o true ~/Data/ebooks/
+
+`:information_source:` Explaining the options:
+
+- ``-u`` enables the cache in order to add the converted text to the cache.
+- The ``--ud`` flag refers to the action of updating the dataset pickle file that was already saved within the main ebooks directory
+  (e.g. ``~/Data/ebooks/``)
+- ``-o true`` enables OCR. The choices for ``-o, --ocr-enabled`` are: ``{always, true, false}``. See `Script options <#script-options>`_ for an 
+  explanation of these values.
+- The OCR procedure is resource intensive, thus the conversion for those problematic ebooks might take longer than usual.
+- By default, OCR is applied on only 5 pages chosen randomly in the first 50% of a given ebook. This number is controlled by
+  the option ``--ocr-only-random-pages PAGES``.
+
+|
+
+Loading a dataset and applying OCR to those ebooks that couldn't be converted to ``txt`` with simpler methods (``pdftotext`` and ``djvutxt``):
+
+.. raw:: html
+
+   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/updating_dataset_ocr.png">
+   </p>
+
+|
+
+Results at the end of applying OCR to all problematic ebooks (made up of images):
+
+.. raw:: html
+
+   <p align="left"><img src="https://github.com/raul23/clustering-text/blob/main/images/updating_dataset_ocr_end_results.png">
+   </p>
+   
+`:information_source:` All 14 problematic ebooks (made up of images) were successfully converted to ``txt`` and added to the dataset and cache.
