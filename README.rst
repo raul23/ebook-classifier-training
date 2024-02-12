@@ -203,7 +203,7 @@ the ebooks to be classified:
 
 Command used to generate the confusion matrix shown next::
 
- python classify_ebooks.py ~/Data/ebooks -s 12345 --clf RandomModel --cat computer_science mathematics physics
+ python train_classifier.py ~/Data/ebooks -s 12345 --clf RandomModel --cat computer_science mathematics physics
  
 .. commit=dce386f074472f72684bf4efb95ea59bc23312e2
 
@@ -232,7 +232,7 @@ mathematics, physics). It is the same model with the same parameters as in sciki
 
 Command used to generate the next plots::
 
- python classify_ebooks.py ~/Data/ebooks -s 12345 --cat computer_science mathematics physics
+ python train_classifier.py ~/Data/ebooks -s 12345 --cat computer_science mathematics physics
  
 .. commit=dce386f074472f72684bf4efb95ea59bc23312e2
  
@@ -302,7 +302,7 @@ Classifying with ``ComplementNB`` (odd results)⁉️
 """"""""""""""""""""""""""""""""""""""""""""""""
 Command used to generate the next plots::
 
- $ python classify_ebooks.py ~/Data/ebooks -s 12345 --clf ComplementNB alpha=1000 --cat computer_science mathematics physics
+ $ python train_classifier.py ~/Data/ebooks -s 12345 --clf ComplementNB alpha=1000 --cat computer_science mathematics physics
 
 .. commit=dce386f074472f72684bf4efb95ea59bc23312e2
 
@@ -449,7 +449,7 @@ the ebooks to be classified:
 
 Command used to generate the confusion matrix shown next::
 
- python classify_ebooks.py ~/Data/organize -s 12345 --clf RandomModel
+ python train_classifier.py ~/Data/organize -s 12345 --clf RandomModel
 
 .. commit=dce386f074472f72684bf4efb95ea59bc23312e2
 
@@ -478,7 +478,7 @@ of 202 documents <#medium-size-dataset-202-documents-with-10-categories>`_ with 
 
 Command used to generate the next plots::
 
- python classify_ebooks.py ~/Data/organize -s 12345
+ python train_classifier.py ~/Data/organize -s 12345
 
 .. commit dce386f074472f72684bf4efb95ea59bc23312e2 with i==250 for generating medium dataset
 
@@ -556,7 +556,7 @@ Classifying with ``ComplementNB`` (again odd results)⁉️
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 Command used to generate the next plots::
 
- $ python classify_ebooks.py ~/Data/organize -s 12345 --clf ComplementNB
+ $ python train_classifier.py ~/Data/organize -s 12345 --clf ComplementNB
 
 .. commit dce386f074472f72684bf4efb95ea59bc23312e2 with i==250 for generating medium dataset
 
@@ -642,11 +642,11 @@ I will try eventually what they suggest: increase ``max_iter`` or do some `prepr
 
 Command used to generate the next plots::
 
- $ python classify_ebooks.py ~/Data/organize -s 12345 -b
+ $ python train_classifier.py ~/Data/organize -s 12345 -b
  
 .. commit 3f2ae11
 
-.. python classify_ebooks.py ~/Data/organize/ -s 12345 --ht --clfs ComplementNB LogisticRegression RidgeClassifier KNeighborsClassifier RandomForestClassifier NeaestCentroid LinearSVC SGDClassifier 
+.. python train_classifier.py ~/Data/organize/ -s 12345 --ht --clfs ComplementNB LogisticRegression RidgeClassifier KNeighborsClassifier RandomForestClassifier NeaestCentroid LinearSVC SGDClassifier 
 
 .. talk about hyper tune the other benchmarking results and add command for benchmarking
 
@@ -739,7 +739,7 @@ the ebooks to be classified:
 
 Command used to generate the confusion matrix shown next::
 
- python classify_ebooks.py ~/Data/organize -s 12345 --clf RandomModel
+ python train_classifier.py ~/Data/organize -s 12345 --clf RandomModel
  
 .. commit dce386f074472f72684bf4efb95ea59bc23312e2
 
@@ -767,7 +767,7 @@ of 982 documents <#large-dataset-982-documents-with-43-categories>`_ with 43 cat
 
 Command used to generate the next plot::
 
- python classify_ebooks.py ~/Data/organize -s 12345
+ python train_classifier.py ~/Data/organize -s 12345
 
 .. commit dce386f074472f72684bf4efb95ea59bc23312e2
 
@@ -876,7 +876,7 @@ Benchmarking classifiers [large]
 """"""""""""""""""""""""""""""""
 Command used to generate the next plots::
 
- $ python classify_ebooks.py ~/Data/organize -s 12345 -b
+ $ python train_classifier.py ~/Data/organize -s 12345 -b
  
 .. commit 7767bf6fb8e0484926975d847a610336ad101daf
 
