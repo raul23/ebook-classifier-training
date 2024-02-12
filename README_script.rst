@@ -18,7 +18,7 @@ This is the environment on which the script `train_classifier.py <./scripts/trai
 * `pandas <https://pandas.pydata.org/>`_: **v2.0.3**, "High-performance, easy-to-use data structures and data analysis tool" 
 * `pycld2 <https://github.com/aboSamoor/pycld2>`_: **v0.41**, for detecting the language of a given ebook in order to keep 
   books based on a chosen language
-* `regex <https://pypi.org/project/regex/>`_: **v2023.12.25 **, "this regex implementation is backwards-compatible with 
+* `regex <https://pypi.org/project/regex/>`_: **v2023.12.25**, "this regex implementation is backwards-compatible with 
   the standard ``re`` module, but offers additional functionality"
 * `scikit-learn <https://scikit-learn.org/>`_: **v1.3.0**, "a set of python modules for machine learning and data mining"
 
