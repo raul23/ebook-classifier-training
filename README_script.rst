@@ -102,7 +102,7 @@ I won't list all options (too many) but here are some of the important and inter
    --vect-params max_df=0.2 min_df=1 ngram_range='(1,1)' norm=l2
    
   `:warning:` It is important to escape any parentheses on the terminal by placing them within single quotes or after a backslash
-  (e.g. ``ngram_range=\(1,1)\)``).
+  (e.g. ``ngram_range=\(1,1\)``).
 - ``--clfs [CLF [CLF ...]]``: the names of the classifiers are those used in scikit-learn's modules. For example::
 
    python train_classifier.py ~/Data/ebooks --hyper-tune --clfs KNeighborsClassifier NearestCentroid LogisticRegression
