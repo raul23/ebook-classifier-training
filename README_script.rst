@@ -72,7 +72,7 @@ I won't list all options (too many) but here are some of the important and inter
 **Hyperparameter tuning options:**
 
 --hyper-tuning                         Perform hyperparameter tuning.
---clfs CLF                             The names of classifiers whose hyperparameters will be tuned with grid search.
+--clfs [CLF [CLF ...]]                 The names of classifiers whose hyperparameters will be tuned with grid search.
                                        (default: RidgeClassifier ComplementNB)
 
 **Classification options:**
