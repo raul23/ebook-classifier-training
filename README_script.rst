@@ -13,6 +13,8 @@ This is the environment on which the script `train_classifier.py <./scripts/trai
 
 * **Platform:** macOS
 * **Python**: version **3.8**
+* `joblib <https://joblib.readthedocs.io/en/stable/index.html/>`_: **v1.2.0** for saving ML models. "A replacement 
+  for pickle to work efficiently on Python objects containing large data (``joblib.dump`` & ``joblib.load``).
 * `matplotlib <https://matplotlib.org/>`_: **v3.7.2** for generating graphs
 * `numpy <https://numpy.org/>`_: **v1.24.3**, for "array processing for numbers, strings, records, and objects"
 * `pandas <https://pandas.pydata.org/>`_: **v2.0.3**, "High-performance, easy-to-use data structures and data analysis tool" 
