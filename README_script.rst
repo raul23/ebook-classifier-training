@@ -90,7 +90,7 @@ I won't list all options (too many) but here are some of the important and inter
   
   - ``--hyper-tuning``: hyperparameter tuning
   - ``-b``: benchmarking
-- ``-b`` uses right now **hard-coded parameter** values for multiple classifiers. However, I will eventualy
+- ``-b`` uses right now **hard-coded parameter** values for multiple classifiers. However, I will eventually
   make it possible to upload a JSON file with custom parameter values for different classifiers when
   using this option (TODO).
 - By **dataset re-creation** I mean the case when you delete the pickle dataset file and generate the dataset 
