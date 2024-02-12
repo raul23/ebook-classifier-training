@@ -26,7 +26,7 @@ This is the environment on which the script `train_classifier.py <./scripts/trai
 
 `:star:` **Other dependencies**
 
-You also need recent versions of:
+You also need recent version of:
 
 -  `poppler <https://poppler.freedesktop.org/>`_ (including ``pdftotext``) and `DjVuLibre <http://djvu.sourceforge.net/>`_ (including ``djvutxt``)
    can be installed for conversion of ``.pdf`` and ``.djvu`` files to ``.txt``, respectively.
