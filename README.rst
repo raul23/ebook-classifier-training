@@ -22,6 +22,10 @@ multiple classifiers are used such as: ``RidgeClassifier``, ``LogisticRegression
 The best classifier will then be used for `part 2 <https://github.com/raul23/automated-ebook-organization>`_ 
 to automate the organization of ebooks within the filesystem.
 
+Script ``train_classifier.py``
+=============================
+To know how to use the script ``train_classifier.py``, go `here <./README_script.rst>`_ to read its documentation.
+
 Datasets
 ========
 
@@ -182,9 +186,7 @@ Some stats about this large dataset:
 
 Results of classifying ebooks ⭐
 ================================
-I put the results section at the top before explaining the `script <#script-classify-ebooks-py>`_ since it is one of the most important and interesting part of this document.
-
-Thus without further ado, here are the results from training multiple classifiers on `three different datasets of ebook text <#datasets>`_.
+Here are the results from training multiple classifiers on `three different datasets of ebook text <#datasets>`_.
 
 Part A: classifiers trained on the small dataset
 ------------------------------------------------
@@ -963,7 +965,3 @@ Next, I will be trying to improve the test score on the large dataset which is a
 on that dataset are below 0.8 
 
 Preprocessing and tuning better the hyperparameters (I am not exploring enough different sets of hyperparameters) are avenues I will be exploring.
-
-Script ``train_classifier.py``
-=============================
-To know how to use the script ``train_classifier.py``, go `here <./README_script.rst>`_ to read its documentation.
