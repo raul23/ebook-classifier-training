@@ -12,17 +12,15 @@ Dependencies
 This is the environment on which the script `train_classifier.py <./scripts/train_classifier.py>`_ was tested:
 
 * **Platform:** macOS
-* **Python**: version **3.7**
-* `matplotlib <https://matplotlib.org/>`_: **v3.5.2** for generating graphs
-* `numpy <https://numpy.org/>`_: **v1.21.5**, for "array processing for numbers, strings, records, and objects"
-* `pandas <https://pandas.pydata.org/>`_: **v1.3.5**, "High-performance, easy-to-use data structures and data analysis tool" 
+* **Python**: version **3.8**
+* `matplotlib <https://matplotlib.org/>`_: **v3.7.2** for generating graphs
+* `numpy <https://numpy.org/>`_: **v1.24.3**, for "array processing for numbers, strings, records, and objects"
+* `pandas <https://pandas.pydata.org/>`_: **v2.0.3**, "High-performance, easy-to-use data structures and data analysis tool" 
 * `pycld2 <https://github.com/aboSamoor/pycld2>`_: **v0.41**, for detecting the language of a given ebook in order to keep 
   books based on a chosen language
-* `regex <https://pypi.org/project/regex/>`_: **v2022.7.9**, "this regex implementation is backwards-compatible with 
+* `regex <https://pypi.org/project/regex/>`_: **v2023.12.25 **, "this regex implementation is backwards-compatible with 
   the standard ``re`` module, but offers additional functionality"
-* `scikit-learn <https://scikit-learn.org/>`_: **v1.0.2**, "a set of python modules for machine learning and data mining"
-
-**Ref.:** https://docs.anaconda.com/anaconda/packages/py3.7_osx-64/
+* `scikit-learn <https://scikit-learn.org/>`_: **v1.3.0**, "a set of python modules for machine learning and data mining"
 
 |
 
@@ -35,9 +33,9 @@ You also need recent versions of:
 
 Optionally:
 
-- `diskcache <http://www.grantjenks.com/docs/diskcache/>`_: **v5.4.0** for caching persistently the converted files into ``txt``
+- `diskcache <http://www.grantjenks.com/docs/diskcache/>`_: **v5.6.3** for caching persistently the converted files into ``txt``
 - `Ghostscript <https://www.ghostscript.com/>`_ for converting ``pdf`` to ``png`` when applying OCR on a given document.
-- `nltk <https://www.nltk.org/>`_ for detecting the language of a given ebook
+- `nltk <https://www.nltk.org/>`_: **v3.8.1** for detecting the language of a given ebook
 - `Tesseract <https://github.com/tesseract-ocr/tesseract>`_ for running OCR on books - version 4 gives 
   better results. OCR is disabled by default since it is a slow resource-intensive process.
 
