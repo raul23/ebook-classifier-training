@@ -53,34 +53,34 @@ I won't list all options (too many) but here are some of the important and inter
 
 **Cache options:**
 
--u                                     Highly recommended to use cache to speed up **dataset re-creation**.
+``-u``: Highly recommended to use cache to speed up **dataset re-creation**.
 
 **OCR options:**
 
--o                                     Whether to enable OCR for ``pdf``, ``djvu`` and image files. It is disabled by default. (default: false)
+``-o``: Whether to enable OCR for ``pdf``, ``djvu`` and image files. It is disabled by default. (default: false)
 
 **Dataset options:**
 
---cd                                  Create dataset with text from ebooks found in the directory.
---ud                                  Update dataset with text from more new ebooks found in the directory.
---cat CATEGORY                        Only include these categories in the dataset. (default: None)  
---vect-params PARAMS                  The parameters to be used by TfidfVectorizer for vectorizing the dataset. 
-                                      (default: max_df=0.5 min_df=5 ngram_range='(1, 1)' norm=l2)
+* ``--cd``: Create dataset with text from ebooks found in the directory.
+* ``--ud``: Update dataset with text from more new ebooks found in the directory.
+* ``--cat CATEGORY``: Only include these categories in the dataset. (default: None)  
+* ``--vect-params PARAMS``: The parameters to be used by TfidfVectorizer for vectorizing the dataset. 
+  (default: max_df=0.5 min_df=5 ngram_range='(1, 1)' norm=l2)
 
 **Benchmarking options:**
 
--b                                     Benchmarking classifiers.
+``-b``: Benchmarking classifiers.
 
 **Hyperparameter tuning options:**
 
---hyper-tuning                         Perform hyperparameter tuning.
---clfs CLF                             The names of classifiers whose hyperparameters will be tuned with grid search.
-                                       (default: RidgeClassifier ComplementNB)
+* ``--hyper-tuning``: Perform hyperparameter tuning.
+* ``--clfs CLF``: The names of classifiers whose hyperparameters will be tuned with grid search. 
+  (default: RidgeClassifier ComplementNB)
 
 **Classification options:**
 
---clf CLF_PARAMS                       The name of the classifier along with its parameters to be used for classifying ebooks. 
-                                       (default: RidgeClassifier tol=1e-2 solver=sparse_cg)
+* ``--clf CLF_PARAMS``: The name of the classifier along with its parameters to be used for classifying ebooks. 
+  (default: RidgeClassifier tol=1e-2 solver=sparse_cg)
 
 |
 
