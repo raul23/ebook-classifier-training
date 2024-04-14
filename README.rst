@@ -1,10 +1,6 @@
-=======================================================
-Part 1: Experimenting with Training an Ebook Classifier
-=======================================================
-.. contents:: **Contents**
-   :depth: 3
-   :local:
-   :backlinks: top
+===============================================
+Experimenting with Training an Ebook Classifier
+===============================================
 
 Introduction
 ============
