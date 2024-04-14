@@ -23,7 +23,7 @@ The best classifier will then be used for `part 2 <https://github.com/raul23/aut
 to automate the organization of ebooks within the filesystem.
 
 Script ``train_classifier.py``
-=============================
+==============================
 To know how to use the script ``train_classifier.py``, go `here <./README_script.rst>`_ to read its documentation.
 
 Datasets
@@ -301,7 +301,7 @@ Command used to generate the next plots::
   form of a word (TODO).
 
 Classifying with ``ComplementNB`` (odd results)⁉️
-""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""
 Command used to generate the next plots::
 
  $ python train_classifier.py ~/Data/ebooks -s 12345 --clf ComplementNB alpha=1000 --cat computer_science mathematics physics
@@ -555,7 +555,7 @@ Command used to generate the next plots::
   associated with *linux*, *machine learning* and *artificial neural networks*).
 
 Classifying with ``ComplementNB`` (again odd results)⁉️
-""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Command used to generate the next plots::
 
  $ python train_classifier.py ~/Data/organize -s 12345 --clf ComplementNB
